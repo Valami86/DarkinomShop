@@ -3,365 +3,394 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DarkinoM | Premium FiveM Scripts</title>
+    <title>DarkinoM Store</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
-    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
     <style>
         :root {
-            --primary: #00f3ff; /* Neon Cián */
-            --secondary: #bd00ff; /* Neon Lila */
-            --bg-dark: #0a0b10;
-            --bg-card: #13151d;
+            --primary: #00f3ff;
+            --secondary: #bd00ff;
+            --bg-dark: #050608;
+            --bg-card: #0f1116;
+            --card-border: #1f222e;
             --text-main: #ffffff;
             --text-dim: #8892b0;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
         body {
             background-color: var(--bg-dark);
             color: var(--text-main);
             font-family: 'Rajdhani', sans-serif;
+            background-image: 
+                linear-gradient(rgba(5, 6, 8, 0.9), rgba(5, 6, 8, 0.95)),
+                url('https://wallpapers.com/images/hd/futuristic-city-background-1920-x-1080-8736.jpg'); /* Háttérkép */
+            background-size: cover;
+            background-attachment: fixed;
             overflow-x: hidden;
         }
 
-        h1, h2, h3, .logo {
-            font-family: 'Orbitron', sans-serif;
-            text-transform: uppercase;
-        }
-
-        /* --- NAVBAR --- */
-        nav {
+        /* --- HEADER --- */
+        header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 20px 5%;
-            background: rgba(10, 11, 16, 0.95);
-            border-bottom: 1px solid rgba(0, 243, 255, 0.1);
+            background: rgba(15, 17, 22, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--card-border);
             position: sticky;
             top: 0;
             z-index: 100;
-            backdrop-filter: blur(10px);
         }
 
-        .logo {
-            font-size: 1.8rem;
+        .logo-text {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
             font-weight: 900;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 20px rgba(189, 0, 255, 0.3);
-        }
-
-        .nav-links {
             display: flex;
-            gap: 30px;
-            list-style: none;
-        }
-
-        .nav-links a {
-            color: var(--text-main);
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 1.1rem;
-            transition: 0.3s;
-            position: relative;
-        }
-
-        .nav-links a:hover {
-            color: var(--primary);
-            text-shadow: 0 0 10px var(--primary);
-        }
-
-        /* Nyelvváltó gombok */
-        .lang-switch {
-            display: flex;
+            align-items: center;
             gap: 10px;
         }
-
-        .lang-btn {
-            background: transparent;
-            border: 1px solid var(--text-dim);
-            color: var(--text-dim);
-            padding: 5px 10px;
-            cursor: pointer;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.8rem;
-            transition: 0.3s;
-        }
-
-        .lang-btn.active, .lang-btn:hover {
-            border-color: var(--primary);
-            color: var(--primary);
-            box-shadow: 0 0 10px rgba(0, 243, 255, 0.2);
-        }
-
-        /* --- HERO SECTION --- */
-        .hero {
-            height: 80vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            background: radial-gradient(circle at center, #1a1d29 0%, var(--bg-dark) 70%);
-            padding: 0 20px;
-            position: relative;
-        }
-
-        .hero h1 {
-            font-size: 4rem;
-            margin-bottom: 20px;
-            letter-spacing: 2px;
-        }
         
-        .hero span {
-            color: var(--primary);
+        .logo-icon-small {
+            height: 40px; 
+            /* Ide jön majd a logód */
         }
 
-        .hero p {
-            font-size: 1.5rem;
+        .nav-links { display: flex; gap: 25px; }
+        .nav-links a {
             color: var(--text-dim);
-            max-width: 600px;
-            margin-bottom: 40px;
+            text-decoration: none;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            transition: 0.3s;
+        }
+        .nav-links a:hover, .nav-links a.active { color: var(--primary); }
+        
+        .cart-count { color: var(--primary); }
+
+        /* --- CONTAINER --- */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
         }
 
-        .cta-btn {
-            padding: 15px 40px;
-            background: transparent;
-            border: 2px solid var(--primary);
-            color: var(--primary);
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.2rem;
-            font-weight: bold;
-            text-decoration: none;
-            text-transform: uppercase;
-            transition: 0.3s;
+        /* --- HERO CARD (A nagy doboz) --- */
+        .hero-card {
+            background: linear-gradient(135deg, rgba(15, 17, 22, 0.9), rgba(20, 20, 30, 0.9));
+            border: 1px solid var(--primary);
+            border-radius: 15px;
+            padding: 40px;
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
             position: relative;
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.1);
             overflow: hidden;
         }
 
-        .cta-btn:hover {
+        .hero-content {
+            z-index: 2;
+            max-width: 60%;
+        }
+
+        .hero-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3rem;
+            line-height: 1.1;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .hero-title span { color: var(--secondary); }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-dim);
+            margin-bottom: 30px;
+        }
+
+        .hero-btn {
+            display: inline-block;
+            padding: 12px 30px;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            text-decoration: none;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: bold;
+            text-transform: uppercase;
+            border-radius: 5px;
+            transition: 0.3s;
+            background: rgba(0, 243, 255, 0.05);
+        }
+
+        .hero-btn:hover {
             background: var(--primary);
             color: #000;
-            box-shadow: 0 0 30px var(--primary);
+            box-shadow: 0 0 20px var(--primary);
         }
 
-        /* --- SCRIPTS GRID --- */
-        .products {
-            padding: 80px 5%;
+        .hero-image {
+            max-width: 350px;
+            filter: drop-shadow(0 0 20px rgba(189, 0, 255, 0.4));
+            /* Animáció */
+            animation: float 4s ease-in-out infinite;
         }
 
-        .section-title {
-            text-align: center;
-            font-size: 2.5rem;
-            margin-bottom: 60px;
-            color: var(--text-main);
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
+
+        /* --- FEATURED SECTION --- */
+        .section-header {
+            margin-top: 50px;
+            margin-bottom: 20px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            text-transform: uppercase;
+            border-left: 4px solid var(--primary);
+            padding-left: 15px;
         }
 
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
         }
 
         .card {
             background: var(--bg-card);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            padding: 20px;
-            border-radius: 5px;
+            border: 1px solid var(--card-border);
+            border-radius: 10px;
+            overflow: hidden;
             transition: 0.3s;
-            position: relative;
+            display: flex;
+            flex-direction: column;
         }
 
         .card:hover {
+            border-color: var(--primary);
             transform: translateY(-5px);
-            border-color: var(--secondary);
-            box-shadow: 0 0 20px rgba(189, 0, 255, 0.15);
         }
 
-        .card-img {
+        .card-img-top {
             width: 100%;
-            height: 150px;
-            background: linear-gradient(45deg, #222, #333);
-            margin-bottom: 20px;
+            height: 180px;
+            background: #222;
+            object-fit: cover;
+        }
+
+        .card-body {
+            padding: 20px;
+            flex-grow: 1;
             display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #555;
+            flex-direction: column;
+        }
+
+        .card-title {
             font-family: 'Orbitron';
+            font-size: 1.1rem;
+            margin-bottom: 5px;
         }
 
-        .card h3 {
-            font-size: 1.5rem;
-            margin-bottom: 10px;
-        }
-
-        .card p {
+        .card-desc {
             color: var(--text-dim);
+            font-size: 0.9rem;
             margin-bottom: 20px;
-            line-height: 1.6;
+            flex-grow: 1;
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: auto;
         }
 
         .price {
-            font-size: 1.5rem;
+            font-size: 1.2rem;
             color: var(--primary);
             font-weight: bold;
-            display: block;
-            margin-bottom: 15px;
         }
 
-        .buy-btn {
-            display: block;
-            width: 100%;
-            padding: 10px;
-            background: var(--secondary);
-            color: white;
-            text-align: center;
+        .btn-small {
+            padding: 8px 20px;
+            border: 1px solid var(--text-dim);
+            color: #fff;
             text-decoration: none;
-            font-weight: bold;
+            font-size: 0.8rem;
             text-transform: uppercase;
+            border-radius: 4px;
             transition: 0.3s;
         }
 
-        .buy-btn:hover {
-            background: #d94dff;
-            box-shadow: 0 0 15px var(--secondary);
+        .btn-small:hover {
+            border-color: var(--primary);
+            background: rgba(0, 243, 255, 0.1);
         }
+
+        /* --- ABOUT BOX --- */
+        .about-box {
+            background: var(--bg-card);
+            border: 1px solid var(--card-border);
+            border-radius: 10px;
+            padding: 30px;
+            margin-top: 50px;
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .about-text { flex: 1; color: var(--text-dim); line-height: 1.6; }
+        .about-logo { width: 100px; opacity: 0.8; }
 
         /* --- FOOTER --- */
         footer {
-            text-align: center;
-            padding: 40px;
-            border-top: 1px solid #222;
-            color: var(--text-dim);
+            margin-top: 60px;
+            padding: 40px 0;
+            border-top: 1px solid var(--card-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        /* Glitch Effect Animation (Opcionális extra) */
-        @keyframes glitch {
-            0% { text-shadow: 2px 2px var(--primary), -2px -2px var(--secondary); }
-            25% { text-shadow: -2px 2px var(--primary), 2px -2px var(--secondary); }
-            50% { text-shadow: 2px -2px var(--primary), -2px 2px var(--secondary); }
-            100% { text-shadow: 0 0 var(--primary); }
+        .socials a {
+            color: var(--text-main);
+            margin-right: 20px;
+            font-size: 1.2rem;
+            transition: 0.3s;
         }
+        .socials a:hover { color: var(--primary); }
 
-        .glitch-hover:hover {
-            animation: glitch 0.3s infinite;
+        /* --- MOBIL NÉZET (RESPONSIVE) --- */
+        @media (max-width: 768px) {
+            .nav-links { display: none; } /* Egyszerűség kedvéért mobilon rejtjük a menüt */
+            
+            .hero-card {
+                flex-direction: column-reverse; /* Kép felülre kerüljön */
+                text-align: center;
+                padding: 20px;
+            }
+
+            .hero-content { max-width: 100%; }
+            .hero-image { max-width: 200px; margin-bottom: 20px; }
+            .hero-title { font-size: 2rem; }
+            
+            .grid {
+                grid-template-columns: 1fr; /* 1 oszlop mobilon */
+            }
+
+            .about-box {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            footer {
+                flex-direction: column;
+                gap: 20px;
+            }
         }
-
     </style>
 </head>
 <body>
 
-    <nav>
-        <div class="logo">DARKINOM</div>
-        <ul class="nav-links">
-            <li><a href="#" id="nav-home" data-i18n="nav_home">Főoldal</a></li>
-            <li><a href="#scripts" id="nav-scripts" data-i18n="nav_scripts">Scriptek</a></li>
-            <li><a href="#" id="nav-support" data-i18n="nav_support">Support</a></li>
-        </ul>
-        <div class="lang-switch">
-            <button class="lang-btn active" onclick="setLanguage('hu')" id="btn-hu">HU</button>
-            <button class="lang-btn" onclick="setLanguage('en')" id="btn-en">EN</button>
+    <header>
+        <div class="logo-text">
+            <img src="https://via.placeholder.com/50" alt="DM" class="logo-icon-small" id="nav-logo">
+            DarkinoM
         </div>
-    </nav>
+        <nav class="nav-links">
+            <a href="#" class="active">Home</a>
+            <a href="#">Scripts</a>
+            <a href="#">Packages</a>
+            <a href="#">Support</a>
+            <a href="#">Cart <span class="cart-count">(0)</span></a>
+        </nav>
+        <div style="color:white; font-size: 1.5rem; display: none;" class="mobile-menu-btn">
+            <i class="fas fa-bars"></i>
+        </div>
+    </header>
 
-    <section class="hero">
-        <h1 class="glitch-hover" id="hero-title" data-i18n="hero_title">Prémium <br><span>FiveM Scriptek</span></h1>
-        <p id="hero-desc" data-i18n="hero_desc">Emeld a szervered szintjét egyedi, optimalizált és biztonságos kiegészítőkkel.</p>
-        <a href="#scripts" class="cta-btn" id="hero-cta" data-i18n="hero_cta">Vásárlás</a>
-    </section>
+    <div class="container">
+        
+        <div class="hero-card">
+            <div class="hero-content">
+                <h1 class="hero-title">Prémium <br><span>FiveM Scriptek</span></h1>
+                <p class="hero-subtitle">Egyedi megoldások a szerveredhez. Optimalizált kód, 0-24 support.</p>
+                <a href="#" class="hero-btn">Böngészés</a>
+            </div>
+            <img src="https://via.placeholder.com/350x350" alt="DarkinoM Logo" class="hero-image" id="hero-logo-img">
+        </div>
 
-    <section class="products" id="scripts">
-        <h2 class="section-title" id="scripts-title" data-i18n="scripts_title">Legújabb Munkák</h2>
+        <h2 class="section-header">Featured Scripts</h2>
         
         <div class="grid">
             <div class="card">
-                <div class="card-img">IMG PLACEHOLDER</div>
-                <h3>DarkinoM HUD</h3>
-                <p id="desc-1" data-i18n="desc_1">Teljesen testreszabható, 0.01ms futásidejű HUD rendszer modern dizájnnal.</p>
-                <span class="price">15.00€</span>
-                <a href="#" class="buy-btn" id="btn-buy-1" data-i18n="btn_buy">Megveszem</a>
+                <img src="https://via.placeholder.com/400x200" class="card-img-top" alt="Script 1">
+                <div class="card-body">
+                    <h3 class="card-title">Haladó Járműrendszer v2</h3>
+                    <p class="card-desc">Custom Police Content. Teljesen testreszabható handling és tuning.</p>
+                    <div class="card-footer">
+                        <span class="price">35€</span>
+                        <a href="#" class="btn-small">Megtekintés</a>
+                    </div>
+                </div>
             </div>
 
             <div class="card">
-                <div class="card-img">IMG PLACEHOLDER</div>
-                <h3>Advanced Robbery</h3>
-                <p id="desc-2" data-i18n="desc_2">Komplex rablás rendszer minigame-ekkel és részletes animációkkal.</p>
-                <span class="price">25.00€</span>
-                <a href="#" class="buy-btn" id="btn-buy-2" data-i18n="btn_buy">Megveszem</a>
+                <img src="https://via.placeholder.com/400x200" class="card-img-top" alt="Script 2">
+                <div class="card-body">
+                    <h3 class="card-title">Egyedi Munkák Csomag</h3>
+                    <p class="card-desc">Mentős, Szerelő, Rendőr kiegészítők egy csomagban.</p>
+                    <div class="card-footer">
+                        <span class="price">50€</span>
+                        <a href="#" class="btn-small">Megtekintés</a>
+                    </div>
+                </div>
             </div>
 
             <div class="card">
-                <div class="card-img">IMG PLACEHOLDER</div>
-                <h3>DarkinoM Garage</h3>
-                <p id="desc-3" data-i18n="desc_3">Valósághű garázs rendszer jármű állapot mentéssel és kulcs rendszerrel.</p>
-                <span class="price">20.00€</span>
-                <a href="#" class="buy-btn" id="btn-buy-3" data-i18n="btn_buy">Megveszem</a>
+                <img src="https://via.placeholder.com/400x200" class="card-img-top" alt="Script 3">
+                <div class="card-body">
+                    <h3 class="card-title">Admin Panel Pro</h3>
+                    <p class="card-desc">Server Management egyszerűen. Ban, Kick, Spectate funkciók.</p>
+                    <div class="card-footer">
+                        <span class="price">40€</span>
+                        <a href="#" class="btn-small">Megtekintés</a>
+                    </div>
+                </div>
             </div>
         </div>
-    </section>
 
-    <footer>
-        <p>&copy; 2024 DarkinoM Store. All rights reserved.</p>
-    </footer>
+        <div class="about-box">
+            <div class="about-text">
+                <h3>About DarkinoM</h3>
+                <p>Minőségi FiveM scriptek fejlesztésével foglalkozom. A célom, hogy a szervered egyedi legyen és hibamentesen fusson. Csatlakozz a Discordunkhoz segítségért!</p>
+            </div>
+            <img src="https://via.placeholder.com/100" alt="Logo" class="about-logo" id="about-logo-img">
+        </div>
 
-    <script>
-        // Nyelvi adatbázis
-        const translations = {
-            hu: {
-                nav_home: "Főoldal",
-                nav_scripts: "Scriptek",
-                nav_support: "Support",
-                hero_title: "Prémium <br><span>FiveM Scriptek</span>",
-                hero_desc: "Emeld a szervered szintjét egyedi, optimalizált és biztonságos kiegészítőkkel.",
-                hero_cta: "Vásárlás",
-                scripts_title: "Legújabb Munkák",
-                desc_1: "Teljesen testreszabható, 0.01ms futásidejű HUD rendszer modern dizájnnal.",
-                desc_2: "Komplex rablás rendszer minigame-ekkel és részletes animációkkal.",
-                desc_3: "Valósághű garázs rendszer jármű állapot mentéssel és kulcs rendszerrel.",
-                btn_buy: "Megveszem"
-            },
-            en: {
-                nav_home: "Home",
-                nav_scripts: "Scripts",
-                nav_support: "Support",
-                hero_title: "Premium <br><span>FiveM Scripts</span>",
-                hero_desc: "Level up your server with unique, optimized, and secure resources.",
-                hero_cta: "Browse Shop",
-                scripts_title: "Latest Releases",
-                desc_1: "Fully customizable HUD system with 0.01ms resmon and modern design.",
-                desc_2: "Complex robbery system featuring minigames and detailed animations.",
-                desc_3: "Realistic garage system with vehicle state saving and keys.",
-                btn_buy: "Purchase"
-            }
-        };
+        <footer>
+            <div class="socials">
+                <a href="#"><i class="fab fa-facebook"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-youtube"></i></a>
+                <a href="#"><i class="fab fa-discord"></i> DarkinoM</a>
+            </div>
+            <div style="color: var(--text-dim); font-size: 0.8rem;">
+                Terms of Service | Privacy Policy
+            </div>
+        </footer>
 
-        function setLanguage(lang) {
-            // Gombok stílusának frissítése
-            document.getElementById('btn-hu').classList.remove('active');
-            document.getElementById('btn-en').classList.remove('active');
-            document.getElementById('btn-' + lang).classList.add('active');
+    </div>
 
-            // Szövegek cseréje
-            const elements = document.querySelectorAll('[data-i18n]');
-            
-            elements.forEach(element => {
-                const key = element.getAttribute('data-i18n');
-                if (translations[lang][key]) {
-                    // Ha van HTML tag a szövegben (pl. <br> vagy <span>), akkor innerHTML kell
-                    if(translations[lang][key].includes('<')) {
-                        element.innerHTML = translations[lang][key];
-                    } else {
-                        element.innerText = translations[lang][key];
-                    }
-                }
-            });
-        }
-    </script>
 </body>
 </html>
