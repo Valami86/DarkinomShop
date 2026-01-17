@@ -4,15 +4,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DarkinoM | Csomagok</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@300;500;700&display=swap&subset=latin,latin-ext" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@400;500;600;700&display=swap&subset=latin,latin-ext" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
         :root { --primary: #00f3ff; --secondary: #bd00ff; --bg-dark: #050608; --bg-card: rgba(15, 17, 22, 0.9); --text-main: #ffffff; --text-dim: #b0b8d4; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background-color: var(--bg-dark); color: var(--text-main); font-family: 'Rajdhani', sans-serif; background-image: url('background.png'); background-size: cover; background-position: center; background-attachment: fixed; overflow-x: hidden; display: flex; flex-direction: column; min-height: 100vh; }
+        body { 
+            background-color: var(--bg-dark); 
+            color: var(--text-main); 
+            font-family: 'Rajdhani', sans-serif; 
+            background-image: url('background.png'); 
+            background-size: cover; 
+            background-position: center; 
+            background-attachment: fixed; 
+            overflow-x: hidden; 
+            display: flex; flex-direction: column; min-height: 100vh;
+            cursor: crosshair; /* CÉLKERESZT KURZOR */
+        }
+        /* Interaktív elemek */
+        a, button { cursor: pointer; }
+
         .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(5, 6, 8, 0.7); z-index: -1; }
         
+        /* TRAIL */
+        .cursor-trail {
+            position: fixed; top: 0; left: 0; width: 8px; height: 8px; background: var(--primary);
+            pointer-events: none; z-index: 9999; box-shadow: 0 0 10px var(--primary); animation: fadeOut 0.5s forwards;
+        }
+        @keyframes fadeOut { 0% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: scale(0); } }
+
         header { display: flex; justify-content: space-between; align-items: center; padding: 15px 5%; background: rgba(10, 10, 15, 0.95); border-bottom: 1px solid rgba(0, 243, 255, 0.2); position: sticky; top: 0; z-index: 1000; backdrop-filter: blur(10px); }
         .logo-link { display: flex; align-items: center; gap: 15px; text-decoration: none; }
         .logo-img-small { height: 50px; filter: drop-shadow(0 0 5px rgba(189, 0, 255, 0.5)); transition: transform 0.3s; }
@@ -22,18 +43,9 @@
         .logo-link:hover .logo-text { animation: glitch-skew 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both infinite, glitch-color 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both infinite; color: #fff; }
         .logo-link:hover .logo-img-small { transform: scale(1.1); }
 
-        /* SZÉLES MENÜ */
+        /* JAVÍTOTT MENÜ */
         .nav-links { display: flex; gap: 50px; align-items: center; }
-        .nav-links a { 
-            color: var(--text-main); 
-            text-decoration: none; 
-            font-weight: 700; 
-            text-transform: uppercase; 
-            font-size: 1rem; 
-            letter-spacing: 1px;
-            transition: 0.3s; 
-            font-family: 'Orbitron', sans-serif; 
-        }
+        .nav-links a { color: var(--text-main); text-decoration: none; font-weight: 700; text-transform: uppercase; font-size: 1.1rem; letter-spacing: 1px; transition: 0.3s; font-family: 'Rajdhani', sans-serif; }
         .nav-links a:hover, .nav-links a.active { color: var(--primary); text-shadow: 0 0 10px var(--primary); }
 
         .menu-toggle { display: none; font-size: 1.8rem; color: var(--primary); cursor: pointer; }
@@ -176,14 +188,29 @@
             document.getElementById('btn-hu').classList.remove('active');
             document.getElementById('btn-en').classList.remove('active');
             document.getElementById('btn-' + lang).classList.add('active');
-            
             document.querySelectorAll('[data-i18n]').forEach(el => {
                 const key = el.getAttribute('data-i18n');
-                if (translations[lang][key]) {
-                    el.innerHTML = translations[lang][key];
-                }
+                if (translations[lang][key]) el.innerHTML = translations[lang][key];
             });
         }
+
+        // --- GLITCH EGÉR TRAIL ---
+        document.addEventListener('mousemove', function(e) {
+            const trail = document.createElement('div');
+            trail.classList.add('cursor-trail');
+            document.body.appendChild(trail);
+            trail.style.left = e.pageX + 'px';
+            trail.style.top = e.pageY + 'px';
+            const colors = ['#00f3ff', '#bd00ff'];
+            const randomColor = colors[Math.floor(Math.random() * colors.length)];
+            trail.style.backgroundColor = randomColor;
+            trail.style.boxShadow = `0 0 10px ${randomColor}`;
+            const width = Math.random() * 10 + 2; 
+            const height = Math.random() * 4 + 1; 
+            trail.style.width = width + 'px';
+            trail.style.height = height + 'px';
+            setTimeout(() => { trail.remove(); }, 500);
+        });
     </script>
 </body>
 </html>
