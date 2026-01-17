@@ -25,8 +25,8 @@
 
         .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(5, 6, 8, 0.7); z-index: -1; }
         
-        /* TRAIL (Javítva: Absolute) */
-        .cursor-trail { position: absolute; top: 0; left: 0; width: 8px; height: 8px; background: var(--primary); pointer-events: none; z-index: 9999; box-shadow: 0 0 10px var(--primary); animation: fadeOut 0.5s forwards; }
+        /* TRAIL (VÉGLEGES JAVÍTÁS: FIXED POSITION) */
+        .cursor-trail { position: fixed; top: 0; left: 0; width: 8px; height: 8px; background: var(--primary); pointer-events: none; z-index: 9999; box-shadow: 0 0 10px var(--primary); animation: fadeOut 0.5s forwards; }
         @keyframes fadeOut { 0% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: scale(0); } }
 
         /* HEADER */
@@ -42,9 +42,9 @@
         /* MENÜ */
         .nav-links { display: flex; gap: 50px; align-items: center; }
         .nav-links a { color: var(--text-main); text-decoration: none; font-weight: 700; text-transform: uppercase; font-size: 1.1rem; letter-spacing: 1px; transition: 0.3s; font-family: 'Rajdhani', sans-serif; }
-        .nav-links a:hover { color: var(--primary); text-shadow: 0 0 10px var(--primary); }
+        .nav-links a:hover, .nav-links a.active { color: var(--primary); text-shadow: 0 0 10px var(--primary); }
 
-        .menu-toggle { display: none; font-size: 1.8rem; color: var(--primary); }
+        .menu-toggle { display: none; font-size: 1.8rem; color: var(--primary); cursor: pointer; }
         .lang-switch { display: flex; gap: 10px; margin-left: 20px; }
         .lang-btn { background: transparent; border: 1px solid var(--text-dim); color: var(--text-dim); padding: 4px 10px; cursor: pointer; font-family: 'Orbitron', sans-serif; font-size: 0.8rem; }
         .lang-btn.active { border-color: var(--primary); color: var(--primary); }
@@ -110,10 +110,10 @@
                 <div class="card-img-top"><i class="fas fa-tachometer-alt fa-3x"></i></div>
                 <div class="card-body">
                     <h3 class="card-title">DarkinoM HUD v2</h3>
-                    <p class="card-desc" data-i18n="desc_1">Teljesen testreszabható, 0.01ms futásidejű HUD rendszer modern dizájnnal.</p>
+                    <p class="card-desc" data-i18n="desc_hud">0.01ms futásidejű, modern HUD rendszer.</p>
                     <div class="card-footer">
                         <span class="price">15€</span>
-                        <a href="#" class="btn-small" data-i18n="btn_view">Megtekintés</a>
+                        <a href="#" class="btn-small" data-i18n="btn_buy">Megveszem</a>
                     </div>
                 </div>
             </div>
@@ -121,7 +121,7 @@
                 <div class="card-img-top"><i class="fas fa-mask fa-3x"></i></div>
                 <div class="card-body">
                     <h3 class="card-title">Advanced Robbery</h3>
-                    <p class="card-desc" data-i18n="desc_2">Komplex rablás rendszer minigame-ekkel és részletes animációkkal.</p>
+                    <p class="card-desc" data-i18n="desc_robbery">Rablás rendszer minigame-ekkel.</p>
                     <div class="card-footer">
                         <span class="price">25€</span>
                         <a href="#" class="btn-small" data-i18n="btn_buy">Megveszem</a>
@@ -206,12 +206,12 @@
             });
         }
 
-        // --- TRAIL (JAVÍTOTT: clientX/Y + Absolute) ---
+        // --- TRAIL (JAVÍTOTT: clientX/Y + Fixed Position) ---
         document.addEventListener('mousemove', function(e) {
             const trail = document.createElement('div');
             trail.classList.add('cursor-trail');
             document.body.appendChild(trail);
-            // clientX/Y a position:fixed miatt
+            // clientX/Y a position:fixed miatt!
             trail.style.left = e.clientX + 'px';
             trail.style.top = e.clientY + 'px';
             const colors = ['#00f3ff', '#bd00ff'];
