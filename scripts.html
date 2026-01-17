@@ -4,61 +4,49 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DarkinoM | Scriptek</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@300;500;700&display=swap&subset=latin,latin-ext" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@400;500;600;700;900&display=swap&subset=latin,latin-ext" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
         :root { --primary: #00f3ff; --secondary: #bd00ff; --bg-dark: #050608; --bg-card: rgba(15, 17, 22, 0.9); --text-main: #ffffff; --text-dim: #b0b8d4; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { 
-            background-color: var(--bg-dark); 
-            color: var(--text-main); 
-            font-family: 'Rajdhani', sans-serif; 
-            background-image: url('background.png'); 
-            background-size: cover; 
-            background-position: center; 
-            background-attachment: fixed; 
-            overflow-x: hidden; 
-            display: flex; 
-            flex-direction: column; 
-            min-height: 100vh; 
-            cursor: default;
+            background-color: var(--bg-dark); color: var(--text-main); font-family: 'Rajdhani', sans-serif; 
+            background-image: url('background.png'); background-size: cover; background-position: center; background-attachment: fixed; overflow-x: hidden; 
+            display: flex; flex-direction: column; min-height: 100vh; cursor: crosshair;
         }
+        /* Interaktív elemek */
+        a, button, .btn-small { cursor: pointer; }
+
         .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(5, 6, 8, 0.7); z-index: -1; }
         
+        /* TRAIL */
+        .cursor-trail { position: fixed; top: 0; left: 0; width: 8px; height: 8px; background: var(--primary); pointer-events: none; z-index: 9999; box-shadow: 0 0 10px var(--primary); animation: fadeOut 0.5s forwards; }
+        @keyframes fadeOut { 0% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: scale(0); } }
+
         /* HEADER */
         header { display: flex; justify-content: space-between; align-items: center; padding: 15px 5%; background: rgba(10, 10, 15, 0.95); border-bottom: 1px solid rgba(0, 243, 255, 0.2); position: sticky; top: 0; z-index: 1000; backdrop-filter: blur(10px); }
         .logo-link { display: flex; align-items: center; gap: 15px; text-decoration: none; }
         .logo-img-small { height: 50px; filter: drop-shadow(0 0 5px rgba(189, 0, 255, 0.5)); transition: transform 0.3s; }
         .logo-text { font-family: 'Orbitron', sans-serif; font-size: 1.5rem; font-weight: 900; color: #fff; text-transform: uppercase; letter-spacing: 2px; position: relative; transition: 0.3s; }
-
         @keyframes glitch-skew { 0% { transform: skew(0deg); } 20% { transform: skew(-10deg); } 40% { transform: skew(10deg); } 60% { transform: skew(-5deg); } 80% { transform: skew(5deg); } 100% { transform: skew(0deg); } }
         @keyframes glitch-color { 0% { text-shadow: 2px 2px var(--secondary), -2px -2px var(--primary); } 25% { text-shadow: -2px 2px var(--secondary), 2px -2px var(--primary); } 50% { text-shadow: 2px -2px var(--secondary), -2px 2px var(--primary); } 75% { text-shadow: -2px -2px var(--secondary), 2px 2px var(--primary); } 100% { text-shadow: 2px 0 var(--secondary), -2px 0 var(--primary); } }
         .logo-link:hover .logo-text { animation: glitch-skew 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both infinite, glitch-color 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both infinite; color: #fff; }
         .logo-link:hover .logo-img-small { transform: scale(1.1); }
 
-        /* SZÉLES MENÜ */
+        /* JAVÍTOTT MENÜ */
         .nav-links { display: flex; gap: 50px; align-items: center; }
-        .nav-links a { 
-            color: var(--text-main); 
-            text-decoration: none; 
-            font-weight: 700; 
-            text-transform: uppercase; 
-            font-size: 1rem; 
-            letter-spacing: 1px;
-            transition: 0.3s; 
-            font-family: 'Orbitron', sans-serif; 
-        }
+        .nav-links a { color: var(--text-main); text-decoration: none; font-weight: 700; text-transform: uppercase; font-size: 1.1rem; letter-spacing: 1px; transition: 0.3s; font-family: 'Rajdhani', sans-serif; }
         .nav-links a:hover, .nav-links a.active { color: var(--primary); text-shadow: 0 0 10px var(--primary); }
-        
+
+        .menu-toggle { display: none; font-size: 1.8rem; color: var(--primary); cursor: pointer; }
         .lang-switch { display: flex; gap: 10px; margin-left: 20px; }
         .lang-btn { background: transparent; border: 1px solid var(--text-dim); color: var(--text-dim); padding: 4px 10px; cursor: pointer; font-family: 'Orbitron', sans-serif; font-size: 0.8rem; }
         .lang-btn.active { border-color: var(--primary); color: var(--primary); }
-        .menu-toggle { display: none; font-size: 1.8rem; color: var(--primary); cursor: pointer; }
 
         .container { max-width: 1200px; margin: 0 auto; padding: 20px; flex: 1; width: 100%; }
         .page-header { text-align: center; margin-top: 40px; margin-bottom: 40px; }
-        .page-title { font-family: 'Orbitron', sans-serif; font-size: 3rem; color: #fff; text-transform: uppercase; margin-bottom: 10px; }
+        .page-title { font-family: 'Rajdhani', sans-serif; font-weight: 900; font-size: 3rem; color: #fff; text-transform: uppercase; margin-bottom: 10px; }
         .page-subtitle { color: var(--text-dim); font-size: 1.2rem; }
 
         .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
@@ -66,32 +54,16 @@
         .card:hover { border-color: var(--primary); transform: translateY(-5px); box-shadow: 0 0 20px rgba(0, 243, 255, 0.2); }
         .card-img-top { width: 100%; height: 180px; background: #1a1a1a; display: flex; align-items: center; justify-content: center; color: #555; border-bottom: 1px solid rgba(255,255,255,0.05); }
         .card-body { padding: 20px; flex-grow: 1; display: flex; flex-direction: column; }
-        .card-title { font-family: 'Orbitron', sans-serif; font-size: 1.2rem; margin-bottom: 8px; color: #fff; }
-        .card-desc { color: var(--text-dim); font-size: 0.9rem; margin-bottom: 20px; line-height: 1.5; flex-grow: 1; }
+        .card-title { font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 1.4rem; margin-bottom: 8px; color: #fff; letter-spacing: 0.5px; }
+        .card-desc { color: var(--text-dim); font-size: 1rem; margin-bottom: 20px; line-height: 1.5; flex-grow: 1; font-weight: 500; }
         .card-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px; }
-        .price { font-size: 1.4rem; color: var(--primary); font-weight: bold; font-family: 'Orbitron', sans-serif; }
-        .btn-small { padding: 8px 20px; border: 1px solid var(--secondary); color: #fff; background: rgba(189, 0, 255, 0.1); text-decoration: none; font-size: 0.8rem; text-transform: uppercase; font-weight: bold; transition: 0.3s; border-radius: 4px; font-family: 'Orbitron', sans-serif; }
+        .price { font-size: 1.6rem; color: var(--primary); font-weight: 800; font-family: 'Rajdhani', sans-serif; }
+        .btn-small { padding: 8px 20px; border: 1px solid var(--secondary); color: #fff; background: rgba(189, 0, 255, 0.1); text-decoration: none; font-size: 0.9rem; text-transform: uppercase; font-weight: 800; transition: 0.3s; border-radius: 4px; font-family: 'Rajdhani', sans-serif; }
         .btn-small:hover { background: var(--secondary); box-shadow: 0 0 15px var(--secondary); }
 
         footer { width: 100%; padding: 40px; text-align: center; border-top: 1px solid rgba(255,255,255,0.1); background: #000; margin-top: auto; }
         .socials a { color: var(--text-dim); margin: 0 15px; font-size: 1.8rem; transition: 0.3s; }
         .socials a:hover { color: var(--primary); }
-
-        /* TRAIL CSS */
-        .cursor-trail {
-            position: fixed;
-            top: 0; left: 0;
-            width: 8px; height: 8px;
-            background: var(--primary);
-            pointer-events: none;
-            z-index: 9999;
-            box-shadow: 0 0 10px var(--primary);
-            animation: fadeOut 0.5s forwards;
-        }
-        @keyframes fadeOut {
-            0% { opacity: 1; transform: scale(1); }
-            100% { opacity: 0; transform: scale(0); }
-        }
 
         @media (max-width: 768px) {
             .menu-toggle { display: block; }
@@ -140,7 +112,7 @@
                     </div>
                 </div>
             </div>
-            <div class="card">
+             <div class="card">
                 <div class="card-img-top"><i class="fas fa-mask fa-3x"></i></div>
                 <div class="card-body">
                     <h3 class="card-title">Advanced Robbery</h3>
@@ -151,7 +123,7 @@
                     </div>
                 </div>
             </div>
-            <div class="card">
+             <div class="card">
                 <div class="card-img-top"><i class="fas fa-warehouse fa-3x"></i></div>
                 <div class="card-body">
                     <h3 class="card-title">Garage System</h3>
@@ -186,6 +158,7 @@
     <script>
         function toggleMenu() { document.getElementById('nav-menu').classList.toggle('active'); }
         
+        // BŐVÍTETT FORDÍTÁSOK
         const translations = {
             hu: {
                 nav_home: "Főoldal", nav_scripts: "Scriptek", nav_packages: "Csomagok", nav_support: "Support",
@@ -209,7 +182,14 @@
             }
         };
 
+        // --- NYELVMEMÓRIA ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedLang = localStorage.getItem('darkinom_lang') || 'hu';
+            setLanguage(savedLang);
+        });
+
         function setLanguage(lang) {
+            localStorage.setItem('darkinom_lang', lang);
             document.getElementById('btn-hu').classList.remove('active');
             document.getElementById('btn-en').classList.remove('active');
             document.getElementById('btn-' + lang).classList.add('active');
@@ -222,28 +202,22 @@
             });
         }
 
-        // --- GLITCH EGÉR TRAIL ---
+        // --- TRAIL ---
         document.addEventListener('mousemove', function(e) {
             const trail = document.createElement('div');
             trail.classList.add('cursor-trail');
             document.body.appendChild(trail);
-
             trail.style.left = e.pageX + 'px';
             trail.style.top = e.pageY + 'px';
-            
             const colors = ['#00f3ff', '#bd00ff'];
             const randomColor = colors[Math.floor(Math.random() * colors.length)];
             trail.style.backgroundColor = randomColor;
             trail.style.boxShadow = `0 0 10px ${randomColor}`;
-
             const width = Math.random() * 10 + 2; 
             const height = Math.random() * 4 + 1; 
             trail.style.width = width + 'px';
             trail.style.height = height + 'px';
-
-            setTimeout(() => {
-                trail.remove();
-            }, 500);
+            setTimeout(() => { trail.remove(); }, 500);
         });
     </script>
 </body>
