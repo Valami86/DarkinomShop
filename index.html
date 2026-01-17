@@ -9,10 +9,10 @@
 
     <style>
         :root {
-            --primary: #00f3ff;
-            --secondary: #bd00ff;
+            --primary: #00f3ff;       /* Neon Cián */
+            --secondary: #bd00ff;     /* Neon Lila */
             --bg-dark: #050608;
-            --bg-card: rgba(15, 17, 22, 0.75); /* Átlátszóbb */
+            --bg-card: rgba(15, 17, 22, 0.85); /* Átlátszó sötét háttér a kártyáknak */
             --text-main: #ffffff;
             --text-dim: #b0b8d4;
         }
@@ -23,34 +23,43 @@
             background-color: var(--bg-dark);
             color: var(--text-main);
             font-family: 'Rajdhani', sans-serif;
-            /* Cyberpunk Város Háttér */
-            background-image: url('https://images4.alphacoders.com/936/936378.jpg');
+            
+            /* --- HÁTTÉRKÉP BEÁLLÍTÁSA --- */
+            /* Feltételezzük, hogy feltöltötted background.png néven */
+            background-image: url('background.png'); 
+            
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
             overflow-x: hidden;
         }
 
-        /* Sötétítő réteg a háttérre, hogy olvasható legyen a szöveg */
+        /* Sötétítő réteg az egész oldalra, hogy a szöveg olvasható legyen a háttérkép előtt */
         .overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(5, 6, 8, 0.85);
+            background: rgba(5, 6, 8, 0.7); /* Itt állíthatod a sötétítés erősségét (0.7 = 70%) */
             z-index: -1;
         }
 
-        /* --- HEADER --- */
+        /* --- FEJLÉC (HEADER) --- */
         header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 15px 5%;
-            background: rgba(10, 10, 15, 0.9);
+            background: rgba(10, 10, 15, 0.95);
             border-bottom: 1px solid rgba(0, 243, 255, 0.2);
             position: sticky;
             top: 0;
             z-index: 1000;
             backdrop-filter: blur(10px);
+        }
+
+        .logo-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
         .logo-text {
@@ -62,8 +71,9 @@
             letter-spacing: 2px;
         }
 
-        /* Desktop Navigáció */
+        /* --- NAVIGÁCIÓ --- */
         .nav-links { display: flex; gap: 25px; align-items: center; }
+        
         .nav-links a {
             color: var(--text-main);
             text-decoration: none;
@@ -72,27 +82,35 @@
             font-size: 0.9rem;
             transition: 0.3s;
             font-family: 'Orbitron';
+            position: relative;
         }
-        .nav-links a:hover { color: var(--primary); text-shadow: 0 0 10px var(--primary); }
+        
+        .nav-links a:hover { 
+            color: var(--primary); 
+            text-shadow: 0 0 10px var(--primary); 
+        }
 
         /* Nyelvváltó gombok */
         .lang-switch { display: flex; gap: 10px; margin-left: 20px; }
+        
         .lang-btn {
             background: transparent;
             border: 1px solid var(--text-dim);
             color: var(--text-dim);
-            padding: 2px 8px;
+            padding: 4px 10px;
             cursor: pointer;
             font-family: 'Orbitron';
             font-size: 0.8rem;
+            transition: 0.3s;
         }
-        .lang-btn.active { 
+        
+        .lang-btn.active, .lang-btn:hover { 
             border-color: var(--primary); 
             color: var(--primary); 
             box-shadow: 0 0 10px rgba(0, 243, 255, 0.3);
         }
 
-        /* Mobil Menü Gomb */
+        /* Mobil Menü Gomb (Alapból rejtett) */
         .menu-toggle {
             display: none;
             font-size: 1.8rem;
@@ -100,14 +118,15 @@
             cursor: pointer;
         }
 
-        /* --- HERO CARD --- */
+        /* --- FŐ TARTALOM (HERO) --- */
         .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
 
         .hero-card {
-            background: linear-gradient(90deg, rgba(15, 17, 22, 0.9) 0%, rgba(20, 20, 40, 0.6) 100%);
+            /* Üveghatású doboz */
+            background: linear-gradient(90deg, rgba(15, 17, 22, 0.95) 0%, rgba(20, 20, 40, 0.7) 100%);
             border: 1px solid var(--primary);
             border-radius: 15px;
-            padding: 40px;
+            padding: 50px;
             margin-top: 20px;
             display: flex;
             align-items: center;
@@ -117,39 +136,30 @@
             overflow: hidden;
         }
 
-        /* Fény effekt a Hero mögött */
-        .hero-card::before {
-            content: '';
-            position: absolute;
-            top: -50%; right: -50%;
-            width: 100%; height: 200%;
-            background: radial-gradient(circle, rgba(189,0,255,0.2) 0%, rgba(0,0,0,0) 70%);
-            z-index: 0;
-        }
-
         .hero-content { z-index: 2; max-width: 60%; }
 
         .hero-title {
             font-family: 'Orbitron', sans-serif;
-            font-size: 3rem;
+            font-size: 3.5rem;
             line-height: 1.1;
             margin-bottom: 15px;
             text-transform: uppercase;
         }
+        
         .hero-title span { 
             color: var(--secondary); 
             text-shadow: 0 0 20px rgba(189, 0, 255, 0.5);
         }
 
         .hero-subtitle {
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             color: var(--text-dim);
             margin-bottom: 30px;
         }
 
         .cta-btn {
             display: inline-block;
-            padding: 12px 35px;
+            padding: 15px 40px;
             background: rgba(0, 243, 255, 0.1);
             border: 2px solid var(--primary);
             color: var(--primary);
@@ -160,14 +170,16 @@
             transition: 0.3s;
             box-shadow: 0 0 15px rgba(0, 243, 255, 0.1);
         }
+        
         .cta-btn:hover {
             background: var(--primary);
             color: #000;
-            box-shadow: 0 0 30px var(--primary);
+            box-shadow: 0 0 40px var(--primary);
         }
 
+        /* A Logó képe */
         .hero-image {
-            max-width: 350px;
+            max-width: 380px;
             z-index: 2;
             filter: drop-shadow(0 0 30px rgba(189, 0, 255, 0.3));
             animation: float 4s ease-in-out infinite;
@@ -175,25 +187,26 @@
 
         @keyframes float {
             0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-15px); }
+            50% { transform: translateY(-20px); }
         }
 
-        /* --- CARDS GRID --- */
+        /* --- TERMÉKEK RÁCS (GRID) --- */
         .section-header {
-            margin-top: 60px;
-            margin-bottom: 25px;
+            margin-top: 80px;
+            margin-bottom: 30px;
             font-family: 'Orbitron';
-            font-size: 1.8rem;
+            font-size: 2rem;
             text-transform: uppercase;
             border-left: 5px solid var(--primary);
             padding-left: 20px;
             text-shadow: 0 0 10px rgba(0, 243, 255, 0.3);
+            background: linear-gradient(90deg, rgba(0, 243, 255, 0.1), transparent);
         }
 
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 25px;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
         }
 
         .card {
@@ -202,39 +215,44 @@
             border-radius: 12px;
             overflow: hidden;
             transition: 0.3s;
-            backdrop-filter: blur(5px);
+            backdrop-filter: blur(10px);
             display: flex;
             flex-direction: column;
         }
 
         .card:hover {
             border-color: var(--primary);
-            transform: translateY(-5px);
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
         }
 
+        /* Termék kép helye */
         .card-img-top {
             width: 100%;
-            height: 180px;
-            background: #222;
+            height: 200px;
+            background: #1a1a1a; /* Szürke háttér amíg nincs kép */
             object-fit: cover;
             border-bottom: 1px solid rgba(255,255,255,0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #555;
         }
 
-        .card-body { padding: 20px; flex-grow: 1; display: flex; flex-direction: column; }
+        .card-body { padding: 25px; flex-grow: 1; display: flex; flex-direction: column; }
         
         .card-title {
             font-family: 'Orbitron';
-            font-size: 1.2rem;
-            margin-bottom: 8px;
+            font-size: 1.4rem;
+            margin-bottom: 10px;
             color: #fff;
         }
 
         .card-desc {
             color: var(--text-dim);
-            font-size: 0.95rem;
-            margin-bottom: 20px;
-            line-height: 1.5;
+            font-size: 1rem;
+            margin-bottom: 25px;
+            line-height: 1.6;
             flex-grow: 1;
         }
 
@@ -243,35 +261,38 @@
             justify-content: space-between;
             align-items: center;
             border-top: 1px solid rgba(255,255,255,0.1);
-            padding-top: 15px;
+            padding-top: 20px;
         }
 
-        .price { font-size: 1.4rem; color: var(--primary); font-weight: bold; font-family: 'Orbitron'; }
+        .price { font-size: 1.5rem; color: var(--primary); font-weight: bold; font-family: 'Orbitron'; }
 
         .btn-small {
-            padding: 8px 20px;
+            padding: 10px 25px;
             border: 1px solid var(--secondary);
             color: #fff;
             background: rgba(189, 0, 255, 0.1);
             text-decoration: none;
-            font-size: 0.8rem;
+            font-size: 0.9rem;
             text-transform: uppercase;
             font-weight: bold;
             transition: 0.3s;
+            border-radius: 4px;
         }
-        .btn-small:hover { background: var(--secondary); box-shadow: 0 0 15px var(--secondary); }
+        
+        .btn-small:hover { background: var(--secondary); box-shadow: 0 0 20px var(--secondary); }
 
-        /* --- FOOTER --- */
+        /* --- LÁBLÉC (FOOTER) --- */
         footer {
-            margin-top: 80px;
-            padding: 40px;
+            margin-top: 100px;
+            padding: 50px;
             text-align: center;
             border-top: 1px solid rgba(255,255,255,0.1);
-            background: rgba(5, 6, 8, 0.9);
+            background: rgba(5, 6, 8, 0.95);
         }
-        .socials { font-size: 1.5rem; margin-bottom: 10px; }
+        
+        .socials { font-size: 1.8rem; margin-bottom: 15px; }
         .socials a { color: var(--text-dim); margin: 0 15px; transition: 0.3s; }
-        .socials a:hover { color: var(--primary); }
+        .socials a:hover { color: var(--primary); transform: scale(1.2); }
 
         /* --- MOBIL NÉZET BEÁLLÍTÁSOK --- */
         @media (max-width: 768px) {
@@ -281,28 +302,31 @@
                 display: none; /* Alapból rejtett menü */
                 flex-direction: column;
                 position: absolute;
-                top: 60px;
+                top: 70px;
                 left: 0;
                 width: 100%;
                 background: rgba(10, 11, 16, 0.98);
-                padding: 20px;
-                border-bottom: 1px solid var(--primary);
+                padding: 30px;
+                border-bottom: 2px solid var(--primary);
                 text-align: center;
+                gap: 20px;
             }
 
             .nav-links.active { display: flex; } /* Ha rákattintasz, megjelenik */
 
             .hero-card {
-                flex-direction: column-reverse;
+                flex-direction: column-reverse; /* Mobilon a kép felül, szöveg alul */
                 text-align: center;
                 padding: 30px 15px;
             }
 
             .hero-content { max-width: 100%; }
-            .hero-title { font-size: 2.2rem; margin-top: 20px; }
-            .hero-image { max-width: 200px; }
+            .hero-title { font-size: 2.5rem; margin-top: 20px; }
+            .hero-image { max-width: 220px; margin-bottom: 10px; }
             
             .lang-switch { margin: 20px auto 0; justify-content: center; }
+            
+            .grid { grid-template-columns: 1fr; } /* Egy oszlopos kártyák */
         }
     </style>
 </head>
@@ -311,7 +335,9 @@
     <div class="overlay"></div>
 
     <header>
-        <div class="logo-text">DARKINOM</div>
+        <div class="logo-group">
+            <div class="logo-text">DARKINOM</div>
+        </div>
         
         <div class="menu-toggle" onclick="toggleMenu()">
             <i class="fas fa-bars"></i>
@@ -338,6 +364,7 @@
                 <p class="hero-subtitle" data-i18n="hero_desc">Egyedi megoldások a szerveredhez. Optimalizált kód, 0-24 support.</p>
                 <a href="#" class="cta-btn" data-i18n="hero_cta">Böngészés</a>
             </div>
+            
             <img src="logo.png" alt="DarkinoM Logo" class="hero-image">
         </div>
 
@@ -345,7 +372,7 @@
         
         <div class="grid">
             <div class="card">
-                <img src="https://via.placeholder.com/400x200" class="card-img-top">
+                <div class="card-img-top"><i class="fas fa-tachometer-alt fa-3x"></i></div>
                 <div class="card-body">
                     <h3 class="card-title">DarkinoM HUD v2</h3>
                     <p class="card-desc" data-i18n="desc_1">Teljesen testreszabható, 0.01ms futásidejű HUD rendszer modern dizájnnal.</p>
@@ -357,7 +384,7 @@
             </div>
 
             <div class="card">
-                <img src="https://via.placeholder.com/400x200" class="card-img-top">
+                <div class="card-img-top"><i class="fas fa-mask fa-3x"></i></div>
                 <div class="card-body">
                     <h3 class="card-title">Advanced Robbery</h3>
                     <p class="card-desc" data-i18n="desc_2">Komplex rablás rendszer minigame-ekkel és részletes animációkkal.</p>
@@ -369,7 +396,7 @@
             </div>
 
             <div class="card">
-                <img src="https://via.placeholder.com/400x200" class="card-img-top">
+                <div class="card-img-top"><i class="fas fa-car fa-3x"></i></div>
                 <div class="card-body">
                     <h3 class="card-title">DarkinoM Garage</h3>
                     <p class="card-desc" data-i18n="desc_3">Valósághű garázs rendszer jármű állapot mentéssel és kulcs rendszerrel.</p>
@@ -387,7 +414,7 @@
                 <a href="#"><i class="fab fa-youtube"></i></a>
                 <a href="#"><i class="fab fa-instagram"></i></a>
             </div>
-            <p style="color: #666; font-size: 0.8rem;">&copy; 2024 DarkinoM. All rights reserved.</p>
+            <p style="color: #666; font-size: 0.9rem;">&copy; 2024 DarkinoM. All rights reserved.</p>
         </footer>
 
     </div>
