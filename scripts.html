@@ -13,28 +13,29 @@
         body { 
             background-color: var(--bg-dark); color: var(--text-main); font-family: 'Rajdhani', sans-serif; 
             background-image: url('background.png'); background-size: cover; background-position: center; background-attachment: fixed; overflow-x: hidden; 
-            display: flex; flex-direction: column; min-height: 100vh; cursor: crosshair;
+            display: flex; flex-direction: column; min-height: 100vh; cursor: crosshair; /* Célkereszt */
         }
-        /* Interaktív elemek */
         a, button, .btn-small { cursor: pointer; }
 
         .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(5, 6, 8, 0.7); z-index: -1; }
         
-        /* TRAIL */
+        /* EGÉR CSÍK (TRAIL) */
         .cursor-trail { position: fixed; top: 0; left: 0; width: 8px; height: 8px; background: var(--primary); pointer-events: none; z-index: 9999; box-shadow: 0 0 10px var(--primary); animation: fadeOut 0.5s forwards; }
         @keyframes fadeOut { 0% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: scale(0); } }
 
         /* HEADER */
         header { display: flex; justify-content: space-between; align-items: center; padding: 15px 5%; background: rgba(10, 10, 15, 0.95); border-bottom: 1px solid rgba(0, 243, 255, 0.2); position: sticky; top: 0; z-index: 1000; backdrop-filter: blur(10px); }
+        
         .logo-link { display: flex; align-items: center; gap: 15px; text-decoration: none; }
         .logo-img-small { height: 50px; filter: drop-shadow(0 0 5px rgba(189, 0, 255, 0.5)); transition: transform 0.3s; }
         .logo-text { font-family: 'Orbitron', sans-serif; font-size: 1.5rem; font-weight: 900; color: #fff; text-transform: uppercase; letter-spacing: 2px; position: relative; transition: 0.3s; }
+        
         @keyframes glitch-skew { 0% { transform: skew(0deg); } 20% { transform: skew(-10deg); } 40% { transform: skew(10deg); } 60% { transform: skew(-5deg); } 80% { transform: skew(5deg); } 100% { transform: skew(0deg); } }
         @keyframes glitch-color { 0% { text-shadow: 2px 2px var(--secondary), -2px -2px var(--primary); } 25% { text-shadow: -2px 2px var(--secondary), 2px -2px var(--primary); } 50% { text-shadow: 2px -2px var(--secondary), -2px 2px var(--primary); } 75% { text-shadow: -2px -2px var(--secondary), 2px 2px var(--primary); } 100% { text-shadow: 2px 0 var(--secondary), -2px 0 var(--primary); } }
         .logo-link:hover .logo-text { animation: glitch-skew 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both infinite, glitch-color 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both infinite; color: #fff; }
         .logo-link:hover .logo-img-small { transform: scale(1.1); }
 
-        /* JAVÍTOTT MENÜ */
+        /* SZÉLES MENÜ */
         .nav-links { display: flex; gap: 50px; align-items: center; }
         .nav-links a { color: var(--text-main); text-decoration: none; font-weight: 700; text-transform: uppercase; font-size: 1.1rem; letter-spacing: 1px; transition: 0.3s; font-family: 'Rajdhani', sans-serif; }
         .nav-links a:hover, .nav-links a.active { color: var(--primary); text-shadow: 0 0 10px var(--primary); }
@@ -104,7 +105,7 @@
             <div class="card">
                 <div class="card-img-top"><i class="fas fa-tachometer-alt fa-3x"></i></div>
                 <div class="card-body">
-                    <h3 class="card-title">DarkinoM HUD</h3>
+                    <h3 class="card-title">DarkinoM HUD v2</h3>
                     <p class="card-desc" data-i18n="desc_hud">0.01ms futásidejű, modern HUD rendszer.</p>
                     <div class="card-footer">
                         <span class="price">15€</span>
@@ -152,13 +153,12 @@
         <div class="socials">
             <a href="https://discord.gg/TE_DISCORD_LINKED" target="_blank"><i class="fab fa-discord"></i></a>
         </div>
-        <p style="color: #666; font-size: 0.9rem;">&copy; 2024 DarkinoM.</p>
+        <p style="color: #666; font-size: 0.9rem;">&copy; 2024 DarkinoM. All rights reserved.</p>
     </footer>
 
     <script>
         function toggleMenu() { document.getElementById('nav-menu').classList.toggle('active'); }
         
-        // BŐVÍTETT FORDÍTÁSOK
         const translations = {
             hu: {
                 nav_home: "Főoldal", nav_scripts: "Scriptek", nav_packages: "Csomagok", nav_support: "Support",
@@ -182,7 +182,7 @@
             }
         };
 
-        // --- NYELVMEMÓRIA ---
+        // --- MEMÓRIA ---
         document.addEventListener('DOMContentLoaded', () => {
             const savedLang = localStorage.getItem('darkinom_lang') || 'hu';
             setLanguage(savedLang);
