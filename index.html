@@ -27,9 +27,10 @@
 
         .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(5, 6, 8, 0.75); z-index: -1; }
 
-        /* TRAIL (Javítva: Absolute + Z-index) */
+        /* TRAIL (VÉGLEGES JAVÍTÁS: FIXED POSITION) */
         .cursor-trail {
-            position: absolute; top: 0; left: 0; width: 8px; height: 8px; background: var(--primary);
+            position: fixed; /* Visszaállítva fixed-re */
+            top: 0; left: 0; width: 8px; height: 8px; background: var(--primary);
             pointer-events: none; z-index: 9999; box-shadow: 0 0 10px var(--primary); animation: fadeOut 0.5s forwards;
         }
         @keyframes fadeOut { 0% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: scale(0); } }
@@ -125,7 +126,6 @@
     </header>
 
     <div class="container">
-        
         <div class="hero-card">
             <div class="hero-content">
                 <h1 class="hero-title" data-i18n="hero_title">Prémium <br><span>FiveM Scriptek</span></h1>
@@ -216,15 +216,14 @@
             });
         }
 
-        // --- TRAIL (JAVÍTOTT: clientX/Y + Absolute) ---
+        // --- TRAIL (JAVÍTOTT: clientX/Y + Fixed Position) ---
         document.addEventListener('mousemove', function(e) {
             const trail = document.createElement('div');
             trail.classList.add('cursor-trail');
             document.body.appendChild(trail);
-            // Használj clientX/Y-t pageX/Y helyett!
-            trail.style.left = e.clientX + 'px'; // JAVÍTVA
-            trail.style.top = e.clientY + 'px';  // JAVÍTVA
-            
+            // clientX/Y a position:fixed miatt!
+            trail.style.left = e.clientX + 'px';
+            trail.style.top = e.clientY + 'px';
             const colors = ['#00f3ff', '#bd00ff'];
             const randomColor = colors[Math.floor(Math.random() * colors.length)];
             trail.style.backgroundColor = randomColor;
