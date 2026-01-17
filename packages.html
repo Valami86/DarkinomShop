@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DarkinoM | Csomagok</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        /* (Ugyanaz a CSS alap, csak a pricing kártyákkal bővítve) */
+        :root { --primary: #00f3ff; --secondary: #bd00ff; --bg-dark: #050608; --bg-card: rgba(15, 17, 22, 0.9); --text-main: #ffffff; --text-dim: #b0b8d4; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background-color: var(--bg-dark); color: var(--text-main); font-family: 'Rajdhani', sans-serif; background-image: url('background.png'); background-size: cover; background-position: center; background-attachment: fixed; overflow-x: hidden; }
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(5, 6, 8, 0.7); z-index: -1; }
+        
+        header { display: flex; justify-content: space-between; align-items: center; padding: 15px 5%; background: rgba(10, 10, 15, 0.95); border-bottom: 1px solid rgba(0, 243, 255, 0.2); position: sticky; top: 0; z-index: 1000; backdrop-filter: blur(10px); }
+        .logo-text { font-family: 'Orbitron'; font-size: 1.5rem; font-weight: 900; color: #fff; text-decoration: none; }
+        .nav-links { display: flex; gap: 25px; align-items: center; }
+        .nav-links a { color: var(--text-main); text-decoration: none; font-weight: 600; text-transform: uppercase; font-size: 0.9rem; transition: 0.3s; font-family: 'Orbitron'; }
+        .nav-links a:hover, .nav-links a.active { color: var(--primary); text-shadow: 0 0 10px var(--primary); }
+        .menu-toggle { display: none; font-size: 1.8rem; color: var(--primary); cursor: pointer; }
+        .lang-switch { display: flex; gap: 10px; margin-left: 20px; }
+        .lang-btn { background: transparent; border: 1px solid var(--text-dim); color: var(--text-dim); padding: 4px 10px; cursor: pointer; font-family: 'Orbitron'; font-size: 0.8rem; }
+        .lang-btn.active { border-color: var(--primary); color: var(--primary); }
+
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .page-header { text-align: center; margin: 40px 0; }
+        .page-title { font-family: 'Orbitron'; font-size: 3rem; color: #fff; margin-bottom: 10px; }
+
+        /* PRICING TABLE STÍLUS */
+        .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; align-items: center; }
+        .pricing-card { background: var(--bg-card); border: 1px solid rgba(255,255,255,0.1); padding: 40px; border-radius: 15px; text-align: center; transition: 0.3s; position: relative; }
+        .pricing-card:hover { transform: translateY(-10px); }
+        
+        /* Kiemelt kártya */
+        .pricing-card.featured { border: 2px solid var(--primary); background: rgba(15, 17, 22, 0.95); box-shadow: 0 0 30px rgba(0, 243, 255, 0.15); transform: scale(1.05); z-index: 2; }
+        .pricing-card.featured:hover { transform: scale(1.05) translateY(-10px); }
+        
+        .pkg-name { font-family: 'Orbitron'; font-size: 1.5rem; margin-bottom: 15px; color: #fff; }
+        .pkg-price { font-family: 'Orbitron'; font-size: 3rem; color: var(--primary); font-weight: bold; margin-bottom: 30px; }
+        .pkg-features { list-style: none; margin-bottom: 30px; text-align: left; }
+        .pkg-features li { margin-bottom: 15px; color: var(--text-dim); font-size: 1.1rem; }
+        .pkg-features li i { color: var(--secondary); margin-right: 10px; }
+        
+        .btn-full { display: block; width: 100%; padding: 15px; background: transparent; border: 2px solid var(--primary); color: var(--primary); font-family: 'Orbitron'; font-weight: bold; text-decoration: none; text-transform: uppercase; transition: 0.3s; }
+        .btn-full:hover { background: var(--primary); color: #000; box-shadow: 0 0 20px var(--primary); }
+        .featured .btn-full { background: var(--primary); color: #000; }
+
+        footer { margin-top: 80px; padding: 40px; text-align: center; border-top: 1px solid rgba(255,255,255,0.1); background: rgba(5, 6, 8, 0.95); }
+        .socials a { color: var(--text-dim); margin: 0 15px; font-size: 1.5rem; transition: 0.3s; }
+
+        @media (max-width: 768px) {
+            .menu-toggle { display: block; }
+            .nav-links { display: none; flex-direction: column; position: absolute; top: 60px; left: 0; width: 100%; background: rgba(10, 11, 16, 0.98); padding: 20px; border-bottom: 1px solid var(--primary); text-align: center; gap: 20px; }
+            .nav-links.active { display: flex; }
+            .pricing-card.featured { transform: scale(1); } /* Mobilon ne legyen nagyobb */
+            .lang-switch { margin: 20px auto 0; justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+    <div class="overlay"></div>
+
+    <header>
+        <a href="index.html" class="logo-text">DARKINOM</a>
+        <div class="menu-toggle" onclick="toggleMenu()"><i class="fas fa-bars"></i></div>
+        <nav class="nav-links" id="nav-menu">
+            <a href="index.html">Főoldal</a>
+            <a href="scripts.html">Scriptek</a>
+            <a href="packages.html" class="active">Csomagok</a>
+            <a href="support.html">Support</a>
+            <div class="lang-switch">
+                <button class="lang-btn active" onclick="setLanguage('hu')" id="btn-hu">HU</button>
+                <button class="lang-btn" onclick="setLanguage('en')" id="btn-en">EN</button>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container">
+        <div class="page-header">
+            <h1 class="page-title" data-i18n="title">Csomagajánlatok</h1>
+            <p style="color:#888;" data-i18n="subtitle">Spórolj pénzt bundle vásárlással.</p>
+        </div>
+
+        <div class="pricing-grid">
+            <div class="pricing-card">
+                <h3 class="pkg-name">Starter Pack</h3>
+                <div class="pkg-price">30€</div>
+                <ul class="pkg-features">
+                    <li><i class="fas fa-check"></i> DarkinoM HUD</li>
+                    <li><i class="fas fa-check"></i> Garage System</li>
+                    <li><i class="fas fa-times" style="color:#555"></i> Advanced Robbery</li>
+                </ul>
+                <a href="#" class="btn-full">Vásárlás</a>
+            </div>
+
+            <div class="pricing-card featured">
+                <div style="position: absolute; top:0; left:50%; transform:translateX(-50%) translateY(-50%); background:var(--secondary); padding: 5px 15px; font-weight:bold; font-size:0.8rem; border-radius:20px;">BEST SELLER</div>
+                <h3 class="pkg-name">Pro Pack</h3>
+                <div class="pkg-price">60€</div>
+                <ul class="pkg-features">
+                    <li><i class="fas fa-check"></i> DarkinoM HUD</li>
+                    <li><i class="fas fa-check"></i> Garage System</li>
+                    <li><i class="fas fa-check"></i> Advanced Robbery</li>
+                    <li><i class="fas fa-check"></i> Admin Panel</li>
+                </ul>
+                <a href="#" class="btn-full">Vásárlás</a>
+            </div>
+
+            <div class="pricing-card">
+                <h3 class="pkg-name">Ultimate</h3>
+                <div class="pkg-price">100€</div>
+                <ul class="pkg-features">
+                    <li><i class="fas fa-check"></i> Összes jelenlegi script</li>
+                    <li><i class="fas fa-check"></i> Jövőbeli frissítések</li>
+                    <li><i class="fas fa-check"></i> Priority Support</li>
+                    <li><i class="fas fa-check"></i> Egyedi kérések</li>
+                </ul>
+                <a href="#" class="btn-full">Vásárlás</a>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="socials">
+            <a href="#"><i class="fab fa-discord"></i></a>
+            <a href="#"><i class="fab fa-youtube"></i></a>
+        </div>
+        <p style="color: #666; font-size: 0.9rem;">&copy; 2024 DarkinoM.</p>
+    </footer>
+
+    <script>
+        function toggleMenu() { document.getElementById('nav-menu').classList.toggle('active'); }
+        const translations = {
+            hu: { title: "Csomagajánlatok", subtitle: "Spórolj pénzt bundle vásárlással." },
+            en: { title: "Bundle Offers", subtitle: "Save money by buying bundles." }
+        };
+        function setLanguage(lang) {
+            document.getElementById('btn-hu').classList.remove('active');
+            document.getElementById('btn-en').classList.remove('active');
+            document.getElementById('btn-' + lang).classList.add('active');
+            document.querySelector('[data-i18n="title"]').innerText = translations[lang].title;
+            document.querySelector('[data-i18n="subtitle"]').innerText = translations[lang].subtitle;
+        }
+    </script>
+</body>
+</html>
