@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DarkinoM Store</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
     <style>
@@ -22,18 +22,21 @@
         body {
             background-color: var(--bg-dark);
             color: var(--text-main);
-            font-family: 'Rajdhani', sans-serif;
+            font-family: 'Rajdhani', sans-serif; /* Alap betűtípus olvasáshoz */
             background-image: url('background.png'); 
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
             overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh; /* Hogy a footer mindig alul legyen */
         }
 
         .overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(5, 6, 8, 0.7);
+            background: rgba(5, 6, 8, 0.75); /* Kicsit sötétebb háttér a jobb olvashatóságért */
             z-index: -1;
         }
 
@@ -51,68 +54,24 @@
             backdrop-filter: blur(10px);
         }
 
-        /* LOGO CSOPORT */
-        .logo-link {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            text-decoration: none;
-        }
+        .logo-link { display: flex; align-items: center; gap: 15px; text-decoration: none; }
+        .logo-img-small { height: 50px; filter: drop-shadow(0 0 5px rgba(189, 0, 255, 0.5)); transition: transform 0.3s; }
+        .logo-text { font-family: 'Orbitron', sans-serif; font-size: 1.5rem; font-weight: 900; color: #fff; text-transform: uppercase; letter-spacing: 2px; position: relative; transition: 0.3s; }
 
-        .logo-img-small {
-            height: 50px;
-            filter: drop-shadow(0 0 5px rgba(189, 0, 255, 0.5));
-            transition: transform 0.3s;
-        }
-
-        .logo-text {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.5rem;
-            font-weight: 900;
-            color: #fff;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            position: relative;
-            transition: 0.3s;
-        }
-
-        /* --- GLITCH EFFEKT ANIMÁCIÓ --- */
-        @keyframes glitch-skew {
-            0% { transform: skew(0deg); }
-            20% { transform: skew(-10deg); }
-            40% { transform: skew(10deg); }
-            60% { transform: skew(-5deg); }
-            80% { transform: skew(5deg); }
-            100% { transform: skew(0deg); }
-        }
-
-        @keyframes glitch-color {
-            0% { text-shadow: 2px 2px var(--secondary), -2px -2px var(--primary); }
-            25% { text-shadow: -2px 2px var(--secondary), 2px -2px var(--primary); }
-            50% { text-shadow: 2px -2px var(--secondary), -2px 2px var(--primary); }
-            75% { text-shadow: -2px -2px var(--secondary), 2px 2px var(--primary); }
-            100% { text-shadow: 2px 0 var(--secondary), -2px 0 var(--primary); }
-        }
-
-        /* Ha ráviszed az egeret a logóra (képre vagy szövegre) */
-        .logo-link:hover .logo-text {
-            animation: glitch-skew 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both infinite,
-                       glitch-color 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both infinite;
-            color: #fff;
-        }
+        @keyframes glitch-skew { 0% { transform: skew(0deg); } 20% { transform: skew(-10deg); } 40% { transform: skew(10deg); } 60% { transform: skew(-5deg); } 80% { transform: skew(5deg); } 100% { transform: skew(0deg); } }
+        @keyframes glitch-color { 0% { text-shadow: 2px 2px var(--secondary), -2px -2px var(--primary); } 25% { text-shadow: -2px 2px var(--secondary), 2px -2px var(--primary); } 50% { text-shadow: 2px -2px var(--secondary), -2px 2px var(--primary); } 75% { text-shadow: -2px -2px var(--secondary), 2px 2px var(--primary); } 100% { text-shadow: 2px 0 var(--secondary), -2px 0 var(--primary); } }
         
-        .logo-link:hover .logo-img-small {
-            transform: scale(1.1);
-        }
+        .logo-link:hover .logo-text { animation: glitch-skew 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both infinite, glitch-color 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both infinite; color: #fff; }
+        .logo-link:hover .logo-img-small { transform: scale(1.1); }
 
-        /* --- MENÜ --- */
         .nav-links { display: flex; gap: 25px; align-items: center; }
         .nav-links a {
             color: var(--text-main);
             text-decoration: none;
             font-weight: 600;
             text-transform: uppercase;
-            font-size: 0.9rem;
+            font-size: 0.95rem; /* Kicsit nagyobb betűk */
+            letter-spacing: 1px;
             transition: 0.3s;
             font-family: 'Orbitron';
         }
@@ -129,18 +88,24 @@
             font-size: 0.8rem;
         }
         .lang-btn.active { border-color: var(--primary); color: var(--primary); }
-
         .menu-toggle { display: none; font-size: 1.8rem; color: var(--primary); cursor: pointer; }
 
-        /* --- HERO --- */
-        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        /* --- CONTAINER (Tartalom doboz) --- */
+        .container { 
+            max-width: 1200px; 
+            margin: 0 auto; 
+            padding: 20px; 
+            flex: 1; /* Ez tolja le a footert */
+            width: 100%;
+        }
 
+        /* --- HERO --- */
         .hero-card {
             background: linear-gradient(90deg, rgba(15, 17, 22, 0.95) 0%, rgba(20, 20, 40, 0.7) 100%);
             border: 1px solid var(--primary);
             border-radius: 15px;
             padding: 50px;
-            margin-top: 20px;
+            margin-top: 30px;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -150,20 +115,35 @@
         }
 
         .hero-content { z-index: 2; max-width: 60%; }
-        .hero-title { font-family: 'Orbitron'; font-size: 3.5rem; line-height: 1.1; margin-bottom: 15px; text-transform: uppercase; }
+        .hero-title { 
+            font-family: 'Orbitron'; 
+            font-size: 3.5rem; 
+            line-height: 1.2; 
+            margin-bottom: 20px; 
+            text-transform: uppercase; 
+            font-weight: 900;
+        }
         .hero-title span { color: var(--secondary); text-shadow: 0 0 20px rgba(189, 0, 255, 0.5); }
-        .hero-subtitle { font-size: 1.3rem; color: var(--text-dim); margin-bottom: 30px; }
+        
+        .hero-subtitle { 
+            font-size: 1.4rem; 
+            color: var(--text-dim); 
+            margin-bottom: 30px; 
+            line-height: 1.6; 
+            font-weight: 400;
+        }
 
         .cta-btn {
             display: inline-block;
-            padding: 15px 40px;
+            padding: 15px 45px;
             background: rgba(0, 243, 255, 0.1);
             border: 2px solid var(--primary);
             color: var(--primary);
             text-decoration: none;
             font-family: 'Orbitron';
-            font-weight: bold;
+            font-weight: 700;
             text-transform: uppercase;
+            letter-spacing: 1px;
             transition: 0.3s;
         }
         .cta-btn:hover { background: var(--primary); color: #000; box-shadow: 0 0 40px var(--primary); }
@@ -174,17 +154,18 @@
         /* --- GRID --- */
         .section-header {
             margin-top: 80px;
-            margin-bottom: 30px;
+            margin-bottom: 40px;
             font-family: 'Orbitron';
-            font-size: 2rem;
+            font-size: 2.2rem;
             text-transform: uppercase;
-            border-left: 5px solid var(--primary);
+            border-left: 6px solid var(--primary);
             padding-left: 20px;
             text-shadow: 0 0 10px rgba(0, 243, 255, 0.3);
             background: linear-gradient(90deg, rgba(0, 243, 255, 0.1), transparent);
+            letter-spacing: 1px;
         }
 
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; margin-bottom: 60px; }
 
         .card {
             background: var(--bg-card);
@@ -204,20 +185,36 @@
         }
 
         .card-body { padding: 25px; flex-grow: 1; display: flex; flex-direction: column; }
-        .card-title { font-family: 'Orbitron'; font-size: 1.4rem; margin-bottom: 10px; color: #fff; }
-        .card-desc { color: var(--text-dim); font-size: 1rem; margin-bottom: 25px; flex-grow: 1; }
+        .card-title { font-family: 'Orbitron'; font-size: 1.4rem; margin-bottom: 10px; color: #fff; letter-spacing: 0.5px; }
+        .card-desc { 
+            color: var(--text-dim); 
+            font-size: 1.05rem; /* Nagyobb betűméret */
+            margin-bottom: 25px; 
+            flex-grow: 1; 
+            line-height: 1.5; /* Jobb olvashatóság */
+        }
         .card-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px; }
-        .price { font-size: 1.5rem; color: var(--primary); font-weight: bold; font-family: 'Orbitron'; }
+        .price { font-size: 1.6rem; color: var(--primary); font-weight: bold; font-family: 'Orbitron'; }
 
         .btn-small {
             padding: 10px 25px; border: 1px solid var(--secondary); color: #fff;
             background: rgba(189, 0, 255, 0.1); text-decoration: none; font-size: 0.9rem;
             text-transform: uppercase; font-weight: bold; transition: 0.3s; border-radius: 4px;
+            font-family: 'Orbitron';
         }
         .btn-small:hover { background: var(--secondary); box-shadow: 0 0 20px var(--secondary); }
 
-        footer { margin-top: 100px; padding: 50px; text-align: center; border-top: 1px solid rgba(255,255,255,0.1); background: rgba(5, 6, 8, 0.95); }
-        .socials a { color: var(--text-dim); margin: 0 15px; font-size: 1.5rem; transition: 0.3s; }
+        /* --- FOOTER JAVÍTVA --- */
+        footer { 
+            width: 100%; /* Teljes szélesség */
+            padding: 40px; 
+            text-align: center; 
+            border-top: 1px solid rgba(255,255,255,0.1); 
+            background: #000000; /* Teljes fekete háttér */
+            margin-top: auto; /* Aljára igazítás */
+        }
+        .socials { margin-bottom: 10px; }
+        .socials a { color: var(--text-dim); margin: 0 15px; font-size: 1.8rem; transition: 0.3s; }
         .socials a:hover { color: var(--primary); }
 
         @media (max-width: 768px) {
@@ -311,13 +308,12 @@
             </div>
         </div>
 
-        <footer>
-            <div class="socials">
-                <a href="https://discord.gg/TE_DISCORD_LINKED" target="_blank"><i class="fab fa-discord"></i></a>
-            </div>
-            <p style="color: #666; font-size: 0.9rem;">&copy; 2024 DarkinoM.</p>
-        </footer>
-    </div>
+    </div> <footer>
+        <div class="socials">
+            <a href="https://discord.gg/TE_DISCORD_LINKED" target="_blank"><i class="fab fa-discord"></i></a>
+        </div>
+        <p style="color: #666; font-size: 0.9rem;">&copy; 2024 DarkinoM. All rights reserved.</p>
+    </footer>
 
     <script>
         function toggleMenu() { document.getElementById('nav-menu').classList.toggle('active'); }
