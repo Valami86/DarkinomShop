@@ -10,7 +10,6 @@
     <style>
         :root { --primary: #00f3ff; --secondary: #bd00ff; --bg-dark: #050608; --bg-card: rgba(15, 17, 22, 0.85); --text-main: #ffffff; --text-dim: #b0b8d4; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        
         body {
             background-color: var(--bg-dark); color: var(--text-main); font-family: 'Rajdhani', sans-serif;
             background-image: url('background.png'); background-size: cover; background-position: center; background-attachment: fixed; overflow-x: hidden;
@@ -27,7 +26,6 @@
         header { display: flex; justify-content: space-between; align-items: center; padding: 15px 5%; background: rgba(10, 10, 15, 0.95); border-bottom: 1px solid rgba(0, 243, 255, 0.2); position: sticky; top: 0; z-index: 1000; backdrop-filter: blur(10px); }
         .logo-link { display: flex; align-items: center; gap: 15px; text-decoration: none; }
         .logo-img-small { height: 50px; filter: drop-shadow(0 0 5px rgba(189, 0, 255, 0.5)); transition: transform 0.3s; }
-        /* Logo marad Orbitron, mert ott nincs ékezet */
         .logo-text { font-family: 'Orbitron', sans-serif; font-size: 1.5rem; font-weight: 900; color: #fff; text-transform: uppercase; letter-spacing: 2px; position: relative; transition: 0.3s; }
         
         @keyframes glitch-skew { 0% { transform: skew(0deg); } 20% { transform: skew(-10deg); } 40% { transform: skew(10deg); } 60% { transform: skew(-5deg); } 80% { transform: skew(5deg); } 100% { transform: skew(0deg); } }
@@ -35,7 +33,6 @@
         .logo-link:hover .logo-text { animation: glitch-skew 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both infinite, glitch-color 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both infinite; color: #fff; }
         .logo-link:hover .logo-img-small { transform: scale(1.1); }
 
-        /* MENÜ - JAVÍTVA RAJDHANI-RA AZ "Ő" MIATT */
         .nav-links { display: flex; gap: 50px; align-items: center; }
         .nav-links a { color: var(--text-main); text-decoration: none; font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s; }
         .nav-links a:hover { color: var(--primary); text-shadow: 0 0 10px var(--primary); }
@@ -47,7 +44,6 @@
 
         .container { max-width: 1200px; margin: 0 auto; padding: 20px; flex: 1; width: 100%; }
 
-        /* HERO - CÍM CSERÉLVE RAJDHANI-RA */
         .hero-card { background: linear-gradient(90deg, rgba(15, 17, 22, 0.95) 0%, rgba(20, 20, 40, 0.7) 100%); border: 1px solid var(--primary); border-radius: 15px; padding: 50px; margin-top: 30px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 0 30px rgba(0, 243, 255, 0.15); position: relative; overflow: hidden; }
         .hero-content { z-index: 2; max-width: 60%; }
         .hero-title { font-family: 'Rajdhani', sans-serif; font-size: 4rem; line-height: 1.1; margin-bottom: 20px; text-transform: uppercase; font-weight: 900; }
@@ -58,7 +54,6 @@
         .hero-image { max-width: 380px; z-index: 2; filter: drop-shadow(0 0 30px rgba(189, 0, 255, 0.3)); animation: float 4s ease-in-out infinite; }
         @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-20px); } }
 
-        /* GRID */
         .section-header { margin-top: 80px; margin-bottom: 40px; font-family: 'Rajdhani', sans-serif; font-weight: 800; font-size: 2.5rem; text-transform: uppercase; border-left: 6px solid var(--primary); padding-left: 20px; text-shadow: 0 0 10px rgba(0, 243, 255, 0.3); background: linear-gradient(90deg, rgba(0, 243, 255, 0.1), transparent); letter-spacing: 1px; }
         .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; margin-bottom: 60px; }
         .card { background: var(--bg-card); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; overflow: hidden; transition: 0.3s; display: flex; flex-direction: column; backdrop-filter: blur(5px); }
@@ -188,16 +183,13 @@
             }
         };
 
-        // --- NYELVMEMÓRIA BETÖLTÉSE ---
         document.addEventListener('DOMContentLoaded', () => {
             const savedLang = localStorage.getItem('darkinom_lang') || 'hu';
             setLanguage(savedLang);
         });
 
         function setLanguage(lang) {
-            // Mentés a memóriába
             localStorage.setItem('darkinom_lang', lang);
-
             document.getElementById('btn-hu').classList.remove('active');
             document.getElementById('btn-en').classList.remove('active');
             document.getElementById('btn-' + lang).classList.add('active');
@@ -207,13 +199,15 @@
             });
         }
 
-        // --- GLITCH EGÉR TRAIL ---
+        /* --- JAVÍTOTT EGÉR KÖVETÉS --- */
         document.addEventListener('mousemove', function(e) {
             const trail = document.createElement('div');
             trail.classList.add('cursor-trail');
             document.body.appendChild(trail);
-            trail.style.left = e.pageX + 'px';
-            trail.style.top = e.pageY + 'px';
+            // Használj clientX/Y-t a pageX/Y helyett a position:fixed miatt!
+            trail.style.left = e.clientX + 'px';
+            trail.style.top = e.clientY + 'px';
+            
             const colors = ['#00f3ff', '#bd00ff'];
             const randomColor = colors[Math.floor(Math.random() * colors.length)];
             trail.style.backgroundColor = randomColor;
