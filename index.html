@@ -51,6 +51,20 @@
             backdrop-filter: blur(10px);
         }
 
+        /* LOGO CSOPORT */
+        .logo-link {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            text-decoration: none;
+        }
+
+        .logo-img-small {
+            height: 50px;
+            filter: drop-shadow(0 0 5px rgba(189, 0, 255, 0.5));
+            transition: transform 0.3s;
+        }
+
         .logo-text {
             font-family: 'Orbitron', sans-serif;
             font-size: 1.5rem;
@@ -58,9 +72,40 @@
             color: #fff;
             text-transform: uppercase;
             letter-spacing: 2px;
-            text-decoration: none;
+            position: relative;
+            transition: 0.3s;
         }
 
+        /* --- GLITCH EFFEKT ANIMÁCIÓ --- */
+        @keyframes glitch-skew {
+            0% { transform: skew(0deg); }
+            20% { transform: skew(-10deg); }
+            40% { transform: skew(10deg); }
+            60% { transform: skew(-5deg); }
+            80% { transform: skew(5deg); }
+            100% { transform: skew(0deg); }
+        }
+
+        @keyframes glitch-color {
+            0% { text-shadow: 2px 2px var(--secondary), -2px -2px var(--primary); }
+            25% { text-shadow: -2px 2px var(--secondary), 2px -2px var(--primary); }
+            50% { text-shadow: 2px -2px var(--secondary), -2px 2px var(--primary); }
+            75% { text-shadow: -2px -2px var(--secondary), 2px 2px var(--primary); }
+            100% { text-shadow: 2px 0 var(--secondary), -2px 0 var(--primary); }
+        }
+
+        /* Ha ráviszed az egeret a logóra (képre vagy szövegre) */
+        .logo-link:hover .logo-text {
+            animation: glitch-skew 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both infinite,
+                       glitch-color 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both infinite;
+            color: #fff;
+        }
+        
+        .logo-link:hover .logo-img-small {
+            transform: scale(1.1);
+        }
+
+        /* --- MENÜ --- */
         .nav-links { display: flex; gap: 25px; align-items: center; }
         .nav-links a {
             color: var(--text-main);
@@ -100,6 +145,8 @@
             align-items: center;
             justify-content: space-between;
             box-shadow: 0 0 30px rgba(0, 243, 255, 0.15);
+            position: relative;
+            overflow: hidden;
         }
 
         .hero-content { z-index: 2; max-width: 60%; }
@@ -121,7 +168,8 @@
         }
         .cta-btn:hover { background: var(--primary); color: #000; box-shadow: 0 0 40px var(--primary); }
 
-        .hero-image { max-width: 380px; z-index: 2; filter: drop-shadow(0 0 30px rgba(189, 0, 255, 0.3)); }
+        .hero-image { max-width: 380px; z-index: 2; filter: drop-shadow(0 0 30px rgba(189, 0, 255, 0.3)); animation: float 4s ease-in-out infinite; }
+        @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-20px); } }
 
         /* --- GRID --- */
         .section-header {
@@ -145,6 +193,7 @@
             overflow: hidden;
             transition: 0.3s;
             display: flex; flex-direction: column;
+            backdrop-filter: blur(5px);
         }
         .card:hover { border-color: var(--primary); transform: translateY(-10px); }
 
@@ -180,6 +229,7 @@
             .nav-links.active { display: flex; }
             .hero-card { flex-direction: column-reverse; text-align: center; padding: 30px 15px; }
             .hero-content { max-width: 100%; }
+            .hero-title { font-size: 2.5rem; }
             .hero-image { max-width: 220px; margin-bottom: 10px; }
             .lang-switch { margin: 20px auto 0; justify-content: center; }
         }
@@ -190,8 +240,13 @@
     <div class="overlay"></div>
 
     <header>
-        <a href="index.html" class="logo-text">DARKINOM</a>
+        <a href="index.html" class="logo-link">
+            <img src="logo.png" alt="DarkinoM Logo" class="logo-img-small">
+            <span class="logo-text">DARKINOM</span>
+        </a>
+
         <div class="menu-toggle" onclick="toggleMenu()"><i class="fas fa-bars"></i></div>
+        
         <nav class="nav-links" id="nav-menu">
             <a href="index.html" data-i18n="nav_home">Főoldal</a>
             <a href="scripts.html" data-i18n="nav_scripts">Scriptek</a>
@@ -206,6 +261,7 @@
     </header>
 
     <div class="container">
+        
         <div class="hero-card">
             <div class="hero-content">
                 <h1 class="hero-title" data-i18n="hero_title">Prémium <br><span>FiveM Scriptek</span></h1>
@@ -229,6 +285,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="card">
                 <div class="card-img-top"><i class="fas fa-mask fa-3x"></i></div>
                 <div class="card-body">
@@ -240,6 +297,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="card">
                 <div class="card-img-top"><i class="fas fa-car fa-3x"></i></div>
                 <div class="card-body">
