@@ -4,34 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DarkinoM | Csomagok</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@400;500;600;700&display=swap&subset=latin,latin-ext" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@400;500;600;700;900&display=swap&subset=latin,latin-ext" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
         :root { --primary: #00f3ff; --secondary: #bd00ff; --bg-dark: #050608; --bg-card: rgba(15, 17, 22, 0.9); --text-main: #ffffff; --text-dim: #b0b8d4; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { 
-            background-color: var(--bg-dark); 
-            color: var(--text-main); 
-            font-family: 'Rajdhani', sans-serif; 
-            background-image: url('background.png'); 
-            background-size: cover; 
-            background-position: center; 
-            background-attachment: fixed; 
-            overflow-x: hidden; 
-            display: flex; flex-direction: column; min-height: 100vh;
-            cursor: crosshair; /* CÉLKERESZT KURZOR */
+            background-color: var(--bg-dark); color: var(--text-main); font-family: 'Rajdhani', sans-serif; 
+            background-image: url('background.png'); background-size: cover; background-position: center; background-attachment: fixed; overflow-x: hidden; 
+            display: flex; flex-direction: column; min-height: 100vh; cursor: crosshair;
         }
-        /* Interaktív elemek */
         a, button { cursor: pointer; }
-
         .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(5, 6, 8, 0.7); z-index: -1; }
         
         /* TRAIL */
-        .cursor-trail {
-            position: fixed; top: 0; left: 0; width: 8px; height: 8px; background: var(--primary);
-            pointer-events: none; z-index: 9999; box-shadow: 0 0 10px var(--primary); animation: fadeOut 0.5s forwards;
-        }
+        .cursor-trail { position: fixed; top: 0; left: 0; width: 8px; height: 8px; background: var(--primary); pointer-events: none; z-index: 9999; box-shadow: 0 0 10px var(--primary); animation: fadeOut 0.5s forwards; }
         @keyframes fadeOut { 0% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: scale(0); } }
 
         header { display: flex; justify-content: space-between; align-items: center; padding: 15px 5%; background: rgba(10, 10, 15, 0.95); border-bottom: 1px solid rgba(0, 243, 255, 0.2); position: sticky; top: 0; z-index: 1000; backdrop-filter: blur(10px); }
@@ -55,7 +43,7 @@
 
         .container { max-width: 1200px; margin: 0 auto; padding: 20px; flex: 1; width: 100%; }
         .page-header { text-align: center; margin: 40px 0; }
-        .page-title { font-family: 'Orbitron', sans-serif; font-size: 3rem; color: #fff; margin-bottom: 10px; }
+        .page-title { font-family: 'Rajdhani', sans-serif; font-weight: 900; font-size: 3rem; color: #fff; margin-bottom: 10px; text-transform: uppercase; }
 
         .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; align-items: center; }
         .pricing-card { background: var(--bg-card); border: 1px solid rgba(255,255,255,0.1); padding: 40px; border-radius: 15px; text-align: center; transition: 0.3s; position: relative; }
@@ -63,13 +51,13 @@
         .pricing-card.featured { border: 2px solid var(--primary); background: rgba(15, 17, 22, 0.95); box-shadow: 0 0 30px rgba(0, 243, 255, 0.15); transform: scale(1.05); z-index: 2; }
         .pricing-card.featured:hover { transform: scale(1.05) translateY(-10px); }
         
-        .pkg-name { font-family: 'Orbitron', sans-serif; font-size: 1.5rem; margin-bottom: 15px; color: #fff; }
-        .pkg-price { font-family: 'Orbitron', sans-serif; font-size: 3rem; color: var(--primary); font-weight: bold; margin-bottom: 30px; }
+        .pkg-name { font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 1.8rem; margin-bottom: 15px; color: #fff; text-transform: uppercase; }
+        .pkg-price { font-family: 'Rajdhani', sans-serif; font-weight: 800; font-size: 3rem; color: var(--primary); margin-bottom: 30px; }
         .pkg-features { list-style: none; margin-bottom: 30px; text-align: left; }
-        .pkg-features li { margin-bottom: 15px; color: var(--text-dim); font-size: 1.1rem; }
+        .pkg-features li { margin-bottom: 15px; color: var(--text-dim); font-size: 1.1rem; font-weight: 500; }
         .pkg-features li i { color: var(--secondary); margin-right: 10px; }
         
-        .btn-full { display: block; width: 100%; padding: 15px; background: transparent; border: 2px solid var(--primary); color: var(--primary); font-family: 'Orbitron', sans-serif; font-weight: bold; text-decoration: none; text-transform: uppercase; transition: 0.3s; }
+        .btn-full { display: block; width: 100%; padding: 15px; background: transparent; border: 2px solid var(--primary); color: var(--primary); font-family: 'Rajdhani', sans-serif; font-weight: 800; text-decoration: none; text-transform: uppercase; transition: 0.3s; font-size: 1.2rem; }
         .btn-full:hover { background: var(--primary); color: #000; box-shadow: 0 0 20px var(--primary); }
         .featured .btn-full { background: var(--primary); color: #000; }
 
@@ -184,17 +172,26 @@
             }
         };
 
+        // --- NYELVMEMÓRIA BETÖLTÉSE ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedLang = localStorage.getItem('darkinom_lang') || 'hu';
+            setLanguage(savedLang);
+        });
+
         function setLanguage(lang) {
+            localStorage.setItem('darkinom_lang', lang);
             document.getElementById('btn-hu').classList.remove('active');
             document.getElementById('btn-en').classList.remove('active');
             document.getElementById('btn-' + lang).classList.add('active');
             document.querySelectorAll('[data-i18n]').forEach(el => {
                 const key = el.getAttribute('data-i18n');
-                if (translations[lang][key]) el.innerHTML = translations[lang][key];
+                if (translations[lang][key]) {
+                    el.innerHTML = translations[lang][key];
+                }
             });
         }
 
-        // --- GLITCH EGÉR TRAIL ---
+        // --- TRAIL ---
         document.addEventListener('mousemove', function(e) {
             const trail = document.createElement('div');
             trail.classList.add('cursor-trail');
