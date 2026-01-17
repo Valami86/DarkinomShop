@@ -13,19 +13,22 @@
         body { 
             background-color: var(--bg-dark); color: var(--text-main); font-family: 'Rajdhani', sans-serif; 
             background-image: url('background.png'); background-size: cover; background-position: center; background-attachment: fixed; overflow-x: hidden; 
-            display: flex; flex-direction: column; min-height: 100vh; cursor: crosshair;
+            display: flex; flex-direction: column; min-height: 100vh;
+            /* EGYEDI KÉK CÉLKERESZT KURZOR */
+            cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><path d='M16 4 L16 28 M4 16 L28 16' stroke='%2300f3ff' stroke-width='2' fill='none'/></svg>") 16 16, crosshair;
         }
-        /* KATTINTHATÓ KURZOR JAVÍTÁS */
-        a, button, .btn-full, .lang-btn, .menu-toggle, .logo-link { cursor: pointer !important; }
-        a:hover, button:hover, .btn-full:hover { cursor: pointer !important; }
+        
+        /* KATTINTHATÓ ELEMEK: PIROS CÉLKERESZT */
+        a, button, .btn-full, .lang-btn, .menu-toggle, .logo-link, .pricing-card {
+            cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><path d='M16 4 L16 28 M4 16 L28 16' stroke='%23ff3333' stroke-width='3' fill='none'/></svg>") 16 16, pointer !important;
+        }
 
         .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(5, 6, 8, 0.7); z-index: -1; }
         
-        /* TRAIL (JAVÍTVA) */
+        /* TRAIL (Javítva: Absolute) */
         .cursor-trail { position: absolute; top: 0; left: 0; width: 8px; height: 8px; background: var(--primary); pointer-events: none; z-index: 9999; box-shadow: 0 0 10px var(--primary); animation: fadeOut 0.5s forwards; }
         @keyframes fadeOut { 0% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: scale(0); } }
 
-        /* HEADER */
         header { display: flex; justify-content: space-between; align-items: center; padding: 15px 5%; background: rgba(10, 10, 15, 0.95); border-bottom: 1px solid rgba(0, 243, 255, 0.2); position: sticky; top: 0; z-index: 1000; backdrop-filter: blur(10px); }
         .logo-link { display: flex; align-items: center; gap: 15px; text-decoration: none; }
         .logo-img-small { height: 50px; filter: drop-shadow(0 0 5px rgba(189, 0, 255, 0.5)); transition: transform 0.3s; }
@@ -38,11 +41,11 @@
         /* MENÜ */
         .nav-links { display: flex; gap: 50px; align-items: center; }
         .nav-links a { color: var(--text-main); text-decoration: none; font-weight: 700; text-transform: uppercase; font-size: 1.1rem; letter-spacing: 1px; transition: 0.3s; font-family: 'Rajdhani', sans-serif; }
-        .nav-links a:hover, .nav-links a.active { color: var(--primary); text-shadow: 0 0 10px var(--primary); }
+        .nav-links a:hover { color: var(--primary); text-shadow: 0 0 10px var(--primary); }
 
         .menu-toggle { display: none; font-size: 1.8rem; color: var(--primary); cursor: pointer; }
         .lang-switch { display: flex; gap: 10px; margin-left: 20px; }
-        .lang-btn { background: transparent; border: 1px solid var(--text-dim); color: var(--text-dim); padding: 4px 10px; font-family: 'Orbitron', sans-serif; font-size: 0.8rem; }
+        .lang-btn { background: transparent; border: 1px solid var(--text-dim); color: var(--text-dim); padding: 4px 10px; cursor: pointer; font-family: 'Orbitron', sans-serif; font-size: 0.8rem; }
         .lang-btn.active { border-color: var(--primary); color: var(--primary); }
 
         .container { max-width: 1200px; margin: 0 auto; padding: 20px; flex: 1; width: 100%; }
@@ -196,14 +199,14 @@
             });
         }
 
-        // --- TRAIL (JAVÍTOTT: pageX/Y + Absolute) ---
+        // --- TRAIL (JAVÍTOTT: clientX/Y + Absolute) ---
         document.addEventListener('mousemove', function(e) {
             const trail = document.createElement('div');
             trail.classList.add('cursor-trail');
             document.body.appendChild(trail);
-            // pageX/Y az absolute miatt (követi a scrollt)
-            trail.style.left = e.pageX + 'px';
-            trail.style.top = e.pageY + 'px';
+            // clientX/Y a position:fixed miatt
+            trail.style.left = e.clientX + 'px';
+            trail.style.top = e.clientY + 'px';
             const colors = ['#00f3ff', '#bd00ff'];
             const randomColor = colors[Math.floor(Math.random() * colors.length)];
             trail.style.backgroundColor = randomColor;
