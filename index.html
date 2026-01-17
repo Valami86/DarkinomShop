@@ -15,32 +15,22 @@
             background-color: var(--bg-dark); color: var(--text-main); font-family: 'Rajdhani', sans-serif;
             background-image: url('background.png'); background-size: cover; background-position: center; background-attachment: fixed; overflow-x: hidden;
             display: flex; flex-direction: column; min-height: 100vh;
-            /* ALAP KURZOR: Célkereszt */
-            cursor: crosshair;
+            
+            /* EGYEDI KÉK CÉLKERESZT KURZOR */
+            cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><path d='M16 4 L16 28 M4 16 L28 16' stroke='%2300f3ff' stroke-width='2' fill='none'/></svg>") 16 16, crosshair;
         }
 
-        /* --- KURZOR JAVÍTÁS --- */
-        /* Minden kattintható elemen legyen KÉZ a kurzor */
-        a, button, .btn-small, .cta-btn, .lang-btn, .menu-toggle, .logo-link {
-            cursor: pointer !important;
-        }
-        /* Biztonsági tartalék: ha ráviszed az egeret, váltson át */
-        a:hover, button:hover, .card:hover, .btn-small:hover {
-            cursor: pointer !important;
+        /* KATTINTHATÓ ELEMEK: PIROS CÉLKERESZT */
+        a, button, .cta-btn, .btn-small, .lang-btn, .menu-toggle, .logo-link, .card {
+            cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><path d='M16 4 L16 28 M4 16 L28 16' stroke='%23ff3333' stroke-width='3' fill='none'/></svg>") 16 16, pointer !important;
         }
 
         .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(5, 6, 8, 0.75); z-index: -1; }
 
-        /* --- TRAIL JAVÍTVA (Absolute) --- */
+        /* TRAIL (Javítva: Absolute + Z-index) */
         .cursor-trail {
-            position: absolute; /* Fixed helyett Absolute, hogy ne csússzon el görgetéskor */
-            top: 0; left: 0;
-            width: 8px; height: 8px;
-            background: var(--primary);
-            pointer-events: none;
-            z-index: 9999;
-            box-shadow: 0 0 10px var(--primary);
-            animation: fadeOut 0.5s forwards;
+            position: absolute; top: 0; left: 0; width: 8px; height: 8px; background: var(--primary);
+            pointer-events: none; z-index: 9999; box-shadow: 0 0 10px var(--primary); animation: fadeOut 0.5s forwards;
         }
         @keyframes fadeOut { 0% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: scale(0); } }
 
@@ -61,7 +51,7 @@
         .nav-links a:hover { color: var(--primary); text-shadow: 0 0 10px var(--primary); }
 
         .lang-switch { display: flex; gap: 10px; margin-left: 20px; }
-        .lang-btn { background: transparent; border: 1px solid var(--text-dim); color: var(--text-dim); padding: 4px 10px; font-family: 'Orbitron', sans-serif; font-size: 0.8rem; }
+        .lang-btn { background: transparent; border: 1px solid var(--text-dim); color: var(--text-dim); padding: 4px 10px; cursor: pointer; font-family: 'Orbitron', sans-serif; font-size: 0.8rem; }
         .lang-btn.active { border-color: var(--primary); color: var(--primary); }
         .menu-toggle { display: none; font-size: 1.8rem; color: var(--primary); }
 
@@ -135,6 +125,7 @@
     </header>
 
     <div class="container">
+        
         <div class="hero-card">
             <div class="hero-content">
                 <h1 class="hero-title" data-i18n="hero_title">Prémium <br><span>FiveM Scriptek</span></h1>
@@ -225,14 +216,14 @@
             });
         }
 
-        // --- TRAIL (JAVÍTOTT: pageX/Y + Absolute) ---
+        // --- TRAIL (JAVÍTOTT: clientX/Y + Absolute) ---
         document.addEventListener('mousemove', function(e) {
             const trail = document.createElement('div');
             trail.classList.add('cursor-trail');
             document.body.appendChild(trail);
-            // pageX/Y az absolute miatt (követi a scrollt)
-            trail.style.left = e.pageX + 'px';
-            trail.style.top = e.pageY + 'px';
+            // Használj clientX/Y-t pageX/Y helyett!
+            trail.style.left = e.clientX + 'px'; // JAVÍTVA
+            trail.style.top = e.clientY + 'px';  // JAVÍTVA
             
             const colors = ['#00f3ff', '#bd00ff'];
             const randomColor = colors[Math.floor(Math.random() * colors.length)];
