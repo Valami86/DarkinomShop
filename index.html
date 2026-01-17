@@ -4,19 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DarkinoM Store</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@300;500;700&display=swap&subset=latin,latin-ext" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@400;500;600;700&display=swap&subset=latin,latin-ext" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
     <style>
-        :root {
-            --primary: #00f3ff;
-            --secondary: #bd00ff;
-            --bg-dark: #050608;
-            --bg-card: rgba(15, 17, 22, 0.85);
-            --text-main: #ffffff;
-            --text-dim: #b0b8d4;
-        }
-
+        :root { --primary: #00f3ff; --secondary: #bd00ff; --bg-dark: #050608; --bg-card: rgba(15, 17, 22, 0.85); --text-main: #ffffff; --text-dim: #b0b8d4; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body {
@@ -31,145 +23,71 @@
             display: flex;
             flex-direction: column;
             min-height: 100vh;
-            cursor: default; /* Alap kurzor */
+            /* ÚJ KURZOR: Célkereszt */
+            cursor: crosshair; 
         }
 
-        .overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(5, 6, 8, 0.75);
-            z-index: -1;
-        }
+        /* Interaktív elemeknél legyen mutatóujj */
+        a, button, .cta-btn, .logo-link { cursor: pointer; }
 
-        /* --- EGÉR EFFEKT STÍLUS --- */
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(5, 6, 8, 0.75); z-index: -1; }
+
+        /* TRAIL EFFEKT */
         .cursor-trail {
-            position: fixed;
-            top: 0; left: 0;
-            width: 8px; height: 8px;
-            background: var(--primary);
-            pointer-events: none;
-            z-index: 9999;
-            box-shadow: 0 0 10px var(--primary);
-            animation: fadeOut 0.5s forwards;
+            position: fixed; top: 0; left: 0; width: 8px; height: 8px; background: var(--primary);
+            pointer-events: none; z-index: 9999; box-shadow: 0 0 10px var(--primary); animation: fadeOut 0.5s forwards;
         }
-        @keyframes fadeOut {
-            0% { opacity: 1; transform: scale(1); }
-            100% { opacity: 0; transform: scale(0); }
-        }
+        @keyframes fadeOut { 0% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: scale(0); } }
 
-        /* --- HEADER --- */
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 5%;
-            background: rgba(10, 10, 15, 0.95);
-            border-bottom: 1px solid rgba(0, 243, 255, 0.2);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            backdrop-filter: blur(10px);
-        }
-
+        /* HEADER */
+        header { display: flex; justify-content: space-between; align-items: center; padding: 15px 5%; background: rgba(10, 10, 15, 0.95); border-bottom: 1px solid rgba(0, 243, 255, 0.2); position: sticky; top: 0; z-index: 1000; backdrop-filter: blur(10px); }
         .logo-link { display: flex; align-items: center; gap: 15px; text-decoration: none; }
         .logo-img-small { height: 50px; filter: drop-shadow(0 0 5px rgba(189, 0, 255, 0.5)); transition: transform 0.3s; }
         .logo-text { font-family: 'Orbitron', sans-serif; font-size: 1.5rem; font-weight: 900; color: #fff; text-transform: uppercase; letter-spacing: 2px; position: relative; transition: 0.3s; }
-
+        
+        /* GLITCH ANIMÁCIÓ */
         @keyframes glitch-skew { 0% { transform: skew(0deg); } 20% { transform: skew(-10deg); } 40% { transform: skew(10deg); } 60% { transform: skew(-5deg); } 80% { transform: skew(5deg); } 100% { transform: skew(0deg); } }
         @keyframes glitch-color { 0% { text-shadow: 2px 2px var(--secondary), -2px -2px var(--primary); } 25% { text-shadow: -2px 2px var(--secondary), 2px -2px var(--primary); } 50% { text-shadow: 2px -2px var(--secondary), -2px 2px var(--primary); } 75% { text-shadow: -2px -2px var(--secondary), 2px 2px var(--primary); } 100% { text-shadow: 2px 0 var(--secondary), -2px 0 var(--primary); } }
-        
         .logo-link:hover .logo-text { animation: glitch-skew 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both infinite, glitch-color 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both infinite; color: #fff; }
         .logo-link:hover .logo-img-small { transform: scale(1.1); }
 
-        /* --- SZÉLES MENÜ --- */
+        /* MENÜ (JAVÍTVA: Rajdhani font az ékezetek miatt) */
         .nav-links { display: flex; gap: 50px; align-items: center; }
         .nav-links a {
             color: var(--text-main);
             text-decoration: none;
-            font-weight: 700;
+            /* Rajdhani használata itt, mert az Orbitron elrontja az Ő betűt */
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 700; /* Vastagítás, hogy hasonlítson a címekre */
+            font-size: 1.1rem; /* Kicsit nagyobb méret */
             text-transform: uppercase;
-            font-size: 1rem;
             letter-spacing: 1px;
             transition: 0.3s;
-            font-family: 'Orbitron', sans-serif;
         }
         .nav-links a:hover { color: var(--primary); text-shadow: 0 0 10px var(--primary); }
 
         .lang-switch { display: flex; gap: 10px; margin-left: 20px; }
-        .lang-btn {
-            background: transparent;
-            border: 1px solid var(--text-dim);
-            color: var(--text-dim);
-            padding: 4px 10px;
-            cursor: pointer;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.8rem;
-        }
+        .lang-btn { background: transparent; border: 1px solid var(--text-dim); color: var(--text-dim); padding: 4px 10px; cursor: pointer; font-family: 'Orbitron', sans-serif; font-size: 0.8rem; }
         .lang-btn.active { border-color: var(--primary); color: var(--primary); }
         .menu-toggle { display: none; font-size: 1.8rem; color: var(--primary); cursor: pointer; }
 
         .container { max-width: 1200px; margin: 0 auto; padding: 20px; flex: 1; width: 100%; }
 
         /* HERO */
-        .hero-card {
-            background: linear-gradient(90deg, rgba(15, 17, 22, 0.95) 0%, rgba(20, 20, 40, 0.7) 100%);
-            border: 1px solid var(--primary);
-            border-radius: 15px;
-            padding: 50px;
-            margin-top: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            box-shadow: 0 0 30px rgba(0, 243, 255, 0.15);
-            position: relative;
-            overflow: hidden;
-        }
+        .hero-card { background: linear-gradient(90deg, rgba(15, 17, 22, 0.95) 0%, rgba(20, 20, 40, 0.7) 100%); border: 1px solid var(--primary); border-radius: 15px; padding: 50px; margin-top: 30px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 0 30px rgba(0, 243, 255, 0.15); position: relative; overflow: hidden; }
         .hero-content { z-index: 2; max-width: 60%; }
         .hero-title { font-family: 'Orbitron', sans-serif; font-size: 3.5rem; line-height: 1.2; margin-bottom: 20px; text-transform: uppercase; font-weight: 900; }
         .hero-title span { color: var(--secondary); text-shadow: 0 0 20px rgba(189, 0, 255, 0.5); }
         .hero-subtitle { font-size: 1.4rem; color: var(--text-dim); margin-bottom: 30px; line-height: 1.6; font-weight: 400; }
-
-        .cta-btn {
-            display: inline-block;
-            padding: 15px 45px;
-            background: rgba(0, 243, 255, 0.1);
-            border: 2px solid var(--primary);
-            color: var(--primary);
-            text-decoration: none;
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: 0.3s;
-        }
+        .cta-btn { display: inline-block; padding: 15px 45px; background: rgba(0, 243, 255, 0.1); border: 2px solid var(--primary); color: var(--primary); text-decoration: none; font-family: 'Orbitron', sans-serif; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s; }
         .cta-btn:hover { background: var(--primary); color: #000; box-shadow: 0 0 40px var(--primary); }
         .hero-image { max-width: 380px; z-index: 2; filter: drop-shadow(0 0 30px rgba(189, 0, 255, 0.3)); animation: float 4s ease-in-out infinite; }
         @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-20px); } }
 
         /* GRID */
-        .section-header {
-            margin-top: 80px;
-            margin-bottom: 40px;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 2.2rem;
-            text-transform: uppercase;
-            border-left: 6px solid var(--primary);
-            padding-left: 20px;
-            text-shadow: 0 0 10px rgba(0, 243, 255, 0.3);
-            background: linear-gradient(90deg, rgba(0, 243, 255, 0.1), transparent);
-            letter-spacing: 1px;
-        }
+        .section-header { margin-top: 80px; margin-bottom: 40px; font-family: 'Orbitron', sans-serif; font-size: 2.2rem; text-transform: uppercase; border-left: 6px solid var(--primary); padding-left: 20px; text-shadow: 0 0 10px rgba(0, 243, 255, 0.3); background: linear-gradient(90deg, rgba(0, 243, 255, 0.1), transparent); letter-spacing: 1px; }
         .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; margin-bottom: 60px; }
-
-        .card {
-            background: var(--bg-card);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            overflow: hidden;
-            transition: 0.3s;
-            display: flex; flex-direction: column;
-            backdrop-filter: blur(5px);
-        }
+        .card { background: var(--bg-card); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; overflow: hidden; transition: 0.3s; display: flex; flex-direction: column; backdrop-filter: blur(5px); }
         .card:hover { border-color: var(--primary); transform: translateY(-10px); }
         .card-img-top { width: 100%; height: 200px; background: #1a1a1a; display: flex; align-items: center; justify-content: center; color: #555; border-bottom: 1px solid rgba(255,255,255,0.05); }
         .card-body { padding: 25px; flex-grow: 1; display: flex; flex-direction: column; }
@@ -223,7 +141,6 @@
     </header>
 
     <div class="container">
-        
         <div class="hero-card">
             <div class="hero-content">
                 <h1 class="hero-title" data-i18n="hero_title">Prémium <br><span>FiveM Scriptek</span></h1>
@@ -272,7 +189,6 @@
                 </div>
             </div>
         </div>
-
     </div>
 
     <footer>
@@ -310,33 +226,20 @@
 
         // --- GLITCH EGÉR TRAIL ---
         document.addEventListener('mousemove', function(e) {
-            // Csak bizonyos időközönként hozzunk létre elemet, hogy ne legyen túl sok (opcionális)
-            // Itt minden mozgásra létrehozunk egyet, ami szép folyamatos.
-            
             const trail = document.createElement('div');
             trail.classList.add('cursor-trail');
             document.body.appendChild(trail);
-
-            // Pozicionálás az egérhez
             trail.style.left = e.pageX + 'px';
             trail.style.top = e.pageY + 'px';
-            
-            // Random szín (cián vagy lila)
             const colors = ['#00f3ff', '#bd00ff'];
             const randomColor = colors[Math.floor(Math.random() * colors.length)];
             trail.style.backgroundColor = randomColor;
             trail.style.boxShadow = `0 0 10px ${randomColor}`;
-
-            // Random méret a "glitch" hatáshoz
-            const width = Math.random() * 10 + 2; // 2px és 12px között
-            const height = Math.random() * 4 + 1;  // vékony csíkok
+            const width = Math.random() * 10 + 2; 
+            const height = Math.random() * 4 + 1; 
             trail.style.width = width + 'px';
             trail.style.height = height + 'px';
-
-            // Törlés animáció után (0.5s a CSS-ben van beállítva)
-            setTimeout(() => {
-                trail.remove();
-            }, 500);
+            setTimeout(() => { trail.remove(); }, 500);
         });
     </script>
 </body>
