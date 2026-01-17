@@ -15,18 +15,33 @@
             background-color: var(--bg-dark); color: var(--text-main); font-family: 'Rajdhani', sans-serif;
             background-image: url('background.png'); background-size: cover; background-position: center; background-attachment: fixed; overflow-x: hidden;
             display: flex; flex-direction: column; min-height: 100vh;
-            cursor: crosshair; /* ALAP KURZOR: Célkereszt */
+            /* ALAP KURZOR: Célkereszt */
+            cursor: crosshair;
         }
 
-        /* KATTINTHATÓ ELEMEK KURZORA: Mutatóujj */
-        a, button, .cta-btn, .btn-small, .lang-btn, .menu-toggle, .logo-link { 
-            cursor: pointer !important; 
+        /* --- KURZOR JAVÍTÁS --- */
+        /* Minden kattintható elemen legyen KÉZ a kurzor */
+        a, button, .btn-small, .cta-btn, .lang-btn, .menu-toggle, .logo-link {
+            cursor: pointer !important;
+        }
+        /* Biztonsági tartalék: ha ráviszed az egeret, váltson át */
+        a:hover, button:hover, .card:hover, .btn-small:hover {
+            cursor: pointer !important;
         }
 
         .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(5, 6, 8, 0.75); z-index: -1; }
 
-        /* TRAIL EFFEKT */
-        .cursor-trail { position: fixed; top: 0; left: 0; width: 8px; height: 8px; background: var(--primary); pointer-events: none; z-index: 9999; box-shadow: 0 0 10px var(--primary); animation: fadeOut 0.5s forwards; }
+        /* --- TRAIL JAVÍTVA (Absolute) --- */
+        .cursor-trail {
+            position: absolute; /* Fixed helyett Absolute, hogy ne csússzon el görgetéskor */
+            top: 0; left: 0;
+            width: 8px; height: 8px;
+            background: var(--primary);
+            pointer-events: none;
+            z-index: 9999;
+            box-shadow: 0 0 10px var(--primary);
+            animation: fadeOut 0.5s forwards;
+        }
         @keyframes fadeOut { 0% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: scale(0); } }
 
         /* HEADER */
@@ -46,9 +61,9 @@
         .nav-links a:hover { color: var(--primary); text-shadow: 0 0 10px var(--primary); }
 
         .lang-switch { display: flex; gap: 10px; margin-left: 20px; }
-        .lang-btn { background: transparent; border: 1px solid var(--text-dim); color: var(--text-dim); padding: 4px 10px; cursor: pointer; font-family: 'Orbitron', sans-serif; font-size: 0.8rem; }
+        .lang-btn { background: transparent; border: 1px solid var(--text-dim); color: var(--text-dim); padding: 4px 10px; font-family: 'Orbitron', sans-serif; font-size: 0.8rem; }
         .lang-btn.active { border-color: var(--primary); color: var(--primary); }
-        .menu-toggle { display: none; font-size: 1.8rem; color: var(--primary); cursor: pointer; }
+        .menu-toggle { display: none; font-size: 1.8rem; color: var(--primary); }
 
         .container { max-width: 1200px; margin: 0 auto; padding: 20px; flex: 1; width: 100%; }
 
@@ -210,14 +225,14 @@
             });
         }
 
-        // --- TRAIL (GÖRGETÉS JAVÍTVA) ---
+        // --- TRAIL (JAVÍTOTT: pageX/Y + Absolute) ---
         document.addEventListener('mousemove', function(e) {
             const trail = document.createElement('div');
             trail.classList.add('cursor-trail');
             document.body.appendChild(trail);
-            // clientX/Y a position:fixed miatt
-            trail.style.left = e.clientX + 'px';
-            trail.style.top = e.clientY + 'px';
+            // pageX/Y az absolute miatt (követi a scrollt)
+            trail.style.left = e.pageX + 'px';
+            trail.style.top = e.pageY + 'px';
             
             const colors = ['#00f3ff', '#bd00ff'];
             const randomColor = colors[Math.floor(Math.random() * colors.length)];
