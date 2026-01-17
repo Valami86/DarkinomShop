@@ -43,7 +43,7 @@
 
         .container { max-width: 1200px; margin: 0 auto; padding: 20px; flex: 1; width: 100%; }
         .page-header { text-align: center; margin: 40px 0; }
-        .page-title { font-family: 'Rajdhani', sans-serif; font-weight: 900; font-size: 3rem; color: #fff; margin-bottom: 10px; text-transform: uppercase; }
+        .page-title { font-family: 'Rajdhani', sans-serif; font-size: 3rem; color: #fff; margin-bottom: 10px; text-transform: uppercase; font-weight: 900; }
 
         .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; align-items: center; }
         .pricing-card { background: var(--bg-card); border: 1px solid rgba(255,255,255,0.1); padding: 40px; border-radius: 15px; text-align: center; transition: 0.3s; position: relative; }
@@ -172,7 +172,7 @@
             }
         };
 
-        // --- NYELVMEMÓRIA BETÖLTÉSE ---
+        // --- MEMÓRIA ---
         document.addEventListener('DOMContentLoaded', () => {
             const savedLang = localStorage.getItem('darkinom_lang') || 'hu';
             setLanguage(savedLang);
@@ -183,6 +183,7 @@
             document.getElementById('btn-hu').classList.remove('active');
             document.getElementById('btn-en').classList.remove('active');
             document.getElementById('btn-' + lang).classList.add('active');
+            
             document.querySelectorAll('[data-i18n]').forEach(el => {
                 const key = el.getAttribute('data-i18n');
                 if (translations[lang][key]) {
@@ -191,13 +192,14 @@
             });
         }
 
-        // --- TRAIL ---
+        // --- TRAIL (JAVÍTOTT: clientX/Y) ---
         document.addEventListener('mousemove', function(e) {
             const trail = document.createElement('div');
             trail.classList.add('cursor-trail');
             document.body.appendChild(trail);
-            trail.style.left = e.pageX + 'px';
-            trail.style.top = e.pageY + 'px';
+            trail.style.left = e.clientX + 'px';
+            trail.style.top = e.clientY + 'px';
+            
             const colors = ['#00f3ff', '#bd00ff'];
             const randomColor = colors[Math.floor(Math.random() * colors.length)];
             trail.style.backgroundColor = randomColor;
