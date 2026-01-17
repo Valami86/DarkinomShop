@@ -12,10 +12,9 @@
             --primary: #00f3ff;
             --secondary: #bd00ff;
             --bg-dark: #050608;
-            --bg-card: #0f1116;
-            --card-border: #1f222e;
+            --bg-card: rgba(15, 17, 22, 0.75); /* Átlátszóbb */
             --text-main: #ffffff;
-            --text-dim: #8892b0;
+            --text-dim: #b0b8d4;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -24,12 +23,20 @@
             background-color: var(--bg-dark);
             color: var(--text-main);
             font-family: 'Rajdhani', sans-serif;
-            background-image: 
-                linear-gradient(rgba(5, 6, 8, 0.9), rgba(5, 6, 8, 0.95)),
-                url('https://wallpapers.com/images/hd/futuristic-city-background-1920-x-1080-8736.jpg'); /* Háttérkép */
+            /* Cyberpunk Város Háttér */
+            background-image: url('https://images4.alphacoders.com/936/936378.jpg');
             background-size: cover;
+            background-position: center;
             background-attachment: fixed;
             overflow-x: hidden;
+        }
+
+        /* Sötétítő réteg a háttérre, hogy olvasható legyen a szöveg */
+        .overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(5, 6, 8, 0.85);
+            z-index: -1;
         }
 
         /* --- HEADER --- */
@@ -37,52 +44,67 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 20px 5%;
-            background: rgba(15, 17, 22, 0.8);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--card-border);
+            padding: 15px 5%;
+            background: rgba(10, 10, 15, 0.9);
+            border-bottom: 1px solid rgba(0, 243, 255, 0.2);
             position: sticky;
             top: 0;
-            z-index: 100;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
         }
 
         .logo-text {
             font-family: 'Orbitron', sans-serif;
             font-size: 1.5rem;
             font-weight: 900;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .logo-icon-small {
-            height: 40px; 
-            /* Ide jön majd a logód */
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 2px;
         }
 
-        .nav-links { display: flex; gap: 25px; }
+        /* Desktop Navigáció */
+        .nav-links { display: flex; gap: 25px; align-items: center; }
         .nav-links a {
-            color: var(--text-dim);
+            color: var(--text-main);
             text-decoration: none;
             font-weight: 600;
             text-transform: uppercase;
             font-size: 0.9rem;
             transition: 0.3s;
+            font-family: 'Orbitron';
         }
-        .nav-links a:hover, .nav-links a.active { color: var(--primary); }
-        
-        .cart-count { color: var(--primary); }
+        .nav-links a:hover { color: var(--primary); text-shadow: 0 0 10px var(--primary); }
 
-        /* --- CONTAINER --- */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
+        /* Nyelvváltó gombok */
+        .lang-switch { display: flex; gap: 10px; margin-left: 20px; }
+        .lang-btn {
+            background: transparent;
+            border: 1px solid var(--text-dim);
+            color: var(--text-dim);
+            padding: 2px 8px;
+            cursor: pointer;
+            font-family: 'Orbitron';
+            font-size: 0.8rem;
+        }
+        .lang-btn.active { 
+            border-color: var(--primary); 
+            color: var(--primary); 
+            box-shadow: 0 0 10px rgba(0, 243, 255, 0.3);
         }
 
-        /* --- HERO CARD (A nagy doboz) --- */
+        /* Mobil Menü Gomb */
+        .menu-toggle {
+            display: none;
+            font-size: 1.8rem;
+            color: var(--primary);
+            cursor: pointer;
+        }
+
+        /* --- HERO CARD --- */
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+
         .hero-card {
-            background: linear-gradient(135deg, rgba(15, 17, 22, 0.9), rgba(20, 20, 30, 0.9));
+            background: linear-gradient(90deg, rgba(15, 17, 22, 0.9) 0%, rgba(20, 20, 40, 0.6) 100%);
             border: 1px solid var(--primary);
             border-radius: 15px;
             padding: 40px;
@@ -90,25 +112,34 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
+            box-shadow: 0 0 30px rgba(0, 243, 255, 0.15);
             position: relative;
-            box-shadow: 0 0 20px rgba(0, 243, 255, 0.1);
             overflow: hidden;
         }
 
-        .hero-content {
-            z-index: 2;
-            max-width: 60%;
+        /* Fény effekt a Hero mögött */
+        .hero-card::before {
+            content: '';
+            position: absolute;
+            top: -50%; right: -50%;
+            width: 100%; height: 200%;
+            background: radial-gradient(circle, rgba(189,0,255,0.2) 0%, rgba(0,0,0,0) 70%);
+            z-index: 0;
         }
+
+        .hero-content { z-index: 2; max-width: 60%; }
 
         .hero-title {
             font-family: 'Orbitron', sans-serif;
             font-size: 3rem;
             line-height: 1.1;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
             text-transform: uppercase;
         }
-
-        .hero-title span { color: var(--secondary); }
+        .hero-title span { 
+            color: var(--secondary); 
+            text-shadow: 0 0 20px rgba(189, 0, 255, 0.5);
+        }
 
         .hero-subtitle {
             font-size: 1.2rem;
@@ -116,62 +147,62 @@
             margin-bottom: 30px;
         }
 
-        .hero-btn {
+        .cta-btn {
             display: inline-block;
-            padding: 12px 30px;
+            padding: 12px 35px;
+            background: rgba(0, 243, 255, 0.1);
             border: 2px solid var(--primary);
             color: var(--primary);
             text-decoration: none;
-            font-family: 'Orbitron', sans-serif;
+            font-family: 'Orbitron';
             font-weight: bold;
             text-transform: uppercase;
-            border-radius: 5px;
             transition: 0.3s;
-            background: rgba(0, 243, 255, 0.05);
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.1);
         }
-
-        .hero-btn:hover {
+        .cta-btn:hover {
             background: var(--primary);
             color: #000;
-            box-shadow: 0 0 20px var(--primary);
+            box-shadow: 0 0 30px var(--primary);
         }
 
         .hero-image {
             max-width: 350px;
-            filter: drop-shadow(0 0 20px rgba(189, 0, 255, 0.4));
-            /* Animáció */
+            z-index: 2;
+            filter: drop-shadow(0 0 30px rgba(189, 0, 255, 0.3));
             animation: float 4s ease-in-out infinite;
         }
 
         @keyframes float {
-            0% { transform: translateY(0px); }
+            0%, 100% { transform: translateY(0px); }
             50% { transform: translateY(-15px); }
-            100% { transform: translateY(0px); }
         }
 
-        /* --- FEATURED SECTION --- */
+        /* --- CARDS GRID --- */
         .section-header {
-            margin-top: 50px;
-            margin-bottom: 20px;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.5rem;
+            margin-top: 60px;
+            margin-bottom: 25px;
+            font-family: 'Orbitron';
+            font-size: 1.8rem;
             text-transform: uppercase;
-            border-left: 4px solid var(--primary);
-            padding-left: 15px;
+            border-left: 5px solid var(--primary);
+            padding-left: 20px;
+            text-shadow: 0 0 10px rgba(0, 243, 255, 0.3);
         }
 
         .grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
         }
 
         .card {
             background: var(--bg-card);
-            border: 1px solid var(--card-border);
-            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
             overflow: hidden;
             transition: 0.3s;
+            backdrop-filter: blur(5px);
             display: flex;
             flex-direction: column;
         }
@@ -179,6 +210,7 @@
         .card:hover {
             border-color: var(--primary);
             transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
         }
 
         .card-img-top {
@@ -186,25 +218,23 @@
             height: 180px;
             background: #222;
             object-fit: cover;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
         }
 
-        .card-body {
-            padding: 20px;
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-        }
-
+        .card-body { padding: 20px; flex-grow: 1; display: flex; flex-direction: column; }
+        
         .card-title {
             font-family: 'Orbitron';
-            font-size: 1.1rem;
-            margin-bottom: 5px;
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+            color: #fff;
         }
 
         .card-desc {
             color: var(--text-dim);
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             margin-bottom: 20px;
+            line-height: 1.5;
             flex-grow: 1;
         }
 
@@ -212,185 +242,208 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-top: auto;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 15px;
         }
 
-        .price {
-            font-size: 1.2rem;
-            color: var(--primary);
-            font-weight: bold;
-        }
+        .price { font-size: 1.4rem; color: var(--primary); font-weight: bold; font-family: 'Orbitron'; }
 
         .btn-small {
             padding: 8px 20px;
-            border: 1px solid var(--text-dim);
+            border: 1px solid var(--secondary);
             color: #fff;
+            background: rgba(189, 0, 255, 0.1);
             text-decoration: none;
             font-size: 0.8rem;
             text-transform: uppercase;
-            border-radius: 4px;
+            font-weight: bold;
             transition: 0.3s;
         }
-
-        .btn-small:hover {
-            border-color: var(--primary);
-            background: rgba(0, 243, 255, 0.1);
-        }
-
-        /* --- ABOUT BOX --- */
-        .about-box {
-            background: var(--bg-card);
-            border: 1px solid var(--card-border);
-            border-radius: 10px;
-            padding: 30px;
-            margin-top: 50px;
-            display: flex;
-            align-items: center;
-            gap: 30px;
-        }
-
-        .about-text { flex: 1; color: var(--text-dim); line-height: 1.6; }
-        .about-logo { width: 100px; opacity: 0.8; }
+        .btn-small:hover { background: var(--secondary); box-shadow: 0 0 15px var(--secondary); }
 
         /* --- FOOTER --- */
         footer {
-            margin-top: 60px;
-            padding: 40px 0;
-            border-top: 1px solid var(--card-border);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            margin-top: 80px;
+            padding: 40px;
+            text-align: center;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            background: rgba(5, 6, 8, 0.9);
         }
-
-        .socials a {
-            color: var(--text-main);
-            margin-right: 20px;
-            font-size: 1.2rem;
-            transition: 0.3s;
-        }
+        .socials { font-size: 1.5rem; margin-bottom: 10px; }
+        .socials a { color: var(--text-dim); margin: 0 15px; transition: 0.3s; }
         .socials a:hover { color: var(--primary); }
 
-        /* --- MOBIL NÉZET (RESPONSIVE) --- */
+        /* --- MOBIL NÉZET BEÁLLÍTÁSOK --- */
         @media (max-width: 768px) {
-            .nav-links { display: none; } /* Egyszerűség kedvéért mobilon rejtjük a menüt */
+            .menu-toggle { display: block; } /* Hamburger menü megjelenítése */
             
-            .hero-card {
-                flex-direction: column-reverse; /* Kép felülre kerüljön */
-                text-align: center;
+            .nav-links {
+                display: none; /* Alapból rejtett menü */
+                flex-direction: column;
+                position: absolute;
+                top: 60px;
+                left: 0;
+                width: 100%;
+                background: rgba(10, 11, 16, 0.98);
                 padding: 20px;
+                border-bottom: 1px solid var(--primary);
+                text-align: center;
+            }
+
+            .nav-links.active { display: flex; } /* Ha rákattintasz, megjelenik */
+
+            .hero-card {
+                flex-direction: column-reverse;
+                text-align: center;
+                padding: 30px 15px;
             }
 
             .hero-content { max-width: 100%; }
-            .hero-image { max-width: 200px; margin-bottom: 20px; }
-            .hero-title { font-size: 2rem; }
+            .hero-title { font-size: 2.2rem; margin-top: 20px; }
+            .hero-image { max-width: 200px; }
             
-            .grid {
-                grid-template-columns: 1fr; /* 1 oszlop mobilon */
-            }
-
-            .about-box {
-                flex-direction: column;
-                text-align: center;
-            }
-
-            footer {
-                flex-direction: column;
-                gap: 20px;
-            }
+            .lang-switch { margin: 20px auto 0; justify-content: center; }
         }
     </style>
 </head>
 <body>
 
+    <div class="overlay"></div>
+
     <header>
-        <div class="logo-text">
-            <img src="https://via.placeholder.com/50" alt="DM" class="logo-icon-small" id="nav-logo">
-            DarkinoM
-        </div>
-        <nav class="nav-links">
-            <a href="#" class="active">Home</a>
-            <a href="#">Scripts</a>
-            <a href="#">Packages</a>
-            <a href="#">Support</a>
-            <a href="#">Cart <span class="cart-count">(0)</span></a>
-        </nav>
-        <div style="color:white; font-size: 1.5rem; display: none;" class="mobile-menu-btn">
+        <div class="logo-text">DARKINOM</div>
+        
+        <div class="menu-toggle" onclick="toggleMenu()">
             <i class="fas fa-bars"></i>
         </div>
+
+        <nav class="nav-links" id="nav-menu">
+            <a href="#" data-i18n="nav_home">Főoldal</a>
+            <a href="#" data-i18n="nav_scripts">Scriptek</a>
+            <a href="#" data-i18n="nav_packages">Csomagok</a>
+            <a href="#" data-i18n="nav_support">Support</a>
+            
+            <div class="lang-switch">
+                <button class="lang-btn active" onclick="setLanguage('hu')" id="btn-hu">HU</button>
+                <button class="lang-btn" onclick="setLanguage('en')" id="btn-en">EN</button>
+            </div>
+        </nav>
     </header>
 
     <div class="container">
         
         <div class="hero-card">
             <div class="hero-content">
-                <h1 class="hero-title">Prémium <br><span>FiveM Scriptek</span></h1>
-                <p class="hero-subtitle">Egyedi megoldások a szerveredhez. Optimalizált kód, 0-24 support.</p>
-                <a href="#" class="hero-btn">Böngészés</a>
+                <h1 class="hero-title" data-i18n="hero_title">Prémium <br><span>FiveM Scriptek</span></h1>
+                <p class="hero-subtitle" data-i18n="hero_desc">Egyedi megoldások a szerveredhez. Optimalizált kód, 0-24 support.</p>
+                <a href="#" class="cta-btn" data-i18n="hero_cta">Böngészés</a>
             </div>
-            <img src="https://via.placeholder.com/350x350" alt="DarkinoM Logo" class="hero-image" id="hero-logo-img">
+            <img src="https://cdn-icons-png.flaticon.com/512/924/924915.png" alt="DarkinoM Logo" class="hero-image">
         </div>
 
-        <h2 class="section-header">Featured Scripts</h2>
+        <h2 class="section-header" data-i18n="scripts_title">Kiemelt Munkák</h2>
         
         <div class="grid">
             <div class="card">
-                <img src="https://via.placeholder.com/400x200" class="card-img-top" alt="Script 1">
+                <img src="https://via.placeholder.com/400x200" class="card-img-top">
                 <div class="card-body">
-                    <h3 class="card-title">Haladó Járműrendszer v2</h3>
-                    <p class="card-desc">Custom Police Content. Teljesen testreszabható handling és tuning.</p>
+                    <h3 class="card-title">DarkinoM HUD v2</h3>
+                    <p class="card-desc" data-i18n="desc_1">Teljesen testreszabható, 0.01ms futásidejű HUD rendszer modern dizájnnal.</p>
                     <div class="card-footer">
-                        <span class="price">35€</span>
-                        <a href="#" class="btn-small">Megtekintés</a>
+                        <span class="price">15€</span>
+                        <a href="#" class="btn-small" data-i18n="btn_view">Megtekintés</a>
                     </div>
                 </div>
             </div>
 
             <div class="card">
-                <img src="https://via.placeholder.com/400x200" class="card-img-top" alt="Script 2">
+                <img src="https://via.placeholder.com/400x200" class="card-img-top">
                 <div class="card-body">
-                    <h3 class="card-title">Egyedi Munkák Csomag</h3>
-                    <p class="card-desc">Mentős, Szerelő, Rendőr kiegészítők egy csomagban.</p>
+                    <h3 class="card-title">Advanced Robbery</h3>
+                    <p class="card-desc" data-i18n="desc_2">Komplex rablás rendszer minigame-ekkel és részletes animációkkal.</p>
                     <div class="card-footer">
-                        <span class="price">50€</span>
-                        <a href="#" class="btn-small">Megtekintés</a>
+                        <span class="price">25€</span>
+                        <a href="#" class="btn-small" data-i18n="btn_view">Megtekintés</a>
                     </div>
                 </div>
             </div>
 
             <div class="card">
-                <img src="https://via.placeholder.com/400x200" class="card-img-top" alt="Script 3">
+                <img src="https://via.placeholder.com/400x200" class="card-img-top">
                 <div class="card-body">
-                    <h3 class="card-title">Admin Panel Pro</h3>
-                    <p class="card-desc">Server Management egyszerűen. Ban, Kick, Spectate funkciók.</p>
+                    <h3 class="card-title">DarkinoM Garage</h3>
+                    <p class="card-desc" data-i18n="desc_3">Valósághű garázs rendszer jármű állapot mentéssel és kulcs rendszerrel.</p>
                     <div class="card-footer">
-                        <span class="price">40€</span>
-                        <a href="#" class="btn-small">Megtekintés</a>
+                        <span class="price">20€</span>
+                        <a href="#" class="btn-small" data-i18n="btn_view">Megtekintés</a>
                     </div>
                 </div>
             </div>
-        </div>
-
-        <div class="about-box">
-            <div class="about-text">
-                <h3>About DarkinoM</h3>
-                <p>Minőségi FiveM scriptek fejlesztésével foglalkozom. A célom, hogy a szervered egyedi legyen és hibamentesen fusson. Csatlakozz a Discordunkhoz segítségért!</p>
-            </div>
-            <img src="https://via.placeholder.com/100" alt="Logo" class="about-logo" id="about-logo-img">
         </div>
 
         <footer>
             <div class="socials">
-                <a href="#"><i class="fab fa-facebook"></i></a>
-                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-discord"></i></a>
                 <a href="#"><i class="fab fa-youtube"></i></a>
-                <a href="#"><i class="fab fa-discord"></i> DarkinoM</a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
             </div>
-            <div style="color: var(--text-dim); font-size: 0.8rem;">
-                Terms of Service | Privacy Policy
-            </div>
+            <p style="color: #666; font-size: 0.8rem;">&copy; 2024 DarkinoM. All rights reserved.</p>
         </footer>
 
     </div>
 
+    <script>
+        // --- MOBIL MENÜ NYITÁS/ZÁRÁS ---
+        function toggleMenu() {
+            const nav = document.getElementById('nav-menu');
+            nav.classList.toggle('active');
+        }
+
+        // --- NYELVVÁLTÓ RENDSZER ---
+        const translations = {
+            hu: {
+                nav_home: "Főoldal",
+                nav_scripts: "Scriptek",
+                nav_packages: "Csomagok",
+                nav_support: "Support",
+                hero_title: "Prémium <br><span>FiveM Scriptek</span>",
+                hero_desc: "Egyedi megoldások a szerveredhez. Optimalizált kód, 0-24 support.",
+                hero_cta: "Böngészés",
+                scripts_title: "Kiemelt Munkák",
+                desc_1: "Teljesen testreszabható, 0.01ms futásidejű HUD rendszer modern dizájnnal.",
+                desc_2: "Komplex rablás rendszer minigame-ekkel és részletes animációkkal.",
+                desc_3: "Valósághű garázs rendszer jármű állapot mentéssel és kulcs rendszerrel.",
+                btn_view: "Megtekintés"
+            },
+            en: {
+                nav_home: "Home",
+                nav_scripts: "Scripts",
+                nav_packages: "Packages",
+                nav_support: "Support",
+                hero_title: "Premium <br><span>FiveM Scripts</span>",
+                hero_desc: "Unique solutions for your server. Optimized code, 24/7 support.",
+                hero_cta: "Browse Shop",
+                scripts_title: "Featured Scripts",
+                desc_1: "Fully customizable HUD system with 0.01ms resmon and modern design.",
+                desc_2: "Complex robbery system featuring minigames and detailed animations.",
+                desc_3: "Realistic garage system with vehicle state saving and keys.",
+                btn_view: "View Product"
+            }
+        };
+
+        function setLanguage(lang) {
+            document.getElementById('btn-hu').classList.remove('active');
+            document.getElementById('btn-en').classList.remove('active');
+            document.getElementById('btn-' + lang).classList.add('active');
+
+            const elements = document.querySelectorAll('[data-i18n]');
+            elements.forEach(element => {
+                const key = element.getAttribute('data-i18n');
+                if (translations[lang][key]) {
+                    element.innerHTML = translations[lang][key];
+                }
+            });
+        }
+    </script>
 </body>
 </html>
