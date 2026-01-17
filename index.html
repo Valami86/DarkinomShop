@@ -10,12 +10,19 @@
     <style>
         :root { --primary: #00f3ff; --secondary: #bd00ff; --bg-dark: #050608; --bg-card: rgba(15, 17, 22, 0.85); --text-main: #ffffff; --text-dim: #b0b8d4; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        
         body {
             background-color: var(--bg-dark); color: var(--text-main); font-family: 'Rajdhani', sans-serif;
             background-image: url('background.png'); background-size: cover; background-position: center; background-attachment: fixed; overflow-x: hidden;
-            display: flex; flex-direction: column; min-height: 100vh; cursor: crosshair;
+            display: flex; flex-direction: column; min-height: 100vh;
+            cursor: crosshair; /* ALAP KURZOR: Célkereszt */
         }
-        a, button, .cta-btn, .logo-link { cursor: pointer; }
+
+        /* KATTINTHATÓ ELEMEK KURZORA: Mutatóujj */
+        a, button, .cta-btn, .btn-small, .lang-btn, .menu-toggle, .logo-link { 
+            cursor: pointer !important; 
+        }
+
         .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(5, 6, 8, 0.75); z-index: -1; }
 
         /* TRAIL EFFEKT */
@@ -33,6 +40,7 @@
         .logo-link:hover .logo-text { animation: glitch-skew 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both infinite, glitch-color 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both infinite; color: #fff; }
         .logo-link:hover .logo-img-small { transform: scale(1.1); }
 
+        /* MENÜ */
         .nav-links { display: flex; gap: 50px; align-items: center; }
         .nav-links a { color: var(--text-main); text-decoration: none; font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s; }
         .nav-links a:hover { color: var(--primary); text-shadow: 0 0 10px var(--primary); }
@@ -44,6 +52,7 @@
 
         .container { max-width: 1200px; margin: 0 auto; padding: 20px; flex: 1; width: 100%; }
 
+        /* HERO */
         .hero-card { background: linear-gradient(90deg, rgba(15, 17, 22, 0.95) 0%, rgba(20, 20, 40, 0.7) 100%); border: 1px solid var(--primary); border-radius: 15px; padding: 50px; margin-top: 30px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 0 30px rgba(0, 243, 255, 0.15); position: relative; overflow: hidden; }
         .hero-content { z-index: 2; max-width: 60%; }
         .hero-title { font-family: 'Rajdhani', sans-serif; font-size: 4rem; line-height: 1.1; margin-bottom: 20px; text-transform: uppercase; font-weight: 900; }
@@ -54,6 +63,7 @@
         .hero-image { max-width: 380px; z-index: 2; filter: drop-shadow(0 0 30px rgba(189, 0, 255, 0.3)); animation: float 4s ease-in-out infinite; }
         @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-20px); } }
 
+        /* GRID */
         .section-header { margin-top: 80px; margin-bottom: 40px; font-family: 'Rajdhani', sans-serif; font-weight: 800; font-size: 2.5rem; text-transform: uppercase; border-left: 6px solid var(--primary); padding-left: 20px; text-shadow: 0 0 10px rgba(0, 243, 255, 0.3); background: linear-gradient(90deg, rgba(0, 243, 255, 0.1), transparent); letter-spacing: 1px; }
         .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; margin-bottom: 60px; }
         .card { background: var(--bg-card); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; overflow: hidden; transition: 0.3s; display: flex; flex-direction: column; backdrop-filter: blur(5px); }
@@ -183,6 +193,7 @@
             }
         };
 
+        // --- MEMÓRIA ---
         document.addEventListener('DOMContentLoaded', () => {
             const savedLang = localStorage.getItem('darkinom_lang') || 'hu';
             setLanguage(savedLang);
@@ -199,12 +210,12 @@
             });
         }
 
-        /* --- JAVÍTOTT EGÉR KÖVETÉS --- */
+        // --- TRAIL (GÖRGETÉS JAVÍTVA) ---
         document.addEventListener('mousemove', function(e) {
             const trail = document.createElement('div');
             trail.classList.add('cursor-trail');
             document.body.appendChild(trail);
-            // Használj clientX/Y-t a pageX/Y helyett a position:fixed miatt!
+            // clientX/Y a position:fixed miatt
             trail.style.left = e.clientX + 'px';
             trail.style.top = e.clientY + 'px';
             
