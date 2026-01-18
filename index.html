@@ -10,16 +10,14 @@
     <style>
         :root { --primary: #00f3ff; --secondary: #bd00ff; --bg-dark: #050608; --bg-card: rgba(10, 12, 18, 0.95); --text-main: #ffffff; --text-dim: #b0b8d4; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        
         body {
             background-color: var(--bg-dark); color: var(--text-main); font-family: 'Rajdhani', sans-serif;
             background-image: url('background.png'); background-size: cover; background-position: center; background-attachment: fixed; overflow-x: hidden;
             display: flex; flex-direction: column; min-height: 100vh;
             cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><path d='M16 4 L16 28 M4 16 L28 16' stroke='%2300f3ff' stroke-width='2' fill='none'/></svg>") 16 16, crosshair;
         }
-        
-        /* KATTINTHATÓ KURZOR */
-        a, button, .btn-card, .btn-outline, .lang-btn, .menu-toggle, .logo-link, .icon-btn, .remove-btn, .checkout-btn, .close-cart {
+        /* KATTINTHATÓ ELEMEK */
+        a, button, .btn-card, .btn-outline, .lang-btn, .menu-toggle, .logo-link, .icon-btn, .remove-btn, .checkout-btn, .close-cart, .cfx-btn {
             cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><path d='M16 4 L16 28 M4 16 L28 16' stroke='%23ff3333' stroke-width='3' fill='none'/></svg>") 16 16, pointer !important;
         }
 
@@ -31,13 +29,12 @@
         header { display: flex; justify-content: space-between; align-items: center; padding: 20px 5%; background: rgba(5, 6, 8, 0.9); border-bottom: 1px solid rgba(0, 243, 255, 0.1); position: sticky; top: 0; z-index: 1000; backdrop-filter: blur(10px); }
         .logo-link { display: flex; align-items: center; gap: 15px; text-decoration: none; }
         .logo-img-small { height: 45px; filter: drop-shadow(0 0 5px rgba(189, 0, 255, 0.5)); transition: 0.3s; }
-        
-        /* GLITCH */
         .logo-text { font-family: 'Orbitron', sans-serif; font-size: 1.5rem; font-weight: 900; color: #fff; letter-spacing: 2px; position: relative; transition: 0.3s; }
         @keyframes glitch-skew { 0% { transform: skew(0deg); } 20% { transform: skew(-10deg); } 40% { transform: skew(10deg); } 60% { transform: skew(-5deg); } 80% { transform: skew(5deg); } 100% { transform: skew(0deg); } }
         @keyframes glitch-color { 0% { text-shadow: 2px 2px var(--secondary), -2px -2px var(--primary); } 25% { text-shadow: -2px 2px var(--secondary), 2px -2px var(--primary); } 50% { text-shadow: 2px -2px var(--secondary), -2px 2px var(--primary); } 75% { text-shadow: -2px -2px var(--secondary), 2px 2px var(--primary); } 100% { text-shadow: 2px 0 var(--secondary), -2px 0 var(--primary); } }
         .logo-link:hover .logo-text { animation: glitch-skew 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both infinite, glitch-color 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both infinite; color: #fff; }
-        
+        .logo-link:hover .logo-img-small { transform: scale(1.1); }
+
         .nav-links { display: flex; gap: 40px; align-items: center; }
         .nav-links a { color: var(--text-dim); text-decoration: none; font-weight: 600; font-size: 1.1rem; text-transform: uppercase; transition: 0.3s; }
         .nav-links a:hover, .nav-links a.active { color: var(--primary); text-shadow: 0 0 10px var(--primary); }
@@ -53,7 +50,6 @@
         
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 2000; opacity: 0; visibility: hidden; transition: 0.3s; backdrop-filter: blur(5px); }
         .modal-overlay.open { opacity: 1; visibility: visible; }
-        
         .cart-sidebar { position: fixed; top: 0; right: -400px; width: 400px; height: 100%; background: rgba(10, 12, 18, 0.98); border-left: 2px solid var(--primary); padding: 30px; z-index: 2001; transition: 0.4s; display: flex; flex-direction: column; box-shadow: -10px 0 30px rgba(0,0,0,0.5); }
         .cart-sidebar.open { right: 0; }
         .cart-header { display: flex; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px; margin-bottom: 20px; font-family: 'Orbitron'; font-size: 1.5rem; color: var(--primary); }
@@ -201,10 +197,11 @@
             <button class="checkout-btn" onclick="proceedToCheckout()">FIZETÉS (TEBEX)</button>
         </div>
     </div>
+    
     <div class="login-modal" id="loginModal">
         <h2 style="color:#fff; font-family:'Orbitron'; margin-bottom:10px;">BEJELENTKEZÉS</h2>
         <p style="color:#aaa;">A vásárláshoz szükséges a Cfx.re fiókod.</p>
-        <button class="cfx-btn" onclick="simulateLogin()"><i class="fas fa-gamepad"></i> Sign in with Cfx.re</button>
+        <button class="cfx-btn" onclick="loginWithCfx()"><i class="fas fa-gamepad"></i> Sign in with Cfx.re</button>
         <p style="margin-top:15px; font-size:0.8rem; color:#666; cursor:pointer;" onclick="toggleLoginModal()">Mégse</p>
     </div>
 
@@ -215,7 +212,12 @@
 
     <script>
         function toggleMenu() { document.getElementById('nav-menu').classList.toggle('active'); }
-        // --- JS LOGIKA ---
+        
+        // --- 1. TÖLTSD KI EZT A CFX CLIENT ID-t! ---
+        // Ha nincs: menj a https://forum.cfx.re/u/NEVED/preferences/apps oldalra és csinálj egyet!
+        const CFX_CLIENT_ID = 'TOLTSD_KI_AZ_ID-VEL'; // PL: '12345abcde'
+        const REDIRECT_URI = window.location.href.split('?')[0]; // Ez automatikusan a jelenlegi oldalad
+
         const productsDB = {
             'vehicle': { name: 'Haladó Járműrendszer v2', price: 35, img: 'logo.png', tebexId: '123456' },
             'jobs': { name: 'Egyedi Munkák', price: 50, img: 'logo.png', tebexId: '654321' },
@@ -228,46 +230,83 @@
         let cart = JSON.parse(localStorage.getItem('darkinom_cart')) || [];
         let isLoggedIn = localStorage.getItem('darkinom_user') !== null;
 
-        document.addEventListener('DOMContentLoaded', () => { updateCartUI(); checkLoginStatus(); const savedLang = localStorage.getItem('darkinom_lang') || 'hu'; setLanguage(savedLang); });
+        document.addEventListener('DOMContentLoaded', () => { 
+            updateCartUI(); 
+            checkLoginStatus(); 
+            checkForAuthParams(); // Ellenőrzi, hogy visszatértünk-e a loginból
+            const savedLang = localStorage.getItem('darkinom_lang') || 'hu'; 
+            setLanguage(savedLang); 
+        });
 
         function setLanguage(lang) {
             localStorage.setItem('darkinom_lang', lang);
             document.getElementById('btn-hu').classList.remove('active'); document.getElementById('btn-en').classList.remove('active'); document.getElementById('btn-' + lang).classList.add('active');
-            const translations = {
-                hu: { nav_home:"Főoldal", hero_title:"PRÉMIUM <br><span>FIVEM SCRIPTEK</span>", scripts_title:"KIEMELT MUNKÁK", about_title:"Rólunk" },
-                en: { nav_home:"Home", hero_title:"PREMIUM <br><span>FIVEM SCRIPTS</span>", scripts_title:"FEATURED SCRIPTS", about_title:"About Us" }
-            };
+            const translations = { hu: { nav_home:"Főoldal", hero_title:"PRÉMIUM <br><span>FIVEM SCRIPTEK</span>" }, en: { nav_home:"Home", hero_title:"PREMIUM <br><span>FIVEM SCRIPTS</span>" } };
             document.querySelectorAll('[data-i18n]').forEach(el => { const key = el.getAttribute('data-i18n'); if (translations[lang] && translations[lang][key]) el.innerHTML = translations[lang][key]; });
         }
 
-        /* CART & LOGIN */
-        function addToCart(id) { const p = productsDB[id]; if(!p) return; cart.push(p); localStorage.setItem('darkinom_cart', JSON.stringify(cart)); updateCartUI(); document.getElementById('cartSidebar').classList.add('open'); document.getElementById('modalOverlay').classList.add('open'); }
-        function removeFromCart(idx) { cart.splice(idx,1); localStorage.setItem('darkinom_cart', JSON.stringify(cart)); updateCartUI(); }
-        function updateCartUI() {
-            document.getElementById('cartCount').innerText = cart.length;
-            const c = document.getElementById('cartItemsContainer'); c.innerHTML = ''; let t = 0;
-            if(cart.length===0) c.innerHTML='<p style="color:#888; text-align:center;">Üres.</p>';
-            else cart.forEach((item,i) => { t+=item.price; c.innerHTML+=`<div class="cart-item"><img src="${item.img}"><div style="flex:1"><div style="font-weight:bold;color:#fff">${item.name}</div><div style="color:var(--primary)">${item.price}€</div></div><i class="fas fa-trash remove-btn" onclick="removeFromCart(${i})"></i></div>`; });
-            document.getElementById('cartTotal').innerText = t + '€';
-        }
-        function toggleCart() { const sb = document.getElementById('cartSidebar'); const ov = document.getElementById('modalOverlay'); if(sb.classList.contains('open')){sb.classList.remove('open');ov.classList.remove('open');}else{sb.classList.add('open');ov.classList.add('open');} }
-        function toggleLoginModal() { const m = document.getElementById('loginModal'); const ov = document.getElementById('modalOverlay'); if(m.style.display==='block'){m.style.display='none';ov.classList.remove('open');}else{m.style.display='block';ov.classList.add('open');} }
-        function simulateLogin() { localStorage.setItem('darkinom_user','FiveM_User'); isLoggedIn=true; checkLoginStatus(); toggleLoginModal(); }
-        function logout() { localStorage.removeItem('darkinom_user'); isLoggedIn=false; checkLoginStatus(); }
-        function checkLoginStatus() { const l=document.getElementById('loginBtn'); const p=document.getElementById('userProfile'); if(isLoggedIn){l.style.display='none';p.style.display='block';document.getElementById('usernameDisplay').innerText='User';}else{l.style.display='block';p.style.display='none';} }
-        function closeAllModals() { document.getElementById('cartSidebar').classList.remove('open'); document.getElementById('loginModal').style.display='none'; document.getElementById('modalOverlay').classList.remove('open'); }
-        function proceedToCheckout() { if(cart.length===0)return alert('Üres a kosár!'); if(!isLoggedIn){toggleCart();setTimeout(()=>toggleLoginModal(),300);return;} 
-            const ids = cart.map(i=>i.tebexId).join(','); 
-            // CSERÉLD LE EZT A LINKET:
-            window.location.href = `https://TE_BOLTOD.tebex.io/checkout/basket?add=${ids}`; 
+        /* --- LOGIN LOGIKA (Valós Redirect) --- */
+        function loginWithCfx() {
+            if(CFX_CLIENT_ID === 'TOLTSD_KI_AZ_ID-VEL') {
+                alert("HIBA: A tulajdonos nem állította be a CFX_CLIENT_ID-t a kódban!");
+                return;
+            }
+            // Átirányítás a hivatalos Cfx.re oldalra
+            const authUrl = `https://forum.cfx.re/auth/authorize?client_id=${CFX_CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&response_type=code&scope=identify`;
+            window.location.href = authUrl;
         }
 
-        /* MOUSE TRAIL */
-        document.addEventListener('mousemove', function(e) {
-            const t = document.createElement('div'); t.classList.add('cursor-trail'); document.body.appendChild(t);
-            t.style.left = e.clientX + 'px'; t.style.top = e.clientY + 'px';
-            const c = ['#00f3ff', '#bd00ff']; t.style.backgroundColor = c[Math.floor(Math.random()*2)]; t.style.boxShadow=`0 0 10px ${t.style.backgroundColor}`;
-            setTimeout(()=>t.remove(),500);
+        function checkForAuthParams() {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.has('code')) {
+                // Sikeres visszatérés a Cfx-ről!
+                // Mivel nincs backendünk a név lekéréséhez, beállítunk egy általános nevet
+                localStorage.setItem('darkinom_user', 'Cfx.re User'); 
+                window.history.replaceState({}, document.title, window.location.pathname); // URL tisztítása
+                isLoggedIn = true;
+                checkLoginStatus();
+            }
+        }
+
+        function logout() { localStorage.removeItem('darkinom_user'); isLoggedIn=false; checkLoginStatus(); }
+        function checkLoginStatus() { 
+            const l=document.getElementById('loginBtn'); 
+            const p=document.getElementById('userProfile'); 
+            if(isLoggedIn){
+                l.style.display='none';
+                p.style.display='block';
+                document.getElementById('usernameDisplay').innerText = localStorage.getItem('darkinom_user');
+            }else{
+                l.style.display='block';
+                p.style.display='none';
+            } 
+        }
+
+        /* CART */
+        function addToCart(id) { const p = productsDB[id]; if(!p) return; cart.push(p); localStorage.setItem('darkinom_cart', JSON.stringify(cart)); updateCartUI(); document.getElementById('cartSidebar').classList.add('open'); document.getElementById('modalOverlay').classList.add('open'); }
+        function removeFromCart(idx) { cart.splice(idx,1); localStorage.setItem('darkinom_cart', JSON.stringify(cart)); updateCartUI(); }
+        function updateCartUI() { document.getElementById('cartCount').innerText = cart.length; const c = document.getElementById('cartItemsContainer'); c.innerHTML = ''; let t = 0; if(cart.length===0) c.innerHTML='<p style="color:#888; text-align:center;">Üres.</p>'; else cart.forEach((item,i) => { t+=item.price; c.innerHTML+=`<div class="cart-item"><img src="${item.img}"><div style="flex:1"><div style="font-weight:bold;color:#fff">${item.name}</div><div style="color:var(--primary)">${item.price}€</div></div><i class="fas fa-trash remove-btn" onclick="removeFromCart(${i})"></i></div>`; }); document.getElementById('cartTotal').innerText = t + '€'; }
+        function toggleCart() { const sb = document.getElementById('cartSidebar'); const ov = document.getElementById('modalOverlay'); if(sb.classList.contains('open')){sb.classList.remove('open');ov.classList.remove('open');}else{sb.classList.add('open');ov.classList.add('open');} }
+        function toggleLoginModal() { const m = document.getElementById('loginModal'); const ov = document.getElementById('modalOverlay'); if(m.style.display==='block'){m.style.display='none';ov.classList.remove('open');}else{m.style.display='block';ov.classList.add('open');} }
+        function closeAllModals() { document.getElementById('cartSidebar').classList.remove('open'); document.getElementById('loginModal').style.display='none'; document.getElementById('modalOverlay').classList.remove('open'); }
+        
+        function proceedToCheckout() { 
+            if(cart.length===0)return alert('Üres a kosár!'); 
+            if(!isLoggedIn){
+                toggleCart();
+                setTimeout(()=>toggleLoginModal(),300);
+                return;
+            } 
+            // Tebex Basket Link Generálása
+            const ids = cart.map(i=>i.tebexId).join(','); 
+            window.location.href = `https://TE_BOLTOD.tebex.io/checkout/basket?add=${ids}`; 
+        }
+        
+        document.addEventListener('mousemove', function(e) { 
+            const t = document.createElement('div'); t.classList.add('cursor-trail'); document.body.appendChild(t); 
+            t.style.left = e.clientX + 'px'; t.style.top = e.clientY + 'px'; 
+            const c = ['#00f3ff', '#bd00ff']; t.style.backgroundColor = c[Math.floor(Math.random()*2)]; t.style.boxShadow=`0 0 10px ${t.style.backgroundColor}`; 
+            setTimeout(()=>t.remove(),500); 
         });
     </script>
 </body>
