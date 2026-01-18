@@ -16,11 +16,19 @@
             display: flex; flex-direction: column; min-height: 100vh;
             cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><path d='M16 4 L16 28 M4 16 L28 16' stroke='%2300f3ff' stroke-width='2' fill='none'/></svg>") 16 16, crosshair;
         }
-        a, button, .btn-buy, .lang-btn, .menu-toggle, .logo-link { cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><path d='M16 4 L16 28 M4 16 L28 16' stroke='%23ff3333' stroke-width='3' fill='none'/></svg>") 16 16, pointer !important; }
+        
+        /* KATTINTHATÓ KURZOR */
+        a, button, .btn-buy, .lang-btn, .menu-toggle, .logo-link, .icon-btn, .remove-btn, .checkout-btn, .close-cart {
+            cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><path d='M16 4 L16 28 M4 16 L28 16' stroke='%23ff3333' stroke-width='3' fill='none'/></svg>") 16 16, pointer !important;
+        }
+        
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(5, 6, 8, 0.75); z-index: -1; }
+        
+        /* TRAIL (JAVÍTVA: FIXED) */
         .cursor-trail { position: fixed; top: 0; left: 0; width: 8px; height: 8px; background: var(--primary); pointer-events: none; z-index: 9999; box-shadow: 0 0 10px var(--primary); animation: fadeOut 0.5s forwards; }
         @keyframes fadeOut { 0% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: scale(0); } }
 
-        /* HEADER & GLITCH (Javítva) */
+        /* HEADER & GLITCH */
         header { display: flex; justify-content: space-between; align-items: center; padding: 20px 5%; background: rgba(5, 6, 8, 0.9); border-bottom: 1px solid rgba(0, 243, 255, 0.1); position: sticky; top: 0; z-index: 1000; backdrop-filter: blur(10px); }
         .logo-link { display: flex; align-items: center; gap: 15px; text-decoration: none; }
         .logo-img-small { height: 45px; filter: drop-shadow(0 0 5px rgba(189, 0, 255, 0.5)); transition: 0.3s; }
@@ -34,12 +42,34 @@
         .nav-links a { color: var(--text-dim); text-decoration: none; font-weight: 600; font-size: 1.1rem; text-transform: uppercase; transition: 0.3s; }
         .nav-links a:hover { color: var(--primary); text-shadow: 0 0 10px var(--primary); }
         .menu-toggle { display: none; font-size: 1.8rem; color: var(--primary); }
-        .lang-switch button { background: none; border: 1px solid #333; color: #888; padding: 2px 8px; font-size: 0.8rem; font-family: 'Orbitron'; cursor: pointer; }
+        .lang-switch button { background: none; border: 1px solid #333; color: #888; padding: 2px 8px; font-size: 0.8rem; font-family: 'Orbitron'; }
         .lang-switch button.active { border-color: var(--primary); color: var(--primary); }
+
+        /* KOSÁR & LOGIN UI */
+        .header-actions { display: flex; gap: 20px; margin-left: 20px; align-items: center; }
+        .icon-btn { background: none; border: none; color: #fff; font-size: 1.2rem; position: relative; transition: 0.3s; }
+        .icon-btn:hover { color: var(--primary); text-shadow: 0 0 10px var(--primary); }
+        .cart-badge { position: absolute; top: -8px; right: -8px; background: var(--secondary); color: #fff; font-size: 0.7rem; font-weight: bold; width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+        
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 2000; opacity: 0; visibility: hidden; transition: 0.3s; backdrop-filter: blur(5px); }
+        .modal-overlay.open { opacity: 1; visibility: visible; }
+        .cart-sidebar { position: fixed; top: 0; right: -400px; width: 400px; height: 100%; background: rgba(10, 12, 18, 0.98); border-left: 2px solid var(--primary); padding: 30px; z-index: 2001; transition: 0.4s; display: flex; flex-direction: column; box-shadow: -10px 0 30px rgba(0,0,0,0.5); }
+        .cart-sidebar.open { right: 0; }
+        .cart-header { display: flex; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px; margin-bottom: 20px; font-family: 'Orbitron'; font-size: 1.5rem; color: var(--primary); }
+        .cart-items { flex-grow: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; }
+        .cart-item { display: flex; gap: 15px; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 8px; align-items: center; }
+        .cart-item img { width: 50px; height: 50px; object-fit: cover; border-radius: 5px; }
+        .cart-footer { margin-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px; }
+        .checkout-btn { width: 100%; padding: 15px; background: var(--primary); color: #000; font-family: 'Orbitron'; font-weight: bold; border: none; transition: 0.3s; margin-top: 10px; }
+        .checkout-btn:hover { background: #fff; box-shadow: 0 0 20px var(--primary); }
+        .login-modal { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: var(--bg-card); border: 2px solid var(--secondary); padding: 40px; border-radius: 15px; z-index: 2002; width: 90%; max-width: 400px; display: none; box-shadow: 0 0 50px rgba(189,0,255,0.2); text-align: center; }
+        .login-modal.open { display: block; }
+        .cfx-btn { background: #f77c1e; color: #fff; padding: 12px; border: none; font-family: 'Orbitron'; width: 100%; margin-top: 20px; display: flex; align-items: center; justify-content: center; gap: 10px; transition: 0.3s; }
+        .cfx-btn:hover { box-shadow: 0 0 20px #f77c1e; transform: scale(1.05); }
 
         .container { max-width: 1200px; margin: 0 auto; padding: 40px 20px; flex: 1; width: 100%; }
 
-        /* --- TERMÉK RÉSZLETEK --- */
+        /* TERMÉK RÉSZLETEK */
         .product-wrapper { display: flex; gap: 40px; margin-top: 20px; }
         .product-image-box { flex: 1; border: 1px solid rgba(0, 243, 255, 0.3); border-radius: 12px; overflow: hidden; background: #000; box-shadow: 0 0 20px rgba(0,243,255,0.1); }
         .product-image-box img { width: 100%; height: auto; display: block; }
@@ -53,7 +83,6 @@
         .btn-buy { display: inline-block; width: 100%; padding: 15px; background: var(--primary); color: #000; text-align: center; text-decoration: none; font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 1.2rem; text-transform: uppercase; border: 2px solid var(--primary); transition: 0.3s; border-radius: 5px; }
         .btn-buy:hover { background: transparent; color: var(--primary); box-shadow: 0 0 20px var(--primary); }
 
-        /* VIDEÓ SZEKCIÓ */
         .media-section { margin-top: 60px; }
         .media-title { font-family: 'Orbitron'; color: #fff; font-size: 1.8rem; margin-bottom: 20px; border-left: 4px solid var(--secondary); padding-left: 15px; }
         .video-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; background: #000; }
@@ -64,20 +93,26 @@
 
         @media (max-width: 768px) {
             .menu-toggle { display: block; }
-            .nav-links { display: none; flex-direction: column; position: absolute; top: 70px; left: 0; width: 100%; background: #0a0b10; padding: 20px; text-align: center; border-bottom: 1px solid var(--primary); }
+            .nav-links { display: none; flex-direction: column; position: absolute; top: 80px; left: 0; width: 100%; background: #0a0b10; padding: 20px; border-bottom: 1px solid var(--primary); }
             .nav-links.active { display: flex; }
             .product-wrapper { flex-direction: column; }
-            .lang-switch { margin: 20px auto 0; justify-content: center; }
+            .cart-sidebar { width: 100%; right: -100%; }
         }
     </style>
 </head>
 <body>
+    <div class="overlay"></div>
     <header>
         <a href="index.html" class="logo-link">
             <img src="logo.png" alt="DarkinoM" class="logo-img-small">
             <span class="logo-text">DARKINOM</span>
         </a>
-        <div class="menu-toggle" onclick="toggleMenu()"><i class="fas fa-bars"></i></div>
+        <div class="header-actions">
+            <button class="icon-btn" id="loginBtn" onclick="toggleLoginModal()"><i class="fas fa-user"></i></button>
+            <div id="userProfile" style="display:none; color:var(--primary); font-weight:bold; cursor:pointer;" onclick="logout()"><i class="fas fa-user-check"></i> <span id="usernameDisplay">User</span></div>
+            <button class="icon-btn" onclick="toggleCart()"><i class="fas fa-shopping-cart"></i><span class="cart-badge" id="cartCount">0</span></button>
+            <div class="menu-toggle" onclick="toggleMenu()"><i class="fas fa-bars"></i></div>
+        </div>
         <nav class="nav-links" id="nav-menu">
             <a href="index.html">Főoldal</a>
             <a href="scripts.html">Scriptek</a>
@@ -95,25 +130,21 @@
 
         <div class="product-wrapper">
             <div class="product-image-box">
-                <img src="https://via.placeholder.com/800x600.png?text=SCRIPT+PREVIEW+IMAGE" alt="Script Preview">
+                <img src="https://via.placeholder.com/800x600.png?text=HUD+SCRIPT+PREVIEW" alt="HUD Preview">
             </div>
-
             <div class="product-info">
-                <h1 class="product-title">Script Neve PL: HUD v2</h1>
+                <h1 class="product-title">DarkinoM HUD v2</h1>
                 <div class="product-price">15.00€</div>
                 <p class="product-desc" data-i18n="prod_desc">
-                    Ide jön a script részletes leírása. Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-                    Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Optimalizált kód, könnyű beállítás.
+                    Ez a legújabb generációs HUD rendszer a FiveM szerveredhez. Teljesen optimalizált (0.01ms), modern design, és könnyen testreszabható config fájl.
                 </p>
-                
                 <ul class="features-list">
-                    <li><i class="fas fa-check"></i> 0.01ms Resmon (Optimalizált)</li>
-                    <li><i class="fas fa-check"></i> Teljesen reszponzív design</li>
-                    <li><i class="fas fa-check"></i> Könnyű Config beállítás</li>
+                    <li><i class="fas fa-check"></i> 0.01ms Resmon</li>
+                    <li><i class="fas fa-check"></i> Teljesen reszponzív</li>
+                    <li><i class="fas fa-check"></i> Könnyű Config</li>
                     <li><i class="fas fa-check"></i> ESX & QBCore támogatás</li>
                 </ul>
-
-                <a href="https://your-tebex-link.com" target="_blank" class="btn-buy" data-i18n="btn_buy_now">VÁSÁRLÁS MOST</a>
+                <button class="btn-buy" onclick="addToCart('hud')">KOSÁRBA</button>
             </div>
         </div>
 
@@ -125,40 +156,53 @@
         </div>
     </div>
 
-    <footer>
-        <img src="logo.png" style="height:30px; margin-bottom:10px; opacity:0.5;">
-        <div class="socials">
-            <a href="https://discord.gg/TE_DISCORD_LINKED" target="_blank"><i class="fab fa-discord"></i></a>
+    <div class="modal-overlay" id="modalOverlay" onclick="closeAllModals()"></div>
+    <div class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header"><span class="cart-title">KOSÁR</span><span class="close-cart" onclick="toggleCart()">&times;</span></div>
+        <div class="cart-items" id="cartItemsContainer"></div>
+        <div class="cart-footer">
+            <div style="display:flex; justify-content:space-between; color:#fff; font-size:1.2rem; margin-bottom:15px;"><span>Összesen:</span><span id="cartTotal">0€</span></div>
+            <button class="checkout-btn" onclick="proceedToCheckout()">FIZETÉS (TEBEX)</button>
         </div>
-        <div class="footer-links">&copy; 2024 DarkinoM. All rights reserved.</div>
+    </div>
+    <div class="login-modal" id="loginModal">
+        <h2 style="color:#fff; font-family:'Orbitron'; margin-bottom:10px;">BEJELENTKEZÉS</h2>
+        <p style="color:#aaa;">A vásárláshoz szükséges a Cfx.re fiókod.</p>
+        <button class="cfx-btn" onclick="simulateLogin()"><i class="fas fa-gamepad"></i> Sign in with Cfx.re</button>
+        <p style="margin-top:15px; font-size:0.8rem; color:#666; cursor:pointer;" onclick="toggleLoginModal()">Mégse</p>
+    </div>
+
+    <footer>
+        <div class="socials"><a href="https://discord.gg/TE_DISCORD_LINKED" target="_blank"><i class="fab fa-discord"></i></a></div>
+        <p style="color:#666; margin-top:20px;">&copy; 2024 DarkinoM.</p>
     </footer>
 
     <script>
         function toggleMenu() { document.getElementById('nav-menu').classList.toggle('active'); }
+        // JS LOGIKA (Kosár + Login)
+        const productsDB = { 'hud': { name: 'DarkinoM HUD', price: 15, img: 'logo.png', tebexId: '445566' } }; // Csak a szükségesek
+        let cart = JSON.parse(localStorage.getItem('darkinom_cart')) || [];
+        let isLoggedIn = localStorage.getItem('darkinom_user') !== null;
+        document.addEventListener('DOMContentLoaded', () => { updateCartUI(); checkLoginStatus(); const savedLang = localStorage.getItem('darkinom_lang') || 'hu'; setLanguage(savedLang); });
+        function setLanguage(lang) { localStorage.setItem('darkinom_lang', lang); document.getElementById('btn-hu').classList.remove('active'); document.getElementById('btn-en').classList.remove('active'); document.getElementById('btn-' + lang).classList.add('active'); const translations = { hu: { prod_desc: "Ez a legújabb generációs HUD..." }, en: { prod_desc: "This is the latest generation HUD..." } }; document.querySelectorAll('[data-i18n]').forEach(el => { const key = el.getAttribute('data-i18n'); if (translations[lang] && translations[lang][key]) el.innerHTML = translations[lang][key]; }); }
         
-        const translations = {
-            hu: {
-                prod_desc: "Ide jön a script részletes leírása. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Optimalizált kód, könnyű beállítás.",
-                btn_buy_now: "VÁSÁRLÁS MOST"
-            },
-            en: {
-                prod_desc: "Detailed description of the script goes here. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Optimized code, easy configuration.",
-                btn_buy_now: "BUY NOW"
-            }
-        };
-
-        document.addEventListener('DOMContentLoaded', () => { const savedLang = localStorage.getItem('darkinom_lang') || 'hu'; setLanguage(savedLang); });
-        function setLanguage(lang) {
-            localStorage.setItem('darkinom_lang', lang);
-            document.getElementById('btn-hu').classList.remove('active'); document.getElementById('btn-en').classList.remove('active'); document.getElementById('btn-' + lang).classList.add('active');
-            document.querySelectorAll('[data-i18n]').forEach(el => { const key = el.getAttribute('data-i18n'); if (translations[lang][key]) el.innerText = translations[lang][key]; });
-        }
+        function addToCart(id) { const p = productsDB[id]; if(!p) return; cart.push(p); localStorage.setItem('darkinom_cart', JSON.stringify(cart)); updateCartUI(); document.getElementById('cartSidebar').classList.add('open'); document.getElementById('modalOverlay').classList.add('open'); }
+        function removeFromCart(idx) { cart.splice(idx,1); localStorage.setItem('darkinom_cart', JSON.stringify(cart)); updateCartUI(); }
+        function updateCartUI() { document.getElementById('cartCount').innerText = cart.length; const c = document.getElementById('cartItemsContainer'); c.innerHTML = ''; let t = 0; if(cart.length===0) c.innerHTML='<p style="color:#888; text-align:center;">Üres.</p>'; else cart.forEach((item,i) => { t+=item.price; c.innerHTML+=`<div class="cart-item"><img src="${item.img}"><div style="flex:1"><div style="font-weight:bold;color:#fff">${item.name}</div><div style="color:var(--primary)">${item.price}€</div></div><i class="fas fa-trash remove-btn" onclick="removeFromCart(${i})"></i></div>`; }); document.getElementById('cartTotal').innerText = t + '€'; }
+        function toggleCart() { const sb = document.getElementById('cartSidebar'); const ov = document.getElementById('modalOverlay'); if(sb.classList.contains('open')){sb.classList.remove('open');ov.classList.remove('open');}else{sb.classList.add('open');ov.classList.add('open');} }
+        function toggleLoginModal() { const m = document.getElementById('loginModal'); const ov = document.getElementById('modalOverlay'); if(m.style.display==='block'){m.style.display='none';ov.classList.remove('open');}else{m.style.display='block';ov.classList.add('open');} }
+        function simulateLogin() { localStorage.setItem('darkinom_user','FiveM_User'); isLoggedIn=true; checkLoginStatus(); toggleLoginModal(); }
+        function logout() { localStorage.removeItem('darkinom_user'); isLoggedIn=false; checkLoginStatus(); }
+        function checkLoginStatus() { const l=document.getElementById('loginBtn'); const p=document.getElementById('userProfile'); if(isLoggedIn){l.style.display='none';p.style.display='block';document.getElementById('usernameDisplay').innerText='User';}else{l.style.display='block';p.style.display='none';} }
+        function closeAllModals() { document.getElementById('cartSidebar').classList.remove('open'); document.getElementById('loginModal').style.display='none'; document.getElementById('modalOverlay').classList.remove('open'); }
+        function proceedToCheckout() { if(cart.length===0)return alert('Üres a kosár!'); if(!isLoggedIn){toggleCart();setTimeout(()=>toggleLoginModal(),300);return;} const ids = cart.map(i=>i.tebexId).join(','); window.location.href = `https://TE_BOLTOD.tebex.io/checkout/basket?add=${ids}`; }
+        
+        // JAVÍTOTT TRAIL (FIXED + clientX/Y)
         document.addEventListener('mousemove', function(e) {
             const trail = document.createElement('div'); trail.classList.add('cursor-trail'); document.body.appendChild(trail);
             trail.style.left = e.clientX + 'px'; trail.style.top = e.clientY + 'px';
-            const colors = ['#00f3ff', '#bd00ff']; const randomColor = colors[Math.floor(Math.random() * colors.length)];
-            trail.style.backgroundColor = randomColor; trail.style.boxShadow = `0 0 10px ${randomColor}`;
-            setTimeout(() => { trail.remove(); }, 500);
+            const colors = ['#00f3ff', '#bd00ff']; trail.style.backgroundColor = colors[Math.floor(Math.random()*2)]; trail.style.boxShadow=`0 0 10px ${trail.style.backgroundColor}`;
+            setTimeout(()=>trail.remove(),500);
         });
     </script>
 </body>
