@@ -9,39 +9,22 @@
 
     <style>
         :root { 
-            --primary: #00f3ff;       /* Neon Cián */
-            --secondary: #bd00ff;     /* Neon Lila */
-            --bg-dark: #050608;       /* Mély fekete háttér */
-            --bg-card: rgba(10, 12, 18, 0.95); /* Majdnem fekete kártya */
-            --text-main: #ffffff;
-            --text-dim: #b0b8d4;
+            --primary: #00f3ff; --secondary: #bd00ff; --bg-dark: #050608; --bg-card: rgba(10, 12, 18, 0.95); --text-main: #ffffff; --text-dim: #b0b8d4;
         }
-
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body {
-            background-color: var(--bg-dark); 
-            color: var(--text-main); 
-            font-family: 'Rajdhani', sans-serif; /* Fő betűtípus */
-            
-            /* Oldal általános háttere (sötét tech minta) */
-            background-image: url('background.png'); 
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            overflow-x: hidden;
+            background-color: var(--bg-dark); color: var(--text-main); font-family: 'Rajdhani', sans-serif;
+            background-image: url('background.png'); background-size: cover; background-position: center; background-attachment: fixed; overflow-x: hidden;
             display: flex; flex-direction: column; min-height: 100vh;
-            
             /* KURZOROK */
             cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><path d='M16 4 L16 28 M4 16 L28 16' stroke='%2300f3ff' stroke-width='2' fill='none'/></svg>") 16 16, crosshair;
         }
-
-        /* Kattintható elemek kurzora (Piros) */
-        a, button, .btn-small, .cta-btn, .logo-link, .card {
+        /* KATTINTHATÓ KURZOR (Piros) */
+        a, button, .btn-small, .cta-btn, .logo-link, .card, .btn-outline, .btn-card {
             cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><path d='M16 4 L16 28 M4 16 L28 16' stroke='%23ff3333' stroke-width='3' fill='none'/></svg>") 16 16, pointer !important;
         }
-
-        /* TRAIL EFFEKT */
+        /* TRAIL EFFEKT (FIXED) */
         .cursor-trail {
             position: fixed; top: 0; left: 0; width: 8px; height: 8px; background: var(--primary);
             pointer-events: none; z-index: 9999; box-shadow: 0 0 10px var(--primary); animation: fadeOut 0.5s forwards;
@@ -50,170 +33,86 @@
 
         /* --- HEADER --- */
         header { 
-            display: flex; justify-content: space-between; align-items: center; 
-            padding: 20px 5%; 
-            background: rgba(5, 6, 8, 0.9); 
-            border-bottom: 1px solid rgba(0, 243, 255, 0.1); 
+            display: flex; justify-content: space-between; align-items: center; padding: 20px 5%; 
+            background: rgba(5, 6, 8, 0.9); border-bottom: 1px solid rgba(0, 243, 255, 0.1); 
             position: sticky; top: 0; z-index: 1000; backdrop-filter: blur(10px); 
         }
-
         .logo-link { display: flex; align-items: center; gap: 15px; text-decoration: none; }
-        .logo-img-small { height: 45px; filter: drop-shadow(0 0 5px rgba(189, 0, 255, 0.5)); }
-        .logo-text { font-family: 'Orbitron', sans-serif; font-size: 1.5rem; font-weight: 900; color: #fff; letter-spacing: 2px; }
+        .logo-img-small { height: 45px; filter: drop-shadow(0 0 5px rgba(189, 0, 255, 0.5)); transition: 0.3s; }
+        
+        /* --- GLITCH EFFEKT VISSZAÁLLÍTÁSA --- */
+        .logo-text {
+            font-family: 'Orbitron', sans-serif; font-size: 1.5rem; font-weight: 900; color: #fff; letter-spacing: 2px; position: relative; transition: 0.3s;
+        }
+        @keyframes glitch-skew {
+            0% { transform: skew(0deg); } 20% { transform: skew(-10deg); } 40% { transform: skew(10deg); } 60% { transform: skew(-5deg); } 80% { transform: skew(5deg); } 100% { transform: skew(0deg); }
+        }
+        @keyframes glitch-color {
+            0% { text-shadow: 2px 2px var(--secondary), -2px -2px var(--primary); } 25% { text-shadow: -2px 2px var(--secondary), 2px -2px var(--primary); } 50% { text-shadow: 2px -2px var(--secondary), -2px 2px var(--primary); } 75% { text-shadow: -2px -2px var(--secondary), 2px 2px var(--primary); } 100% { text-shadow: 2px 0 var(--secondary), -2px 0 var(--primary); }
+        }
+        .logo-link:hover .logo-text {
+            animation: glitch-skew 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both infinite, glitch-color 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both infinite; color: #fff;
+        }
+        .logo-link:hover .logo-img-small { transform: scale(1.1); }
 
         /* MENÜ */
         .nav-links { display: flex; gap: 40px; align-items: center; }
-        .nav-links a { 
-            color: var(--text-dim); 
-            text-decoration: none; 
-            font-weight: 600; 
-            font-size: 1.1rem; 
-            text-transform: uppercase; 
-            transition: 0.3s;
-        }
+        .nav-links a { color: var(--text-dim); text-decoration: none; font-weight: 600; font-size: 1.1rem; text-transform: uppercase; transition: 0.3s; }
         .nav-links a:hover, .nav-links a.active { color: var(--primary); text-shadow: 0 0 10px var(--primary); }
-
-        .lang-switch button { 
-            background: none; border: 1px solid #333; color: #888; padding: 2px 8px; font-size: 0.8rem; font-family: 'Orbitron'; 
-        }
+        .lang-switch button { background: none; border: 1px solid #333; color: #888; padding: 2px 8px; font-size: 0.8rem; font-family: 'Orbitron'; cursor: pointer; }
         .lang-switch button.active { border-color: var(--primary); color: var(--primary); }
-        
         .menu-toggle { display: none; font-size: 1.8rem; color: var(--primary); }
 
         /* --- CONTAINER --- */
         .container { max-width: 1200px; margin: 0 auto; padding: 20px; flex: 1; width: 100%; }
 
-        /* --- ÚJ HERO BOKSZ (Banner) --- */
+        /* --- HERO BOKSZ (Banner) --- */
         .hero-box {
-            /* Itt állítsd be a VÁROS HÁTTÉRKÉPET a bannerhez */
-            /* Ha nincs banner_bg.png, használd a background.png-t vagy tölts fel egyet */
-            background-image: url('banner_bg.png'); 
-            background-size: cover;
-            background-position: center;
-            
-            border: 2px solid var(--primary);
-            border-radius: 15px;
-            padding: 60px;
-            margin-top: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            box-shadow: 0 0 30px rgba(0, 243, 255, 0.2);
-            position: relative;
-            overflow: hidden;
+            background-image: url('banner_bg.png'); /* IDE KELL A BANNER KÉP */
+            background-size: cover; background-position: center;
+            border: 2px solid var(--primary); border-radius: 15px; padding: 60px; margin-top: 40px;
+            display: flex; align-items: center; justify-content: space-between;
+            box-shadow: 0 0 30px rgba(0, 243, 255, 0.2); position: relative; overflow: hidden;
         }
-
-        /* Sötétítő réteg a bannerre, hogy olvasható legyen */
-        .hero-box::before {
-            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(90deg, rgba(5,6,8,0.9) 0%, rgba(5,6,8,0.6) 100%);
-            z-index: 1;
-        }
-
+        .hero-box::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(90deg, rgba(5,6,8,0.9) 0%, rgba(5,6,8,0.6) 100%); z-index: 1; }
         .hero-content { position: relative; z-index: 2; max-width: 60%; }
-        
-        .hero-title { 
-            font-family: 'Orbitron', sans-serif; /* Címeknél maradhat az Orbitron a stílus miatt */
-            font-size: 3.5rem; line-height: 1.1; margin-bottom: 15px; 
-            text-transform: uppercase; font-weight: 900; 
-            color: var(--primary);
-        }
+        .hero-title { font-family: 'Orbitron', sans-serif; font-size: 3.5rem; line-height: 1.1; margin-bottom: 15px; text-transform: uppercase; font-weight: 900; color: var(--primary); }
         .hero-title span { color: #fff; text-shadow: 0 0 20px rgba(255,255,255,0.3); }
         .hero-subtitle { font-size: 1.2rem; color: #fff; margin-bottom: 30px; }
-
-        .hero-logo-large {
-            position: relative; z-index: 2;
-            height: 250px;
-            filter: drop-shadow(0 0 40px rgba(189, 0, 255, 0.4));
-            animation: float 6s ease-in-out infinite;
-        }
+        .hero-logo-large { position: relative; z-index: 2; height: 250px; filter: drop-shadow(0 0 40px rgba(189, 0, 255, 0.4)); animation: float 6s ease-in-out infinite; }
         @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-15px); } }
-
-        .btn-outline {
-            display: inline-block; padding: 12px 35px;
-            border: 2px solid var(--primary); color: var(--primary);
-            text-decoration: none; font-weight: 700; text-transform: uppercase;
-            background: rgba(0, 243, 255, 0.05);
-            transition: 0.3s;
-            box-shadow: 0 0 15px rgba(0, 243, 255, 0.1);
-        }
+        .btn-outline { display: inline-block; padding: 12px 35px; border: 2px solid var(--primary); color: var(--primary); text-decoration: none; font-weight: 700; text-transform: uppercase; background: rgba(0, 243, 255, 0.05); transition: 0.3s; box-shadow: 0 0 15px rgba(0, 243, 255, 0.1); }
         .btn-outline:hover { background: var(--primary); color: #000; box-shadow: 0 0 30px var(--primary); }
 
         /* --- SZEKCIÓ CÍMEK --- */
-        .section-title {
-            margin-top: 60px; margin-bottom: 30px;
-            font-family: 'Orbitron', sans-serif; font-size: 1.8rem; font-weight: 700;
-            text-transform: uppercase; color: #fff;
-            border-left: 4px solid var(--primary); padding-left: 15px;
-        }
+        .section-title { margin-top: 60px; margin-bottom: 30px; font-family: 'Orbitron', sans-serif; font-size: 1.8rem; font-weight: 700; text-transform: uppercase; color: #fff; border-left: 4px solid var(--primary); padding-left: 15px; }
 
-        /* --- KÁRTYÁK (Reference Design) --- */
+        /* --- KÁRTYÁK --- */
         .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 25px; }
-
-        .card {
-            background: var(--bg-card);
-            border: 1px solid rgba(0, 243, 255, 0.3);
-            border-radius: 12px; overflow: hidden;
-            transition: 0.3s;
-            box-shadow: 0 0 15px rgba(0,0,0,0.5);
-        }
+        .card { background: var(--bg-card); border: 1px solid rgba(0, 243, 255, 0.3); border-radius: 12px; overflow: hidden; transition: 0.3s; box-shadow: 0 0 15px rgba(0,0,0,0.5); }
         .card:hover { border-color: var(--primary); box-shadow: 0 0 25px rgba(0, 243, 255, 0.2); transform: translateY(-5px); }
-
-        .card-img-top {
-            width: 100%; height: 200px;
-            background: #1a1a1a; object-fit: cover;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            display: flex; align-items: center; justify-content: center; color: #555;
-        }
-
+        .card-img-top { width: 100%; height: 200px; background: #1a1a1a; object-fit: cover; border-bottom: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; color: #555; }
         .card-body { padding: 20px; }
-        
         .card-title { font-size: 1.3rem; font-weight: 700; color: #fff; margin-bottom: 5px; }
         .card-sub { font-size: 0.9rem; color: #888; margin-bottom: 20px; }
-        
         .card-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 15px; }
         .price { font-size: 1.5rem; color: var(--primary); font-weight: 800; }
-        
-        .btn-card {
-            padding: 8px 20px; border: 1px solid rgba(255,255,255,0.3);
-            color: #fff; text-decoration: none; font-size: 0.8rem; font-weight: 700; text-transform: uppercase;
-            transition: 0.3s;
-        }
+        .btn-card { padding: 8px 20px; border: 1px solid rgba(255,255,255,0.3); color: #fff; text-decoration: none; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; transition: 0.3s; }
         .btn-card:hover { border-color: var(--primary); background: var(--primary); color: #000; }
 
-        /* --- ABOUT SZEKCIÓ (Alsó doboz) --- */
-        .about-box {
-            margin-top: 60px; margin-bottom: 60px;
-            background: var(--bg-card);
-            border: 1px solid var(--secondary); /* Lila keret */
-            border-radius: 12px;
-            padding: 40px;
-            display: flex; align-items: center; gap: 40px;
-            box-shadow: 0 0 20px rgba(189, 0, 255, 0.15);
-            position: relative; overflow: hidden;
-        }
-        /* Lila glow effekt */
-        .about-box::before {
-            content: ''; position: absolute; right: -50px; bottom: -50px; width: 200px; height: 200px;
-            background: var(--secondary); filter: blur(100px); opacity: 0.3; pointer-events: none;
-        }
-
+        /* --- ABOUT SZEKCIÓ --- */
+        .about-box { margin-top: 60px; margin-bottom: 60px; background: var(--bg-card); border: 1px solid var(--secondary); border-radius: 12px; padding: 40px; display: flex; align-items: center; gap: 40px; box-shadow: 0 0 20px rgba(189, 0, 255, 0.15); position: relative; overflow: hidden; }
+        .about-box::before { content: ''; position: absolute; right: -50px; bottom: -50px; width: 200px; height: 200px; background: var(--secondary); filter: blur(100px); opacity: 0.3; pointer-events: none; }
         .about-content h2 { font-family: 'Orbitron'; margin-bottom: 15px; color: #fff; }
         .about-content p { color: var(--text-dim); line-height: 1.6; font-size: 1rem; }
-        
         .about-logo-img { height: 120px; filter: drop-shadow(0 0 20px var(--secondary)); }
 
         /* --- FOOTER --- */
-        footer {
-            background: #000; border-top: 1px solid #222;
-            padding: 40px 0; text-align: center; margin-top: auto;
-        }
-        .footer-logo { font-family: 'Orbitron'; font-weight: bold; color: #fff; font-size: 1.2rem; margin-bottom: 20px; display: block; }
+        footer { background: #000; border-top: 1px solid #222; padding: 40px 0; text-align: center; margin-top: auto; }
         .socials a { color: #fff; font-size: 1.5rem; margin: 0 15px; transition: 0.3s; }
         .socials a:hover { color: var(--primary); }
         .footer-links { margin-top: 20px; font-size: 0.8rem; color: #666; }
 
-        /* MOBIL */
         @media (max-width: 768px) {
             .menu-toggle { display: block; }
             .nav-links { display: none; flex-direction: column; position: absolute; top: 70px; left: 0; width: 100%; background: #0a0b10; padding: 20px; text-align: center; border-bottom: 1px solid var(--primary); }
@@ -227,8 +126,6 @@
 </head>
 <body>
 
-    <div class="overlay"></div>
-
     <header>
         <a href="index.html" class="logo-link">
             <img src="logo.png" alt="DarkinoM" class="logo-img-small">
@@ -236,7 +133,7 @@
         </a>
         <div class="menu-toggle" onclick="toggleMenu()"><i class="fas fa-bars"></i></div>
         <nav class="nav-links" id="nav-menu">
-            <a href="index.html" data-i18n="nav_home">Főoldal</a>
+            <a href="index.html" class="active" data-i18n="nav_home">Főoldal</a>
             <a href="scripts.html" data-i18n="nav_scripts">Scriptek</a>
             <a href="packages.html" data-i18n="nav_packages">Csomagok</a>
             <a href="support.html" data-i18n="nav_support">Support</a>
@@ -262,42 +159,36 @@
         
         <div class="grid">
             <div class="card">
-                <div class="card-img-top">
-                    <i class="fas fa-car fa-3x"></i>
-                </div>
+                <div class="card-img-top"><i class="fas fa-tachometer-alt fa-3x"></i></div>
                 <div class="card-body">
-                    <h3 class="card-title">Haladó Járműrendszer v2</h3>
-                    <p class="card-sub">Custom Police Content</p>
+                    <h3 class="card-title">DarkinoM HUD v2</h3>
+                    <p class="card-sub">0.01ms Optimized</p>
                     <div class="card-footer">
-                        <span class="price">35€</span>
-                        <a href="scripts.html" class="btn-card" data-i18n="btn_view">MEGTEKINTÉS</a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card" style="border-color: var(--secondary); box-shadow: 0 0 15px rgba(189,0,255,0.2);">
-                <div class="card-img-top">
-                    <i class="fas fa-tools fa-3x" style="color:var(--secondary)"></i>
-                </div>
-                <div class="card-body">
-                    <h3 class="card-title">Egyedi Munkák Csomag</h3>
-                    <p class="card-sub">Job System Bundle</p>
-                    <div class="card-footer">
-                        <span class="price" style="color:var(--secondary)">50€</span>
-                        <a href="packages.html" class="btn-card" data-i18n="btn_view" style="border-color:var(--secondary)">MEGTEKINTÉS</a>
+                        <span class="price">15€</span>
+                        <a href="product_template.html" class="btn-card" data-i18n="btn_view">MEGTEKINTÉS</a>
                     </div>
                 </div>
             </div>
 
             <div class="card">
-                <div class="card-img-top">
-                    <i class="fas fa-desktop fa-3x"></i>
-                </div>
+                <div class="card-img-top"><i class="fas fa-mask fa-3x"></i></div>
                 <div class="card-body">
-                    <h3 class="card-title">Admin Panel Pro</h3>
-                    <p class="card-sub">Server Management</p>
+                    <h3 class="card-title">Advanced Robbery</h3>
+                    <p class="card-sub">Minigames & Animations</p>
                     <div class="card-footer">
-                        <span class="price">40€</span>
+                        <span class="price">25€</span>
+                        <a href="scripts.html" class="btn-card" data-i18n="btn_view">MEGTEKINTÉS</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-img-top"><i class="fas fa-car fa-3x"></i></div>
+                <div class="card-body">
+                    <h3 class="card-title">DarkinoM Garage</h3>
+                    <p class="card-sub">Realistic System</p>
+                    <div class="card-footer">
+                        <span class="price">20€</span>
                         <a href="scripts.html" class="btn-card" data-i18n="btn_view">MEGTEKINTÉS</a>
                     </div>
                 </div>
@@ -307,11 +198,7 @@
         <div class="about-box">
             <div class="about-content">
                 <h2 data-i18n="about_title">Rólunk</h2>
-                <p data-i18n="about_text">
-                    A DarkinoM minőségi FiveM scripteket kínál, amelyek optimalizáltak és teljesen testreszabhatók.
-                    Célunk, hogy a szervered a legjobb játékélményt nyújtsa. Folyamatos frissítések, 
-                    gyors support és egyedi megoldások várnak rád.
-                </p>
+                <p data-i18n="about_text">A DarkinoM minőségi FiveM scripteket kínál, amelyek optimalizáltak és teljesen testreszabhatók. Célunk, hogy a szervered a legjobb játékélményt nyújtsa.</p>
             </div>
             <img src="logo.png" alt="Logo" class="about-logo-img">
         </div>
@@ -323,9 +210,7 @@
         <div class="socials">
             <a href="https://discord.gg/TE_DISCORD_LINKED" target="_blank"><i class="fab fa-discord"></i></a>
         </div>
-        <div class="footer-links">
-            &copy; 2024 DarkinoM. All rights reserved.
-        </div>
+        <div class="footer-links">&copy; 2024 DarkinoM. All rights reserved.</div>
     </footer>
 
     <script>
@@ -336,51 +221,27 @@
                 nav_home: "Főoldal", nav_scripts: "Scriptek", nav_packages: "Csomagok", nav_support: "Support",
                 hero_title: "PRÉMIUM <br><span>FIVEM SCRIPTEK</span>", hero_desc: "Egyedi megoldások a szerveredhez.", hero_cta: "BÖNGÉSZÉS",
                 scripts_title: "KIEMELT MUNKÁK", btn_view: "MEGTEKINTÉS",
-                about_title: "Rólunk",
-                about_text: "A DarkinoM minőségi FiveM scripteket kínál, amelyek optimalizáltak és teljesen testreszabhatók. Célunk, hogy a szervered a legjobb játékélményt nyújtsa."
+                about_title: "Rólunk", about_text: "A DarkinoM minőségi FiveM scripteket kínál..."
             },
             en: {
                 nav_home: "Home", nav_scripts: "Scripts", nav_packages: "Packages", nav_support: "Support",
                 hero_title: "PREMIUM <br><span>FIVEM SCRIPTS</span>", hero_desc: "Unique solutions for your server.", hero_cta: "BROWSE",
                 scripts_title: "FEATURED SCRIPTS", btn_view: "VIEW PRODUCT",
-                about_title: "About Us",
-                about_text: "DarkinoM provides high-quality FiveM scripts that are optimized and fully customizable. Our goal is to provide the best gaming experience for your server."
+                about_title: "About Us", about_text: "DarkinoM provides high-quality FiveM scripts..."
             }
         };
 
-        // --- MEMÓRIA ---
-        document.addEventListener('DOMContentLoaded', () => {
-            const savedLang = localStorage.getItem('darkinom_lang') || 'hu';
-            setLanguage(savedLang);
-        });
-
+        document.addEventListener('DOMContentLoaded', () => { const savedLang = localStorage.getItem('darkinom_lang') || 'hu'; setLanguage(savedLang); });
         function setLanguage(lang) {
             localStorage.setItem('darkinom_lang', lang);
-            document.getElementById('btn-hu').classList.remove('active');
-            document.getElementById('btn-en').classList.remove('active');
-            document.getElementById('btn-' + lang).classList.add('active');
-            
-            document.querySelectorAll('[data-i18n]').forEach(el => {
-                const key = el.getAttribute('data-i18n');
-                if (translations[lang][key]) el.innerHTML = translations[lang][key];
-            });
+            document.getElementById('btn-hu').classList.remove('active'); document.getElementById('btn-en').classList.remove('active'); document.getElementById('btn-' + lang).classList.add('active');
+            document.querySelectorAll('[data-i18n]').forEach(el => { const key = el.getAttribute('data-i18n'); if (translations[lang][key]) el.innerHTML = translations[lang][key]; });
         }
-
-        // --- TRAIL (FIXED JAVÍTÁS) ---
         document.addEventListener('mousemove', function(e) {
-            const trail = document.createElement('div');
-            trail.classList.add('cursor-trail');
-            document.body.appendChild(trail);
-            trail.style.left = e.clientX + 'px';
-            trail.style.top = e.clientY + 'px';
-            const colors = ['#00f3ff', '#bd00ff'];
-            const randomColor = colors[Math.floor(Math.random() * colors.length)];
-            trail.style.backgroundColor = randomColor;
-            trail.style.boxShadow = `0 0 10px ${randomColor}`;
-            const width = Math.random() * 10 + 2; 
-            const height = Math.random() * 4 + 1; 
-            trail.style.width = width + 'px';
-            trail.style.height = height + 'px';
+            const trail = document.createElement('div'); trail.classList.add('cursor-trail'); document.body.appendChild(trail);
+            trail.style.left = e.clientX + 'px'; trail.style.top = e.clientY + 'px';
+            const colors = ['#00f3ff', '#bd00ff']; const randomColor = colors[Math.floor(Math.random() * colors.length)];
+            trail.style.backgroundColor = randomColor; trail.style.boxShadow = `0 0 10px ${randomColor}`;
             setTimeout(() => { trail.remove(); }, 500);
         });
     </script>
