@@ -10,19 +10,12 @@
     <style>
         :root { --primary: #00f3ff; --secondary: #bd00ff; --bg-dark: #050608; --bg-card: rgba(10, 12, 18, 0.95); --text-main: #ffffff; --text-dim: #b0b8d4; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { 
-            background-color: var(--bg-dark); color: var(--text-main); font-family: 'Rajdhani', sans-serif; 
-            background-image: url('background.png'); background-size: cover; background-position: center; background-attachment: fixed; overflow-x: hidden; 
-            display: flex; flex-direction: column; min-height: 100vh;
-            cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><path d='M16 4 L16 28 M4 16 L28 16' stroke='%2300f3ff' stroke-width='2' fill='none'/></svg>") 16 16, crosshair;
-        }
-        a, button, .discord-btn, .lang-btn, .menu-toggle, .logo-link, .faq-item {
-            cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><path d='M16 4 L16 28 M4 16 L28 16' stroke='%23ff3333' stroke-width='3' fill='none'/></svg>") 16 16, pointer !important;
-        }
+        body { background-color: var(--bg-dark); color: var(--text-main); font-family: 'Rajdhani', sans-serif; background-image: url('background.png'); background-size: cover; background-position: center; background-attachment: fixed; overflow-x: hidden; display: flex; flex-direction: column; min-height: 100vh; cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><path d='M16 4 L16 28 M4 16 L28 16' stroke='%2300f3ff' stroke-width='2' fill='none'/></svg>") 16 16, crosshair; }
+        a, button, .discord-btn, .lang-btn, .menu-toggle, .logo-link, .icon-btn, .remove-btn, .checkout-btn, .close-cart, .faq-item { cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><path d='M16 4 L16 28 M4 16 L28 16' stroke='%23ff3333' stroke-width='3' fill='none'/></svg>") 16 16, pointer !important; }
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(5, 6, 8, 0.75); z-index: -1; }
         .cursor-trail { position: fixed; top: 0; left: 0; width: 8px; height: 8px; background: var(--primary); pointer-events: none; z-index: 9999; box-shadow: 0 0 10px var(--primary); animation: fadeOut 0.5s forwards; }
         @keyframes fadeOut { 0% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: scale(0); } }
 
-        /* HEADER & GLITCH (Javítva) */
         header { display: flex; justify-content: space-between; align-items: center; padding: 20px 5%; background: rgba(5, 6, 8, 0.9); border-bottom: 1px solid rgba(0, 243, 255, 0.1); position: sticky; top: 0; z-index: 1000; backdrop-filter: blur(10px); }
         .logo-link { display: flex; align-items: center; gap: 15px; text-decoration: none; }
         .logo-img-small { height: 45px; filter: drop-shadow(0 0 5px rgba(189, 0, 255, 0.5)); transition: 0.3s; }
@@ -36,19 +29,38 @@
         .nav-links a { color: var(--text-dim); text-decoration: none; font-weight: 600; font-size: 1.1rem; text-transform: uppercase; transition: 0.3s; }
         .nav-links a:hover, .nav-links a.active { color: var(--primary); text-shadow: 0 0 10px var(--primary); }
         .menu-toggle { display: none; font-size: 1.8rem; color: var(--primary); }
-        .lang-switch button { background: none; border: 1px solid #333; color: #888; padding: 2px 8px; font-size: 0.8rem; font-family: 'Orbitron'; cursor: pointer; }
+        .lang-switch button { background: none; border: 1px solid #333; color: #888; padding: 2px 8px; font-size: 0.8rem; font-family: 'Orbitron'; }
         .lang-switch button.active { border-color: var(--primary); color: var(--primary); }
 
+        .header-actions { display: flex; gap: 20px; margin-left: 20px; align-items: center; }
+        .icon-btn { background: none; border: none; color: #fff; font-size: 1.2rem; position: relative; transition: 0.3s; }
+        .icon-btn:hover { color: var(--primary); text-shadow: 0 0 10px var(--primary); }
+        .cart-badge { position: absolute; top: -8px; right: -8px; background: var(--secondary); color: #fff; font-size: 0.7rem; font-weight: bold; width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+        
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 2000; opacity: 0; visibility: hidden; transition: 0.3s; backdrop-filter: blur(5px); }
+        .modal-overlay.open { opacity: 1; visibility: visible; }
+        .cart-sidebar { position: fixed; top: 0; right: -400px; width: 400px; height: 100%; background: rgba(10, 12, 18, 0.98); border-left: 2px solid var(--primary); padding: 30px; z-index: 2001; transition: 0.4s; display: flex; flex-direction: column; box-shadow: -10px 0 30px rgba(0,0,0,0.5); }
+        .cart-sidebar.open { right: 0; }
+        .cart-header { display: flex; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px; margin-bottom: 20px; font-family: 'Orbitron'; font-size: 1.5rem; color: var(--primary); }
+        .cart-items { flex-grow: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; }
+        .cart-item { display: flex; gap: 15px; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 8px; align-items: center; }
+        .cart-item img { width: 50px; height: 50px; object-fit: cover; border-radius: 5px; }
+        .cart-footer { margin-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px; }
+        .checkout-btn { width: 100%; padding: 15px; background: var(--primary); color: #000; font-family: 'Orbitron'; font-weight: bold; border: none; transition: 0.3s; margin-top: 10px; }
+        .checkout-btn:hover { background: #fff; box-shadow: 0 0 20px var(--primary); }
+        .login-modal { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: var(--bg-card); border: 2px solid var(--secondary); padding: 40px; border-radius: 15px; z-index: 2002; width: 90%; max-width: 400px; display: none; box-shadow: 0 0 50px rgba(189,0,255,0.2); text-align: center; }
+        .login-modal.open { display: block; }
+        .cfx-btn { background: #f77c1e; color: #fff; padding: 12px; border: none; font-family: 'Orbitron'; width: 100%; margin-top: 20px; display: flex; align-items: center; justify-content: center; gap: 10px; transition: 0.3s; }
+        .cfx-btn:hover { box-shadow: 0 0 20px #f77c1e; transform: scale(1.05); }
+
         .container { max-width: 800px; margin: 0 auto; padding: 20px; flex: 1; width: 100%; }
-        .section-title { margin-top: 40px; margin-bottom: 30px; font-family: 'Orbitron', sans-serif; font-size: 1.8rem; font-weight: 700; text-transform: uppercase; color: #fff; border-left: 4px solid var(--primary); padding-left: 15px; }
-
-        .support-box { background: var(--bg-card); border: 1px solid var(--primary); padding: 40px; border-radius: 15px; text-align: center; box-shadow: 0 0 30px rgba(0, 243, 255, 0.1); margin-bottom: 50px; }
-        .discord-btn { display: inline-flex; align-items: center; gap: 10px; padding: 15px 40px; background: #5865F2; color: white; text-decoration: none; font-family: 'Orbitron', sans-serif; font-weight: 800; font-size: 1.2rem; border-radius: 5px; transition: 0.3s; }
-        .discord-btn:hover { background: #4752c4; box-shadow: 0 0 20px rgba(88, 101, 242, 0.5); transform: translateY(-3px); }
-
+        .section-title { margin-top: 40px; margin-bottom: 30px; font-family: 'Orbitron'; font-size: 1.8rem; font-weight: 700; color: #fff; border-left: 4px solid var(--primary); padding-left: 15px; text-transform: uppercase; }
+        .support-box { background: var(--bg-card); border: 1px solid var(--primary); padding: 40px; border-radius: 15px; text-align: center; box-shadow: 0 0 30px rgba(0,243,255,0.1); margin-bottom: 50px; }
+        .discord-btn { display: inline-flex; align-items: center; gap: 10px; padding: 15px 40px; background: #5865F2; color: white; text-decoration: none; font-family: 'Orbitron'; font-weight: 800; font-size: 1.2rem; border-radius: 5px; transition: 0.3s; }
+        .discord-btn:hover { background: #4752c4; box-shadow: 0 0 20px rgba(88,101,242,0.5); transform: translateY(-3px); }
         .faq-item { background: rgba(255,255,255,0.05); margin-bottom: 15px; padding: 20px; border-radius: 8px; border-left: 3px solid var(--secondary); transition: 0.3s; }
         .faq-item:hover { background: rgba(255,255,255,0.08); }
-        .faq-question { font-family: 'Orbitron', sans-serif; font-weight: 700; font-size: 1.1rem; color: #fff; margin-bottom: 10px; }
+        .faq-question { font-family: 'Orbitron'; font-weight: 700; font-size: 1.1rem; color: #fff; margin-bottom: 10px; }
         .faq-answer { color: var(--text-dim); line-height: 1.6; font-size: 1rem; }
 
         footer { background: #000; border-top: 1px solid #222; padding: 40px 0; text-align: center; margin-top: auto; }
@@ -56,24 +68,30 @@
 
         @media (max-width: 768px) {
             .menu-toggle { display: block; }
-            .nav-links { display: none; flex-direction: column; position: absolute; top: 70px; left: 0; width: 100%; background: #0a0b10; padding: 20px; text-align: center; border-bottom: 1px solid var(--primary); }
+            .nav-links { display: none; flex-direction: column; position: absolute; top: 80px; left: 0; width: 100%; background: #0a0b10; padding: 20px; border-bottom: 1px solid var(--primary); }
             .nav-links.active { display: flex; }
-            .lang-switch { margin: 20px auto 0; justify-content: center; }
+            .cart-sidebar { width: 100%; right: -100%; }
         }
     </style>
 </head>
 <body>
+    <div class="overlay"></div>
     <header>
         <a href="index.html" class="logo-link">
             <img src="logo.png" alt="DarkinoM" class="logo-img-small">
             <span class="logo-text">DARKINOM</span>
         </a>
-        <div class="menu-toggle" onclick="toggleMenu()"><i class="fas fa-bars"></i></div>
+        <div class="header-actions">
+            <button class="icon-btn" id="loginBtn" onclick="toggleLoginModal()"><i class="fas fa-user"></i></button>
+            <div id="userProfile" style="display:none; color:var(--primary); font-weight:bold; cursor:pointer;" onclick="logout()"><i class="fas fa-user-check"></i> <span id="usernameDisplay">User</span></div>
+            <button class="icon-btn" onclick="toggleCart()"><i class="fas fa-shopping-cart"></i><span class="cart-badge" id="cartCount">0</span></button>
+            <div class="menu-toggle" onclick="toggleMenu()"><i class="fas fa-bars"></i></div>
+        </div>
         <nav class="nav-links" id="nav-menu">
-            <a href="index.html" data-i18n="nav_home">Főoldal</a>
-            <a href="scripts.html" data-i18n="nav_scripts">Scriptek</a>
-            <a href="packages.html" data-i18n="nav_packages">Csomagok</a>
-            <a href="support.html" class="active" data-i18n="nav_support">Support</a>
+            <a href="index.html">Főoldal</a>
+            <a href="scripts.html">Scriptek</a>
+            <a href="packages.html">Csomagok</a>
+            <a href="support.html" class="active">Support</a>
             <div class="lang-switch">
                 <button class="lang-btn active" onclick="setLanguage('hu')" id="btn-hu">HU</button>
                 <button class="lang-btn" onclick="setLanguage('en')" id="btn-en">EN</button>
@@ -83,58 +101,66 @@
 
     <div class="container">
         <h2 class="section-title" data-i18n="page_title">Segítségre van szükséged?</h2>
-
         <div class="support-box">
             <i class="fab fa-discord fa-4x" style="color: #5865F2; margin-bottom: 20px;"></i>
-            <h2 style="margin-bottom: 20px; font-family:'Orbitron', sans-serif; font-weight: 700; text-transform: uppercase;" data-i18n="comm_title">DarkinoM Közösség</h2>
+            <h2 style="margin-bottom: 20px; font-family:'Orbitron'; font-weight: 700; text-transform: uppercase;" data-i18n="comm_title">DarkinoM Közösség</h2>
             <a href="https://discord.gg/TE_DISCORD_LINKED" target="_blank" class="discord-btn" data-i18n="btn_join">CSATLAKOZÁS</a>
         </div>
-
         <h2 class="section-title" data-i18n="faq_title">Gyakori Kérdések (FAQ)</h2>
-        
         <div class="faq-item">
             <div class="faq-question" data-i18n="faq_q1">Hogyan kapom meg a scriptet?</div>
             <div class="faq-answer" data-i18n="faq_a1">Vásárlás után a Tebex automatikusan hozzáadja a Keymaster fiókodhoz az asseteket.</div>
         </div>
-
         <div class="faq-item">
             <div class="faq-question" data-i18n="faq_q2">Van visszatérítés?</div>
             <div class="faq-answer" data-i18n="faq_a2">Mivel digitális termékekről van szó, visszatérítésre sajnos nincs lehetőség, csak ha a script bizonyítottan hibás.</div>
         </div>
-
         <div class="faq-item">
             <div class="faq-question" data-i18n="faq_q3">Segítesz a telepítésben?</div>
             <div class="faq-answer" data-i18n="faq_a3">Igen, a Discordon nyiss egy ticketet, és segítünk a beüzemelésben.</div>
         </div>
     </div>
 
-    <footer>
-        <img src="logo.png" style="height:30px; margin-bottom:10px; opacity:0.5;">
-        <div class="socials">
-            <a href="https://discord.gg/TE_DISCORD_LINKED" target="_blank"><i class="fab fa-discord"></i></a>
+    <div class="modal-overlay" id="modalOverlay" onclick="closeAllModals()"></div>
+    <div class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header"><span class="cart-title">KOSÁR</span><span class="close-cart" onclick="toggleCart()">&times;</span></div>
+        <div class="cart-items" id="cartItemsContainer"></div>
+        <div class="cart-footer">
+            <div style="display:flex; justify-content:space-between; color:#fff; font-size:1.2rem; margin-bottom:15px;"><span>Összesen:</span><span id="cartTotal">0€</span></div>
+            <button class="checkout-btn" onclick="proceedToCheckout()">FIZETÉS (TEBEX)</button>
         </div>
-        <div class="footer-links">&copy; 2024 DarkinoM. All rights reserved.</div>
+    </div>
+    <div class="login-modal" id="loginModal">
+        <h2 style="color:#fff; font-family:'Orbitron'; margin-bottom:10px;">BEJELENTKEZÉS</h2>
+        <p style="color:#aaa;">A vásárláshoz szükséges a Cfx.re fiókod.</p>
+        <button class="cfx-btn" onclick="simulateLogin()"><i class="fas fa-gamepad"></i> Sign in with Cfx.re</button>
+        <p style="margin-top:15px; font-size:0.8rem; color:#666; cursor:pointer;" onclick="toggleLoginModal()">Mégse</p>
+    </div>
+
+    <footer>
+        <div class="socials"><a href="https://discord.gg/TE_DISCORD_LINKED" target="_blank"><i class="fab fa-discord"></i></a></div>
+        <p style="color:#666; margin-top:20px;">&copy; 2024 DarkinoM.</p>
     </footer>
 
     <script>
         function toggleMenu() { document.getElementById('nav-menu').classList.toggle('active'); }
-        const translations = {
-            hu: { nav_home: "Főoldal", nav_scripts: "Scriptek", nav_packages: "Csomagok", nav_support: "Support", page_title: "Segítségre van szükséged?", comm_title: "DarkinoM Közösség", btn_join: "CSATLAKOZÁS", faq_title: "Gyakori Kérdések (FAQ)", faq_q1: "Hogyan kapom meg a scriptet?", faq_a1: "Vásárlás után a Tebex automatikusan hozzáadja a Keymaster fiókodhoz az asseteket.", faq_q2: "Van visszatérítés?", faq_a2: "Mivel digitális termékekről van szó, visszatérítésre sajnos nincs lehetőség, csak ha a script bizonyítottan hibás.", faq_q3: "Segítesz a telepítésben?", faq_a3: "Igen, a Discordon nyiss egy ticketet, és segítünk a beüzemelésben." },
-            en: { nav_home: "Home", nav_scripts: "Scripts", nav_packages: "Packages", nav_support: "Support", page_title: "Need Support?", comm_title: "DarkinoM Community", btn_join: "JOIN DISCORD", faq_title: "Frequently Asked Questions", faq_q1: "How do I receive the script?", faq_a1: "After purchase, Tebex automatically adds the assets to your Keymaster account.", faq_q2: "Is there a refund?", faq_a2: "As these are digital products, refunds are not possible unless the script is proven faulty.", faq_q3: "Do you help with installation?", faq_a3: "Yes, open a ticket on Discord, and we will assist you with the setup." }
-        };
-        document.addEventListener('DOMContentLoaded', () => { const savedLang = localStorage.getItem('darkinom_lang') || 'hu'; setLanguage(savedLang); });
-        function setLanguage(lang) {
-            localStorage.setItem('darkinom_lang', lang);
-            document.getElementById('btn-hu').classList.remove('active'); document.getElementById('btn-en').classList.remove('active'); document.getElementById('btn-' + lang).classList.add('active');
-            document.querySelectorAll('[data-i18n]').forEach(el => { const key = el.getAttribute('data-i18n'); if (translations[lang][key]) el.innerText = translations[lang][key]; });
-        }
-        document.addEventListener('mousemove', function(e) {
-            const trail = document.createElement('div'); trail.classList.add('cursor-trail'); document.body.appendChild(trail);
-            trail.style.left = e.clientX + 'px'; trail.style.top = e.clientY + 'px';
-            const colors = ['#00f3ff', '#bd00ff']; const randomColor = colors[Math.floor(Math.random() * colors.length)];
-            trail.style.backgroundColor = randomColor; trail.style.boxShadow = `0 0 10px ${randomColor}`;
-            setTimeout(() => { trail.remove(); }, 500);
-        });
+        // JS LOGIKA (Nincs termék, de kell a kosár funkcionalitás)
+        let cart = JSON.parse(localStorage.getItem('darkinom_cart')) || [];
+        let isLoggedIn = localStorage.getItem('darkinom_user') !== null;
+        document.addEventListener('DOMContentLoaded', () => { updateCartUI(); checkLoginStatus(); const savedLang = localStorage.getItem('darkinom_lang') || 'hu'; setLanguage(savedLang); });
+        function setLanguage(lang) { localStorage.setItem('darkinom_lang', lang); document.getElementById('btn-hu').classList.remove('active'); document.getElementById('btn-en').classList.remove('active'); document.getElementById('btn-' + lang).classList.add('active'); const translations = { hu: { nav_home:"Főoldal", page_title:"Segítségre van szükséged?" }, en: { nav_home:"Home", page_title:"Need Support?" } }; document.querySelectorAll('[data-i18n]').forEach(el => { const key = el.getAttribute('data-i18n'); if (translations[lang] && translations[lang][key]) el.innerHTML = translations[lang][key]; }); }
+        
+        function removeFromCart(idx) { cart.splice(idx,1); localStorage.setItem('darkinom_cart', JSON.stringify(cart)); updateCartUI(); }
+        function updateCartUI() { document.getElementById('cartCount').innerText = cart.length; const c = document.getElementById('cartItemsContainer'); c.innerHTML = ''; let t = 0; if(cart.length===0) c.innerHTML='<p style="color:#888; text-align:center;">Üres.</p>'; else cart.forEach((item,i) => { t+=item.price; c.innerHTML+=`<div class="cart-item"><img src="${item.img}"><div style="flex:1"><div style="font-weight:bold;color:#fff">${item.name}</div><div style="color:var(--primary)">${item.price}€</div></div><i class="fas fa-trash remove-btn" onclick="removeFromCart(${i})"></i></div>`; }); document.getElementById('cartTotal').innerText = t + '€'; }
+        function toggleCart() { const sb = document.getElementById('cartSidebar'); const ov = document.getElementById('modalOverlay'); if(sb.classList.contains('open')){sb.classList.remove('open');ov.classList.remove('open');}else{sb.classList.add('open');ov.classList.add('open');} }
+        function toggleLoginModal() { const m = document.getElementById('loginModal'); const ov = document.getElementById('modalOverlay'); if(m.style.display==='block'){m.style.display='none';ov.classList.remove('open');}else{m.style.display='block';ov.classList.add('open');} }
+        function simulateLogin() { localStorage.setItem('darkinom_user','FiveM_User'); isLoggedIn=true; checkLoginStatus(); toggleLoginModal(); }
+        function logout() { localStorage.removeItem('darkinom_user'); isLoggedIn=false; checkLoginStatus(); }
+        function checkLoginStatus() { const l=document.getElementById('loginBtn'); const p=document.getElementById('userProfile'); if(isLoggedIn){l.style.display='none';p.style.display='block';document.getElementById('usernameDisplay').innerText='User';}else{l.style.display='block';p.style.display='none';} }
+        function closeAllModals() { document.getElementById('cartSidebar').classList.remove('open'); document.getElementById('loginModal').style.display='none'; document.getElementById('modalOverlay').classList.remove('open'); }
+        function proceedToCheckout() { if(cart.length===0)return alert('Üres a kosár!'); if(!isLoggedIn){toggleCart();setTimeout(()=>toggleLoginModal(),300);return;} const ids = cart.map(i=>i.tebexId).join(','); window.location.href = `https://TE_BOLTOD.tebex.io/checkout/basket?add=${ids}`; }
+        
+        document.addEventListener('mousemove', function(e) { const t = document.createElement('div'); t.classList.add('cursor-trail'); document.body.appendChild(t); t.style.left = e.clientX + 'px'; t.style.top = e.clientY + 'px'; const c = ['#00f3ff', '#bd00ff']; t.style.backgroundColor = c[Math.floor(Math.random()*2)]; t.style.boxShadow=`0 0 10px ${t.style.backgroundColor}`; setTimeout(()=>t.remove(),500); });
     </script>
 </body>
 </html>
