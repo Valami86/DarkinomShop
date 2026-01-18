@@ -11,7 +11,7 @@
         :root { --primary: #00f3ff; --secondary: #bd00ff; --bg-dark: #050608; --bg-card: rgba(10, 12, 18, 0.95); --text-main: #ffffff; --text-dim: #b0b8d4; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { background-color: var(--bg-dark); color: var(--text-main); font-family: 'Rajdhani', sans-serif; background-image: url('background.png'); background-size: cover; background-position: center; background-attachment: fixed; overflow-x: hidden; display: flex; flex-direction: column; min-height: 100vh; cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><path d='M16 4 L16 28 M4 16 L28 16' stroke='%2300f3ff' stroke-width='2' fill='none'/></svg>") 16 16, crosshair; }
-        a, button, .btn-card, .lang-btn, .menu-toggle, .logo-link, .icon-btn, .remove-btn, .checkout-btn, .close-cart { cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><path d='M16 4 L16 28 M4 16 L28 16' stroke='%23ff3333' stroke-width='3' fill='none'/></svg>") 16 16, pointer !important; }
+        a, button, .btn-card, .btn-outline, .lang-btn, .menu-toggle, .logo-link, .icon-btn, .remove-btn, .checkout-btn, .close-cart { cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><path d='M16 4 L16 28 M4 16 L28 16' stroke='%23ff3333' stroke-width='3' fill='none'/></svg>") 16 16, pointer !important; }
         .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(5, 6, 8, 0.75); z-index: -1; }
         .cursor-trail { position: fixed; top: 0; left: 0; width: 8px; height: 8px; background: var(--primary); pointer-events: none; z-index: 9999; box-shadow: 0 0 10px var(--primary); animation: fadeOut 0.5s forwards; }
         @keyframes fadeOut { 0% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: scale(0); } }
@@ -23,7 +23,8 @@
         @keyframes glitch-skew { 0% { transform: skew(0deg); } 20% { transform: skew(-10deg); } 40% { transform: skew(10deg); } 60% { transform: skew(-5deg); } 80% { transform: skew(5deg); } 100% { transform: skew(0deg); } }
         @keyframes glitch-color { 0% { text-shadow: 2px 2px var(--secondary), -2px -2px var(--primary); } 25% { text-shadow: -2px 2px var(--secondary), 2px -2px var(--primary); } 50% { text-shadow: 2px -2px var(--secondary), -2px 2px var(--primary); } 75% { text-shadow: -2px -2px var(--secondary), 2px 2px var(--primary); } 100% { text-shadow: 2px 0 var(--secondary), -2px 0 var(--primary); } }
         .logo-link:hover .logo-text { animation: glitch-skew 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both infinite, glitch-color 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both infinite; color: #fff; }
-        
+        .logo-link:hover .logo-img-small { transform: scale(1.1); }
+
         .nav-links { display: flex; gap: 40px; align-items: center; }
         .nav-links a { color: var(--text-dim); text-decoration: none; font-weight: 600; font-size: 1.1rem; text-transform: uppercase; transition: 0.3s; }
         .nav-links a:hover, .nav-links a.active { color: var(--primary); text-shadow: 0 0 10px var(--primary); }
@@ -47,16 +48,12 @@
         .cart-footer { margin-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px; }
         .checkout-btn { width: 100%; padding: 15px; background: var(--primary); color: #000; font-family: 'Orbitron'; font-weight: bold; border: none; transition: 0.3s; margin-top: 10px; }
         .checkout-btn:hover { background: #fff; box-shadow: 0 0 20px var(--primary); }
-        .login-modal { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: var(--bg-card); border: 2px solid var(--secondary); padding: 40px; border-radius: 15px; z-index: 2002; width: 90%; max-width: 400px; display: none; box-shadow: 0 0 50px rgba(189,0,255,0.2); text-align: center; }
-        .login-modal.open { display: block; }
-        .cfx-btn { background: #f77c1e; color: #fff; padding: 12px; border: none; font-family: 'Orbitron'; width: 100%; margin-top: 20px; display: flex; align-items: center; justify-content: center; gap: 10px; transition: 0.3s; }
-        .cfx-btn:hover { box-shadow: 0 0 20px #f77c1e; transform: scale(1.05); }
 
         .container { max-width: 1200px; margin: 0 auto; padding: 20px; flex: 1; width: 100%; }
         .section-title { margin-top: 40px; margin-bottom: 30px; font-family: 'Orbitron'; font-size: 1.8rem; font-weight: 700; color: #fff; border-left: 4px solid var(--primary); padding-left: 15px; text-transform: uppercase; }
         .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; }
         .card { background: var(--bg-card); border: 1px solid rgba(0,243,255,0.3); border-radius: 12px; overflow: hidden; transition: 0.3s; }
-        .card:hover { border-color: var(--primary); box-shadow: 0 0 25px rgba(0,243,255,0.2); transform: translateY(-5px); }
+        .card:hover { border-color: var(--primary); transform: translateY(-5px); box-shadow: 0 0 25px rgba(0,243,255,0.2); }
         .card-img-top { width: 100%; height: 180px; background: #1a1a1a; display: flex; align-items: center; justify-content: center; color: #555; border-bottom: 1px solid rgba(255,255,255,0.1); }
         .card-body { padding: 20px; }
         .card-title { font-size: 1.3rem; font-weight: 700; color: #fff; margin-bottom: 5px; }
@@ -84,8 +81,6 @@
             <span class="logo-text">DARKINOM</span>
         </a>
         <div class="header-actions">
-            <button class="icon-btn" id="loginBtn" onclick="toggleLoginModal()"><i class="fas fa-user"></i></button>
-            <div id="userProfile" style="display:none; color:var(--primary); font-weight:bold; cursor:pointer;" onclick="logout()"><i class="fas fa-user-check"></i> <span id="usernameDisplay">User</span></div>
             <button class="icon-btn" onclick="toggleCart()"><i class="fas fa-shopping-cart"></i><span class="cart-badge" id="cartCount">0</span></button>
             <div class="menu-toggle" onclick="toggleMenu()"><i class="fas fa-bars"></i></div>
         </div>
@@ -111,7 +106,8 @@
                     <p style="color:#888; margin-bottom:20px;">0.01ms Optimized</p>
                     <div class="card-footer">
                         <span class="price">15€</span>
-                        <a href="product_template.html" class="btn-card">MEGTEKINTÉS</a> </div>
+                        <a href="product_template.html" class="btn-card">MEGTEKINTÉS</a>
+                    </div>
                 </div>
             </div>
             <div class="card">
@@ -159,12 +155,6 @@
             <button class="checkout-btn" onclick="proceedToCheckout()">FIZETÉS (TEBEX)</button>
         </div>
     </div>
-    <div class="login-modal" id="loginModal">
-        <h2 style="color:#fff; font-family:'Orbitron'; margin-bottom:10px;">BEJELENTKEZÉS</h2>
-        <p style="color:#aaa;">A vásárláshoz szükséges a Cfx.re fiókod.</p>
-        <button class="cfx-btn" onclick="simulateLogin()"><i class="fas fa-gamepad"></i> Sign in with Cfx.re</button>
-        <p style="margin-top:15px; font-size:0.8rem; color:#666; cursor:pointer;" onclick="toggleLoginModal()">Mégse</p>
-    </div>
 
     <footer>
         <div class="socials"><a href="https://discord.gg/TE_DISCORD_LINKED" target="_blank"><i class="fab fa-discord"></i></a></div>
@@ -173,30 +163,19 @@
 
     <script>
         function toggleMenu() { document.getElementById('nav-menu').classList.toggle('active'); }
-        // UGYANAZ A JS LOGIKA MINT INDEX-BEN (Terméklista)
-        const productsDB = {
-            'vehicle': { name: 'Haladó Járműrendszer v2', price: 35, img: 'logo.png', tebexId: '123456' },
-            'jobs': { name: 'Egyedi Munkák', price: 50, img: 'logo.png', tebexId: '654321' },
-            'admin': { name: 'Admin Panel Pro', price: 40, img: 'logo.png', tebexId: '112233' },
-            'hud': { name: 'DarkinoM HUD', price: 15, img: 'logo.png', tebexId: '445566' },
-            'robbery': { name: 'Advanced Robbery', price: 25, img: 'logo.png', tebexId: '998877' },
-            'garage': { name: 'Garage System', price: 20, img: 'logo.png', tebexId: '776655' }
-        };
+        
+        const productsDB = { 'hud': { name: 'DarkinoM HUD', price: 15, img: 'logo.png', tebexId: '445566' }, 'robbery': { name: 'Advanced Robbery', price: 25, img: 'logo.png', tebexId: '998877' }, 'garage': { name: 'Garage System', price: 20, img: 'logo.png', tebexId: '776655' }, 'admin': { name: 'Admin Panel', price: 30, img: 'logo.png', tebexId: '112233' } };
         let cart = JSON.parse(localStorage.getItem('darkinom_cart')) || [];
-        let isLoggedIn = localStorage.getItem('darkinom_user') !== null;
-        document.addEventListener('DOMContentLoaded', () => { updateCartUI(); checkLoginStatus(); const savedLang = localStorage.getItem('darkinom_lang') || 'hu'; setLanguage(savedLang); });
+
+        document.addEventListener('DOMContentLoaded', () => { updateCartUI(); const savedLang = localStorage.getItem('darkinom_lang') || 'hu'; setLanguage(savedLang); });
         function setLanguage(lang) { localStorage.setItem('darkinom_lang', lang); document.getElementById('btn-hu').classList.remove('active'); document.getElementById('btn-en').classList.remove('active'); document.getElementById('btn-' + lang).classList.add('active'); const translations = { hu: { nav_home:"Főoldal", page_title:"Minden Script" }, en: { nav_home:"Home", page_title:"All Scripts" } }; document.querySelectorAll('[data-i18n]').forEach(el => { const key = el.getAttribute('data-i18n'); if (translations[lang] && translations[lang][key]) el.innerHTML = translations[lang][key]; }); }
         
         function addToCart(id) { const p = productsDB[id]; if(!p) return; cart.push(p); localStorage.setItem('darkinom_cart', JSON.stringify(cart)); updateCartUI(); document.getElementById('cartSidebar').classList.add('open'); document.getElementById('modalOverlay').classList.add('open'); }
         function removeFromCart(idx) { cart.splice(idx,1); localStorage.setItem('darkinom_cart', JSON.stringify(cart)); updateCartUI(); }
         function updateCartUI() { document.getElementById('cartCount').innerText = cart.length; const c = document.getElementById('cartItemsContainer'); c.innerHTML = ''; let t = 0; if(cart.length===0) c.innerHTML='<p style="color:#888; text-align:center;">Üres.</p>'; else cart.forEach((item,i) => { t+=item.price; c.innerHTML+=`<div class="cart-item"><img src="${item.img}"><div style="flex:1"><div style="font-weight:bold;color:#fff">${item.name}</div><div style="color:var(--primary)">${item.price}€</div></div><i class="fas fa-trash remove-btn" onclick="removeFromCart(${i})"></i></div>`; }); document.getElementById('cartTotal').innerText = t + '€'; }
         function toggleCart() { const sb = document.getElementById('cartSidebar'); const ov = document.getElementById('modalOverlay'); if(sb.classList.contains('open')){sb.classList.remove('open');ov.classList.remove('open');}else{sb.classList.add('open');ov.classList.add('open');} }
-        function toggleLoginModal() { const m = document.getElementById('loginModal'); const ov = document.getElementById('modalOverlay'); if(m.style.display==='block'){m.style.display='none';ov.classList.remove('open');}else{m.style.display='block';ov.classList.add('open');} }
-        function simulateLogin() { localStorage.setItem('darkinom_user','FiveM_User'); isLoggedIn=true; checkLoginStatus(); toggleLoginModal(); }
-        function logout() { localStorage.removeItem('darkinom_user'); isLoggedIn=false; checkLoginStatus(); }
-        function checkLoginStatus() { const l=document.getElementById('loginBtn'); const p=document.getElementById('userProfile'); if(isLoggedIn){l.style.display='none';p.style.display='block';document.getElementById('usernameDisplay').innerText='User';}else{l.style.display='block';p.style.display='none';} }
-        function closeAllModals() { document.getElementById('cartSidebar').classList.remove('open'); document.getElementById('loginModal').style.display='none'; document.getElementById('modalOverlay').classList.remove('open'); }
-        function proceedToCheckout() { if(cart.length===0)return alert('Üres a kosár!'); if(!isLoggedIn){toggleCart();setTimeout(()=>toggleLoginModal(),300);return;} const ids = cart.map(i=>i.tebexId).join(','); window.location.href = `https://TE_BOLTOD.tebex.io/checkout/basket?add=${ids}`; }
+        function closeAllModals() { document.getElementById('cartSidebar').classList.remove('open'); document.getElementById('modalOverlay').classList.remove('open'); }
+        function proceedToCheckout() { if(cart.length===0)return alert('Üres a kosár!'); const ids = cart.map(i=>i.tebexId).join(','); window.location.href = `https://TE_BOLTOD.tebex.io/checkout/basket?add=${ids}`; }
         
         document.addEventListener('mousemove', function(e) { const t = document.createElement('div'); t.classList.add('cursor-trail'); document.body.appendChild(t); t.style.left = e.clientX + 'px'; t.style.top = e.clientY + 'px'; const c = ['#00f3ff', '#bd00ff']; t.style.backgroundColor = c[Math.floor(Math.random()*2)]; t.style.boxShadow=`0 0 10px ${t.style.backgroundColor}`; setTimeout(()=>t.remove(),500); });
     </script>
