@@ -10,8 +10,15 @@
     <style>
         :root { --primary: #00f3ff; --secondary: #bd00ff; --bg-dark: #050608; --bg-card: rgba(10, 12, 18, 0.95); --text-main: #ffffff; --text-dim: #b0b8d4; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background-color: var(--bg-dark); color: var(--text-main); font-family: 'Rajdhani', sans-serif; background-image: url('background.png'); background-size: cover; background-position: center; background-attachment: fixed; overflow-x: hidden; display: flex; flex-direction: column; min-height: 100vh; cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><path d='M16 4 L16 28 M4 16 L28 16' stroke='%2300f3ff' stroke-width='2' fill='none'/></svg>") 16 16, crosshair; }
-        a, button, .discord-btn, .lang-btn, .menu-toggle, .logo-link, .icon-btn, .remove-btn, .checkout-btn, .close-cart, .faq-item { cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><path d='M16 4 L16 28 M4 16 L28 16' stroke='%23ff3333' stroke-width='3' fill='none'/></svg>") 16 16, pointer !important; }
+        body { 
+            background-color: var(--bg-dark); color: var(--text-main); font-family: 'Rajdhani', sans-serif; 
+            background-image: url('background.png'); background-size: cover; background-position: center; background-attachment: fixed; overflow-x: hidden; 
+            display: flex; flex-direction: column; min-height: 100vh;
+            cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><path d='M16 4 L16 28 M4 16 L28 16' stroke='%2300f3ff' stroke-width='2' fill='none'/></svg>") 16 16, crosshair;
+        }
+        a, button, .discord-btn, .lang-btn, .menu-toggle, .logo-link, .icon-btn, .remove-btn, .checkout-btn, .close-cart, .faq-item, .cfx-btn {
+            cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><path d='M16 4 L16 28 M4 16 L28 16' stroke='%23ff3333' stroke-width='3' fill='none'/></svg>") 16 16, pointer !important;
+        }
         .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(5, 6, 8, 0.75); z-index: -1; }
         .cursor-trail { position: fixed; top: 0; left: 0; width: 8px; height: 8px; background: var(--primary); pointer-events: none; z-index: 9999; box-shadow: 0 0 10px var(--primary); animation: fadeOut 0.5s forwards; }
         @keyframes fadeOut { 0% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: scale(0); } }
@@ -133,7 +140,7 @@
     <div class="login-modal" id="loginModal">
         <h2 style="color:#fff; font-family:'Orbitron'; margin-bottom:10px;">BEJELENTKEZÉS</h2>
         <p style="color:#aaa;">A vásárláshoz szükséges a Cfx.re fiókod.</p>
-        <button class="cfx-btn" onclick="simulateLogin()"><i class="fas fa-gamepad"></i> Sign in with Cfx.re</button>
+        <button class="cfx-btn" onclick="loginWithCfx()"><i class="fas fa-gamepad"></i> Sign in with Cfx.re</button>
         <p style="margin-top:15px; font-size:0.8rem; color:#666; cursor:pointer;" onclick="toggleLoginModal()">Mégse</p>
     </div>
 
@@ -144,19 +151,26 @@
 
     <script>
         function toggleMenu() { document.getElementById('nav-menu').classList.toggle('active'); }
-        // JS LOGIKA (Nincs termék, de kell a kosár funkcionalitás)
+        // JS LOGIKA (Kosár + Login)
+        // Login Config
+        const CFX_CLIENT_ID = 'TOLTSD_KI_AZ_ID-VEL'; // IDE ÍRD A CLIENT ID-T!
+        const REDIRECT_URI = window.location.href.split('?')[0];
+
         let cart = JSON.parse(localStorage.getItem('darkinom_cart')) || [];
         let isLoggedIn = localStorage.getItem('darkinom_user') !== null;
-        document.addEventListener('DOMContentLoaded', () => { updateCartUI(); checkLoginStatus(); const savedLang = localStorage.getItem('darkinom_lang') || 'hu'; setLanguage(savedLang); });
+        document.addEventListener('DOMContentLoaded', () => { updateCartUI(); checkLoginStatus(); checkForAuthParams(); const savedLang = localStorage.getItem('darkinom_lang') || 'hu'; setLanguage(savedLang); });
         function setLanguage(lang) { localStorage.setItem('darkinom_lang', lang); document.getElementById('btn-hu').classList.remove('active'); document.getElementById('btn-en').classList.remove('active'); document.getElementById('btn-' + lang).classList.add('active'); const translations = { hu: { nav_home:"Főoldal", page_title:"Segítségre van szükséged?" }, en: { nav_home:"Home", page_title:"Need Support?" } }; document.querySelectorAll('[data-i18n]').forEach(el => { const key = el.getAttribute('data-i18n'); if (translations[lang] && translations[lang][key]) el.innerHTML = translations[lang][key]; }); }
         
+        function loginWithCfx() { if(CFX_CLIENT_ID === 'TOLTSD_KI_AZ_ID-VEL') { alert("Állítsd be a CFX_CLIENT_ID-t a kódban!"); return; } window.location.href = `https://forum.cfx.re/auth/authorize?client_id=${CFX_CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&response_type=code&scope=identify`; }
+        function checkForAuthParams() { const urlParams = new URLSearchParams(window.location.search); if (urlParams.has('code')) { localStorage.setItem('darkinom_user', 'Cfx.re User'); window.history.replaceState({}, document.title, window.location.pathname); isLoggedIn = true; checkLoginStatus(); } }
+
         function removeFromCart(idx) { cart.splice(idx,1); localStorage.setItem('darkinom_cart', JSON.stringify(cart)); updateCartUI(); }
         function updateCartUI() { document.getElementById('cartCount').innerText = cart.length; const c = document.getElementById('cartItemsContainer'); c.innerHTML = ''; let t = 0; if(cart.length===0) c.innerHTML='<p style="color:#888; text-align:center;">Üres.</p>'; else cart.forEach((item,i) => { t+=item.price; c.innerHTML+=`<div class="cart-item"><img src="${item.img}"><div style="flex:1"><div style="font-weight:bold;color:#fff">${item.name}</div><div style="color:var(--primary)">${item.price}€</div></div><i class="fas fa-trash remove-btn" onclick="removeFromCart(${i})"></i></div>`; }); document.getElementById('cartTotal').innerText = t + '€'; }
         function toggleCart() { const sb = document.getElementById('cartSidebar'); const ov = document.getElementById('modalOverlay'); if(sb.classList.contains('open')){sb.classList.remove('open');ov.classList.remove('open');}else{sb.classList.add('open');ov.classList.add('open');} }
         function toggleLoginModal() { const m = document.getElementById('loginModal'); const ov = document.getElementById('modalOverlay'); if(m.style.display==='block'){m.style.display='none';ov.classList.remove('open');}else{m.style.display='block';ov.classList.add('open');} }
         function simulateLogin() { localStorage.setItem('darkinom_user','FiveM_User'); isLoggedIn=true; checkLoginStatus(); toggleLoginModal(); }
         function logout() { localStorage.removeItem('darkinom_user'); isLoggedIn=false; checkLoginStatus(); }
-        function checkLoginStatus() { const l=document.getElementById('loginBtn'); const p=document.getElementById('userProfile'); if(isLoggedIn){l.style.display='none';p.style.display='block';document.getElementById('usernameDisplay').innerText='User';}else{l.style.display='block';p.style.display='none';} }
+        function checkLoginStatus() { const l=document.getElementById('loginBtn'); const p=document.getElementById('userProfile'); if(isLoggedIn){l.style.display='none';p.style.display='block';document.getElementById('usernameDisplay').innerText=localStorage.getItem('darkinom_user');}else{l.style.display='block';p.style.display='none';} }
         function closeAllModals() { document.getElementById('cartSidebar').classList.remove('open'); document.getElementById('loginModal').style.display='none'; document.getElementById('modalOverlay').classList.remove('open'); }
         function proceedToCheckout() { if(cart.length===0)return alert('Üres a kosár!'); if(!isLoggedIn){toggleCart();setTimeout(()=>toggleLoginModal(),300);return;} const ids = cart.map(i=>i.tebexId).join(','); window.location.href = `https://TE_BOLTOD.tebex.io/checkout/basket?add=${ids}`; }
         
