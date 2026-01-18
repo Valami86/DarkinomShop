@@ -3,95 +3,75 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DarkinoM | HUD v2</title>
+    <title>DarkinoM | Termék Neve</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@400;500;600;700;900&display=swap&subset=latin,latin-ext" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
-        :root { --primary: #00f3ff; --secondary: #bd00ff; --bg-dark: #050608; --bg-card: rgba(15, 17, 22, 0.95); --text-main: #ffffff; --text-dim: #b0b8d4; }
+        :root { --primary: #00f3ff; --secondary: #bd00ff; --bg-dark: #050608; --bg-card: rgba(10, 12, 18, 0.95); --text-main: #ffffff; --text-dim: #b0b8d4; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { 
             background-color: var(--bg-dark); color: var(--text-main); font-family: 'Rajdhani', sans-serif; 
             background-image: url('background.png'); background-size: cover; background-position: center; background-attachment: fixed; overflow-x: hidden; 
-            display: flex; flex-direction: column; min-height: 100vh; cursor: crosshair;
+            display: flex; flex-direction: column; min-height: 100vh;
+            cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><path d='M16 4 L16 28 M4 16 L28 16' stroke='%2300f3ff' stroke-width='2' fill='none'/></svg>") 16 16, crosshair;
         }
-        /* KATTINTHATÓ */
         a, button, .btn-buy, .lang-btn, .menu-toggle, .logo-link { cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><path d='M16 4 L16 28 M4 16 L28 16' stroke='%23ff3333' stroke-width='3' fill='none'/></svg>") 16 16, pointer !important; }
-
-        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(5, 6, 8, 0.8); z-index: -1; }
-        
-        /* TRAIL */
         .cursor-trail { position: fixed; top: 0; left: 0; width: 8px; height: 8px; background: var(--primary); pointer-events: none; z-index: 9999; box-shadow: 0 0 10px var(--primary); animation: fadeOut 0.5s forwards; }
         @keyframes fadeOut { 0% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: scale(0); } }
 
-        /* HEADER */
-        header { display: flex; justify-content: space-between; align-items: center; padding: 15px 5%; background: rgba(10, 10, 15, 0.95); border-bottom: 1px solid rgba(0, 243, 255, 0.2); position: sticky; top: 0; z-index: 1000; backdrop-filter: blur(10px); }
+        /* HEADER & GLITCH (Javítva) */
+        header { display: flex; justify-content: space-between; align-items: center; padding: 20px 5%; background: rgba(5, 6, 8, 0.9); border-bottom: 1px solid rgba(0, 243, 255, 0.1); position: sticky; top: 0; z-index: 1000; backdrop-filter: blur(10px); }
         .logo-link { display: flex; align-items: center; gap: 15px; text-decoration: none; }
-        .logo-img-small { height: 50px; filter: drop-shadow(0 0 5px rgba(189, 0, 255, 0.5)); transition: transform 0.3s; }
-        
-        /* GLITCH */
-        .logo-text { font-family: 'Orbitron', sans-serif; font-size: 1.5rem; font-weight: 900; color: #fff; text-transform: uppercase; letter-spacing: 2px; position: relative; transition: 0.3s; }
+        .logo-img-small { height: 45px; filter: drop-shadow(0 0 5px rgba(189, 0, 255, 0.5)); transition: 0.3s; }
+        .logo-text { font-family: 'Orbitron', sans-serif; font-size: 1.5rem; font-weight: 900; color: #fff; letter-spacing: 2px; position: relative; transition: 0.3s; }
         @keyframes glitch-skew { 0% { transform: skew(0deg); } 20% { transform: skew(-10deg); } 40% { transform: skew(10deg); } 60% { transform: skew(-5deg); } 80% { transform: skew(5deg); } 100% { transform: skew(0deg); } }
         @keyframes glitch-color { 0% { text-shadow: 2px 2px var(--secondary), -2px -2px var(--primary); } 25% { text-shadow: -2px 2px var(--secondary), 2px -2px var(--primary); } 50% { text-shadow: 2px -2px var(--secondary), -2px 2px var(--primary); } 75% { text-shadow: -2px -2px var(--secondary), 2px 2px var(--primary); } 100% { text-shadow: 2px 0 var(--secondary), -2px 0 var(--primary); } }
         .logo-link:hover .logo-text { animation: glitch-skew 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both infinite, glitch-color 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both infinite; color: #fff; }
         .logo-link:hover .logo-img-small { transform: scale(1.1); }
 
-        .nav-links { display: flex; gap: 50px; align-items: center; }
-        .nav-links a { color: var(--text-main); text-decoration: none; font-weight: 700; text-transform: uppercase; font-size: 1.1rem; letter-spacing: 1px; transition: 0.3s; font-family: 'Rajdhani', sans-serif; }
+        .nav-links { display: flex; gap: 40px; align-items: center; }
+        .nav-links a { color: var(--text-dim); text-decoration: none; font-weight: 600; font-size: 1.1rem; text-transform: uppercase; transition: 0.3s; }
         .nav-links a:hover { color: var(--primary); text-shadow: 0 0 10px var(--primary); }
         .menu-toggle { display: none; font-size: 1.8rem; color: var(--primary); }
-        .lang-switch { display: flex; gap: 10px; margin-left: 20px; }
-        .lang-btn { background: transparent; border: 1px solid var(--text-dim); color: var(--text-dim); padding: 4px 10px; cursor: pointer; font-family: 'Orbitron', sans-serif; font-size: 0.8rem; }
-        .lang-btn.active { border-color: var(--primary); color: var(--primary); }
+        .lang-switch button { background: none; border: 1px solid #333; color: #888; padding: 2px 8px; font-size: 0.8rem; font-family: 'Orbitron'; cursor: pointer; }
+        .lang-switch button.active { border-color: var(--primary); color: var(--primary); }
 
         .container { max-width: 1200px; margin: 0 auto; padding: 40px 20px; flex: 1; width: 100%; }
 
         /* --- TERMÉK RÉSZLETEK --- */
         .product-wrapper { display: flex; gap: 40px; margin-top: 20px; }
-        
-        .product-image-box { flex: 1; border: 1px solid var(--primary); border-radius: 12px; overflow: hidden; background: #000; box-shadow: 0 0 20px rgba(0,243,255,0.1); }
+        .product-image-box { flex: 1; border: 1px solid rgba(0, 243, 255, 0.3); border-radius: 12px; overflow: hidden; background: #000; box-shadow: 0 0 20px rgba(0,243,255,0.1); }
         .product-image-box img { width: 100%; height: auto; display: block; }
-        
         .product-info { flex: 1; display: flex; flex-direction: column; justify-content: center; }
-        
         .product-title { font-family: 'Orbitron', sans-serif; font-size: 2.5rem; color: #fff; margin-bottom: 10px; text-transform: uppercase; }
         .product-price { font-family: 'Orbitron', sans-serif; font-size: 2rem; color: var(--primary); font-weight: bold; margin-bottom: 20px; }
-        
         .product-desc { color: var(--text-dim); font-size: 1.1rem; line-height: 1.6; margin-bottom: 30px; }
-        
         .features-list { list-style: none; margin-bottom: 30px; }
         .features-list li { margin-bottom: 10px; color: #fff; font-weight: 500; display: flex; align-items: center; gap: 10px; }
         .features-list li i { color: var(--secondary); }
-
-        .btn-buy { 
-            display: inline-block; width: 100%; padding: 15px; 
-            background: var(--primary); color: #000; 
-            text-align: center; text-decoration: none; 
-            font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 1.2rem; text-transform: uppercase; 
-            border: 2px solid var(--primary); transition: 0.3s; border-radius: 5px;
-        }
+        .btn-buy { display: inline-block; width: 100%; padding: 15px; background: var(--primary); color: #000; text-align: center; text-decoration: none; font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 1.2rem; text-transform: uppercase; border: 2px solid var(--primary); transition: 0.3s; border-radius: 5px; }
         .btn-buy:hover { background: transparent; color: var(--primary); box-shadow: 0 0 20px var(--primary); }
 
-        /* VIDEÓ/GALÉRIA SZEKCIÓ */
+        /* VIDEÓ SZEKCIÓ */
         .media-section { margin-top: 60px; }
         .media-title { font-family: 'Orbitron'; color: #fff; font-size: 1.8rem; margin-bottom: 20px; border-left: 4px solid var(--secondary); padding-left: 15px; }
-        .video-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border: 1px solid #333; border-radius: 10px; }
+        .video-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; background: #000; }
         .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
 
-        footer { width: 100%; padding: 40px; text-align: center; border-top: 1px solid rgba(255,255,255,0.1); background: #000; margin-top: auto; }
-        .socials a { color: var(--text-dim); margin: 0 15px; font-size: 1.8rem; transition: 0.3s; }
+        footer { background: #000; border-top: 1px solid #222; padding: 40px 0; text-align: center; margin-top: auto; }
+        .socials a { color: #fff; font-size: 1.5rem; margin: 0 15px; transition: 0.3s; }
 
         @media (max-width: 768px) {
             .menu-toggle { display: block; }
-            .nav-links { display: none; flex-direction: column; position: absolute; top: 60px; left: 0; width: 100%; background: rgba(10, 11, 16, 0.98); padding: 20px; border-bottom: 1px solid var(--primary); text-align: center; gap: 20px; }
+            .nav-links { display: none; flex-direction: column; position: absolute; top: 70px; left: 0; width: 100%; background: #0a0b10; padding: 20px; text-align: center; border-bottom: 1px solid var(--primary); }
             .nav-links.active { display: flex; }
             .product-wrapper { flex-direction: column; }
+            .lang-switch { margin: 20px auto 0; justify-content: center; }
         }
     </style>
 </head>
 <body>
-    <div class="overlay"></div>
-
     <header>
         <a href="index.html" class="logo-link">
             <img src="logo.png" alt="DarkinoM" class="logo-img-small">
@@ -111,20 +91,19 @@
     </header>
 
     <div class="container">
-        <a href="scripts.html" style="color: #888; text-decoration: none; margin-bottom: 20px; display: inline-block;">&larr; Vissza a scriptekhez</a>
+        <a href="scripts.html" style="color: #888; text-decoration: none; margin-bottom: 20px; display: inline-block; font-weight: 600;">&larr; Vissza a scriptekhez</a>
 
         <div class="product-wrapper">
             <div class="product-image-box">
-                <img src="https://via.placeholder.com/600x400" alt="HUD Preview">
+                <img src="https://via.placeholder.com/800x600.png?text=SCRIPT+PREVIEW+IMAGE" alt="Script Preview">
             </div>
 
             <div class="product-info">
-                <h1 class="product-title">DarkinoM HUD v2</h1>
+                <h1 class="product-title">Script Neve PL: HUD v2</h1>
                 <div class="product-price">15.00€</div>
                 <p class="product-desc" data-i18n="prod_desc">
-                    Ez a legújabb generációs HUD rendszer a FiveM szerveredhez. Teljesen optimalizált (0.01ms), 
-                    modern design, és könnyen testreszabható config fájl. Tartalmazza a sebességmérőt, 
-                    status barokat (éhség, szomjúság), és a job kijelzést.
+                    Ide jön a script részletes leírása. Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+                    Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Optimalizált kód, könnyű beállítás.
                 </p>
                 
                 <ul class="features-list">
@@ -147,10 +126,11 @@
     </div>
 
     <footer>
+        <img src="logo.png" style="height:30px; margin-bottom:10px; opacity:0.5;">
         <div class="socials">
             <a href="https://discord.gg/TE_DISCORD_LINKED" target="_blank"><i class="fab fa-discord"></i></a>
         </div>
-        <p style="color: #666; font-size: 0.9rem;">&copy; 2024 DarkinoM. All rights reserved.</p>
+        <div class="footer-links">&copy; 2024 DarkinoM. All rights reserved.</div>
     </footer>
 
     <script>
@@ -158,42 +138,26 @@
         
         const translations = {
             hu: {
-                prod_desc: "Ez a legújabb generációs HUD rendszer a FiveM szerveredhez. Teljesen optimalizált (0.01ms), modern design, és könnyen testreszabható.",
+                prod_desc: "Ide jön a script részletes leírása. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Optimalizált kód, könnyű beállítás.",
                 btn_buy_now: "VÁSÁRLÁS MOST"
             },
             en: {
-                prod_desc: "This is the latest generation HUD system for your FiveM server. Fully optimized (0.01ms), modern design, and easily customizable.",
+                prod_desc: "Detailed description of the script goes here. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Optimized code, easy configuration.",
                 btn_buy_now: "BUY NOW"
             }
         };
 
-        document.addEventListener('DOMContentLoaded', () => {
-            const savedLang = localStorage.getItem('darkinom_lang') || 'hu';
-            setLanguage(savedLang);
-        });
-
+        document.addEventListener('DOMContentLoaded', () => { const savedLang = localStorage.getItem('darkinom_lang') || 'hu'; setLanguage(savedLang); });
         function setLanguage(lang) {
             localStorage.setItem('darkinom_lang', lang);
-            document.getElementById('btn-hu').classList.remove('active');
-            document.getElementById('btn-en').classList.remove('active');
-            document.getElementById('btn-' + lang).classList.add('active');
-            
-            document.querySelectorAll('[data-i18n]').forEach(el => {
-                const key = el.getAttribute('data-i18n');
-                if (translations[lang][key]) el.innerText = translations[lang][key];
-            });
+            document.getElementById('btn-hu').classList.remove('active'); document.getElementById('btn-en').classList.remove('active'); document.getElementById('btn-' + lang).classList.add('active');
+            document.querySelectorAll('[data-i18n]').forEach(el => { const key = el.getAttribute('data-i18n'); if (translations[lang][key]) el.innerText = translations[lang][key]; });
         }
-
         document.addEventListener('mousemove', function(e) {
-            const trail = document.createElement('div');
-            trail.classList.add('cursor-trail');
-            document.body.appendChild(trail);
-            trail.style.left = e.clientX + 'px';
-            trail.style.top = e.clientY + 'px';
-            const colors = ['#00f3ff', '#bd00ff'];
-            const randomColor = colors[Math.floor(Math.random() * colors.length)];
-            trail.style.backgroundColor = randomColor;
-            trail.style.boxShadow = `0 0 10px ${randomColor}`;
+            const trail = document.createElement('div'); trail.classList.add('cursor-trail'); document.body.appendChild(trail);
+            trail.style.left = e.clientX + 'px'; trail.style.top = e.clientY + 'px';
+            const colors = ['#00f3ff', '#bd00ff']; const randomColor = colors[Math.floor(Math.random() * colors.length)];
+            trail.style.backgroundColor = randomColor; trail.style.boxShadow = `0 0 10px ${randomColor}`;
             setTimeout(() => { trail.remove(); }, 500);
         });
     </script>
