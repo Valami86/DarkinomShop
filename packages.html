@@ -8,72 +8,66 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
-        :root { --primary: #00f3ff; --secondary: #bd00ff; --bg-dark: #050608; --bg-card: rgba(15, 17, 22, 0.9); --text-main: #ffffff; --text-dim: #b0b8d4; }
+        :root { --primary: #00f3ff; --secondary: #bd00ff; --bg-dark: #050608; --bg-card: rgba(10, 12, 18, 0.95); --text-main: #ffffff; --text-dim: #b0b8d4; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { 
             background-color: var(--bg-dark); color: var(--text-main); font-family: 'Rajdhani', sans-serif; 
             background-image: url('background.png'); background-size: cover; background-position: center; background-attachment: fixed; overflow-x: hidden; 
             display: flex; flex-direction: column; min-height: 100vh;
-            /* EGYEDI KÉK CÉLKERESZT KURZOR */
             cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><path d='M16 4 L16 28 M4 16 L28 16' stroke='%2300f3ff' stroke-width='2' fill='none'/></svg>") 16 16, crosshair;
         }
-        
-        /* KATTINTHATÓ ELEMEK: PIROS CÉLKERESZT */
         a, button, .btn-full, .lang-btn, .menu-toggle, .logo-link, .pricing-card {
             cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><path d='M16 4 L16 28 M4 16 L28 16' stroke='%23ff3333' stroke-width='3' fill='none'/></svg>") 16 16, pointer !important;
         }
-
-        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(5, 6, 8, 0.7); z-index: -1; }
-        
-        /* TRAIL (VÉGLEGES JAVÍTÁS: FIXED POSITION) */
         .cursor-trail { position: fixed; top: 0; left: 0; width: 8px; height: 8px; background: var(--primary); pointer-events: none; z-index: 9999; box-shadow: 0 0 10px var(--primary); animation: fadeOut 0.5s forwards; }
         @keyframes fadeOut { 0% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: scale(0); } }
 
-        header { display: flex; justify-content: space-between; align-items: center; padding: 15px 5%; background: rgba(10, 10, 15, 0.95); border-bottom: 1px solid rgba(0, 243, 255, 0.2); position: sticky; top: 0; z-index: 1000; backdrop-filter: blur(10px); }
+        /* HEADER & GLITCH (Javítva) */
+        header { display: flex; justify-content: space-between; align-items: center; padding: 20px 5%; background: rgba(5, 6, 8, 0.9); border-bottom: 1px solid rgba(0, 243, 255, 0.1); position: sticky; top: 0; z-index: 1000; backdrop-filter: blur(10px); }
         .logo-link { display: flex; align-items: center; gap: 15px; text-decoration: none; }
-        .logo-img-small { height: 50px; filter: drop-shadow(0 0 5px rgba(189, 0, 255, 0.5)); transition: transform 0.3s; }
-        .logo-text { font-family: 'Orbitron', sans-serif; font-size: 1.5rem; font-weight: 900; color: #fff; text-transform: uppercase; letter-spacing: 2px; position: relative; transition: 0.3s; }
+        .logo-img-small { height: 45px; filter: drop-shadow(0 0 5px rgba(189, 0, 255, 0.5)); transition: 0.3s; }
+        .logo-text { font-family: 'Orbitron', sans-serif; font-size: 1.5rem; font-weight: 900; color: #fff; letter-spacing: 2px; position: relative; transition: 0.3s; }
         @keyframes glitch-skew { 0% { transform: skew(0deg); } 20% { transform: skew(-10deg); } 40% { transform: skew(10deg); } 60% { transform: skew(-5deg); } 80% { transform: skew(5deg); } 100% { transform: skew(0deg); } }
         @keyframes glitch-color { 0% { text-shadow: 2px 2px var(--secondary), -2px -2px var(--primary); } 25% { text-shadow: -2px 2px var(--secondary), 2px -2px var(--primary); } 50% { text-shadow: 2px -2px var(--secondary), -2px 2px var(--primary); } 75% { text-shadow: -2px -2px var(--secondary), 2px 2px var(--primary); } 100% { text-shadow: 2px 0 var(--secondary), -2px 0 var(--primary); } }
         .logo-link:hover .logo-text { animation: glitch-skew 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both infinite, glitch-color 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both infinite; color: #fff; }
         .logo-link:hover .logo-img-small { transform: scale(1.1); }
 
-        /* MENÜ */
-        .nav-links { display: flex; gap: 50px; align-items: center; }
-        .nav-links a { color: var(--text-main); text-decoration: none; font-weight: 700; text-transform: uppercase; font-size: 1.1rem; letter-spacing: 1px; transition: 0.3s; font-family: 'Rajdhani', sans-serif; }
+        .nav-links { display: flex; gap: 40px; align-items: center; }
+        .nav-links a { color: var(--text-dim); text-decoration: none; font-weight: 600; font-size: 1.1rem; text-transform: uppercase; transition: 0.3s; }
         .nav-links a:hover, .nav-links a.active { color: var(--primary); text-shadow: 0 0 10px var(--primary); }
-
-        .menu-toggle { display: none; font-size: 1.8rem; color: var(--primary); cursor: pointer; }
-        .lang-switch { display: flex; gap: 10px; margin-left: 20px; }
-        .lang-btn { background: transparent; border: 1px solid var(--text-dim); color: var(--text-dim); padding: 4px 10px; cursor: pointer; font-family: 'Orbitron', sans-serif; font-size: 0.8rem; }
-        .lang-btn.active { border-color: var(--primary); color: var(--primary); }
+        .menu-toggle { display: none; font-size: 1.8rem; color: var(--primary); }
+        .lang-switch button { background: none; border: 1px solid #333; color: #888; padding: 2px 8px; font-size: 0.8rem; font-family: 'Orbitron'; cursor: pointer; }
+        .lang-switch button.active { border-color: var(--primary); color: var(--primary); }
 
         .container { max-width: 1200px; margin: 0 auto; padding: 20px; flex: 1; width: 100%; }
-        .page-header { text-align: center; margin: 40px 0; }
-        .page-title { font-family: 'Rajdhani', sans-serif; font-weight: 900; font-size: 3rem; color: #fff; margin-bottom: 10px; text-transform: uppercase; }
+        .section-title { margin-top: 40px; margin-bottom: 30px; font-family: 'Orbitron', sans-serif; font-size: 1.8rem; font-weight: 700; text-transform: uppercase; color: #fff; border-left: 4px solid var(--primary); padding-left: 15px; }
 
+        /* CSOMAG KÁRTYÁK */
         .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; align-items: center; }
-        .pricing-card { background: var(--bg-card); border: 1px solid rgba(255,255,255,0.1); padding: 40px; border-radius: 15px; text-align: center; transition: 0.3s; position: relative; }
-        .pricing-card:hover { transform: translateY(-10px); }
-        .pricing-card.featured { border: 2px solid var(--primary); background: rgba(15, 17, 22, 0.95); box-shadow: 0 0 30px rgba(0, 243, 255, 0.15); transform: scale(1.05); z-index: 2; }
-        .pricing-card.featured:hover { transform: scale(1.05) translateY(-10px); }
+        .pricing-card { background: var(--bg-card); border: 1px solid rgba(0, 243, 255, 0.3); padding: 40px; border-radius: 15px; text-align: center; transition: 0.3s; position: relative; box-shadow: 0 0 15px rgba(0,0,0,0.5); }
+        .pricing-card:hover { transform: translateY(-10px); border-color: var(--primary); box-shadow: 0 0 30px rgba(0, 243, 255, 0.2); }
+        .pricing-card.featured { border: 2px solid var(--secondary); background: rgba(15, 17, 22, 0.98); box-shadow: 0 0 30px rgba(189, 0, 255, 0.2); transform: scale(1.05); z-index: 2; }
+        .pricing-card.featured:hover { transform: scale(1.05) translateY(-10px); border-color: var(--secondary); box-shadow: 0 0 40px rgba(189, 0, 255, 0.3); }
         
-        .pkg-name { font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 1.8rem; margin-bottom: 15px; color: #fff; text-transform: uppercase; }
-        .pkg-price { font-family: 'Rajdhani', sans-serif; font-weight: 800; font-size: 3rem; color: var(--primary); margin-bottom: 30px; }
+        .pkg-name { font-family: 'Orbitron', sans-serif; font-weight: 700; font-size: 1.8rem; margin-bottom: 15px; color: #fff; text-transform: uppercase; }
+        .pkg-price { font-family: 'Orbitron', sans-serif; font-weight: 800; font-size: 3rem; color: var(--primary); margin-bottom: 30px; }
+        .featured .pkg-price { color: var(--secondary); }
         .pkg-features { list-style: none; margin-bottom: 30px; text-align: left; }
         .pkg-features li { margin-bottom: 15px; color: var(--text-dim); font-size: 1.1rem; font-weight: 500; }
-        .pkg-features li i { color: var(--secondary); margin-right: 10px; }
+        .pkg-features li i { color: var(--primary); margin-right: 10px; }
+        .featured .pkg-features li i { color: var(--secondary); }
         
-        .btn-full { display: block; width: 100%; padding: 15px; background: transparent; border: 2px solid var(--primary); color: var(--primary); font-family: 'Rajdhani', sans-serif; font-weight: 800; text-decoration: none; text-transform: uppercase; transition: 0.3s; font-size: 1.2rem; }
+        .btn-full { display: block; width: 100%; padding: 15px; background: transparent; border: 2px solid var(--primary); color: var(--primary); font-family: 'Orbitron', sans-serif; font-weight: 800; text-decoration: none; text-transform: uppercase; transition: 0.3s; font-size: 1.2rem; }
         .btn-full:hover { background: var(--primary); color: #000; box-shadow: 0 0 20px var(--primary); }
-        .featured .btn-full { background: var(--primary); color: #000; }
+        .featured .btn-full { border-color: var(--secondary); color: var(--secondary); }
+        .featured .btn-full:hover { background: var(--secondary); color: #000; box-shadow: 0 0 20px var(--secondary); }
 
-        footer { width: 100%; padding: 40px; text-align: center; border-top: 1px solid rgba(255,255,255,0.1); background: #000; margin-top: auto; }
-        .socials a { color: var(--text-dim); margin: 0 15px; font-size: 1.8rem; transition: 0.3s; }
+        footer { background: #000; border-top: 1px solid #222; padding: 40px 0; text-align: center; margin-top: auto; }
+        .socials a { color: #fff; font-size: 1.5rem; margin: 0 15px; transition: 0.3s; }
 
         @media (max-width: 768px) {
             .menu-toggle { display: block; }
-            .nav-links { display: none; flex-direction: column; position: absolute; top: 60px; left: 0; width: 100%; background: rgba(10, 11, 16, 0.98); padding: 20px; border-bottom: 1px solid var(--primary); text-align: center; gap: 20px; }
+            .nav-links { display: none; flex-direction: column; position: absolute; top: 70px; left: 0; width: 100%; background: #0a0b10; padding: 20px; text-align: center; border-bottom: 1px solid var(--primary); }
             .nav-links.active { display: flex; }
             .pricing-card.featured { transform: scale(1); }
             .lang-switch { margin: 20px auto 0; justify-content: center; }
@@ -81,11 +75,9 @@
     </style>
 </head>
 <body>
-    <div class="overlay"></div>
-
     <header>
         <a href="index.html" class="logo-link">
-            <img src="logo.png" alt="DarkinoM Logo" class="logo-img-small">
+            <img src="logo.png" alt="DarkinoM" class="logo-img-small">
             <span class="logo-text">DARKINOM</span>
         </a>
         <div class="menu-toggle" onclick="toggleMenu()"><i class="fas fa-bars"></i></div>
@@ -102,10 +94,7 @@
     </header>
 
     <div class="container">
-        <div class="page-header">
-            <h1 class="page-title" data-i18n="page_title">Csomagajánlatok</h1>
-            <p style="color:#888;" data-i18n="page_subtitle">Spórolj pénzt bundle vásárlással.</p>
-        </div>
+        <h2 class="section-title" data-i18n="page_title">Csomagajánlatok</h2>
 
         <div class="pricing-grid">
             <div class="pricing-card">
@@ -120,7 +109,7 @@
             </div>
 
             <div class="pricing-card featured">
-                <div style="position: absolute; top:0; left:50%; transform:translateX(-50%) translateY(-50%); background:var(--secondary); padding: 5px 15px; font-weight:bold; font-size:0.8rem; border-radius:20px;">BEST SELLER</div>
+                <div style="position: absolute; top:0; left:50%; transform:translateX(-50%) translateY(-50%); background:var(--secondary); padding: 5px 15px; font-weight:bold; font-size:0.8rem; border-radius:20px; color:#000;">BEST SELLER</div>
                 <h3 class="pkg-name">Pro Pack</h3>
                 <div class="pkg-price">60€</div>
                 <ul class="pkg-features">
@@ -147,74 +136,30 @@
     </div>
 
     <footer>
+        <img src="logo.png" style="height:30px; margin-bottom:10px; opacity:0.5;">
         <div class="socials">
             <a href="https://discord.gg/TE_DISCORD_LINKED" target="_blank"><i class="fab fa-discord"></i></a>
         </div>
-        <p style="color: #666; font-size: 0.9rem;">&copy; 2024 DarkinoM.</p>
+        <div class="footer-links">&copy; 2024 DarkinoM. All rights reserved.</div>
     </footer>
 
     <script>
         function toggleMenu() { document.getElementById('nav-menu').classList.toggle('active'); }
-        
         const translations = {
-            hu: {
-                nav_home: "Főoldal", nav_scripts: "Scriptek", nav_packages: "Csomagok", nav_support: "Support",
-                page_title: "Csomagajánlatok",
-                page_subtitle: "Spórolj pénzt bundle vásárlással.",
-                btn_buy: "Vásárlás",
-                feat_all: "<i class='fas fa-check'></i> Összes jelenlegi script",
-                feat_future: "<i class='fas fa-check'></i> Jövőbeli frissítések",
-                feat_prio: "<i class='fas fa-check'></i> Priority Support",
-                feat_custom: "<i class='fas fa-check'></i> Egyedi kérések"
-            },
-            en: {
-                nav_home: "Home", nav_scripts: "Scripts", nav_packages: "Packages", nav_support: "Support",
-                page_title: "Bundle Offers",
-                page_subtitle: "Save money by buying bundles.",
-                btn_buy: "Purchase",
-                feat_all: "<i class='fas fa-check'></i> All current scripts",
-                feat_future: "<i class='fas fa-check'></i> Future updates",
-                feat_prio: "<i class='fas fa-check'></i> Priority Support",
-                feat_custom: "<i class='fas fa-check'></i> Custom requests"
-            }
+            hu: { nav_home: "Főoldal", nav_scripts: "Scriptek", nav_packages: "Csomagok", nav_support: "Support", page_title: "Csomagajánlatok", btn_buy: "Vásárlás", feat_all: "<i class='fas fa-check'></i> Összes jelenlegi script", feat_future: "<i class='fas fa-check'></i> Jövőbeli frissítések", feat_prio: "<i class='fas fa-check'></i> Priority Support", feat_custom: "<i class='fas fa-check'></i> Egyedi kérések" },
+            en: { nav_home: "Home", nav_scripts: "Scripts", nav_packages: "Packages", nav_support: "Support", page_title: "Bundle Offers", btn_buy: "Purchase", feat_all: "<i class='fas fa-check'></i> All current scripts", feat_future: "<i class='fas fa-check'></i> Future updates", feat_prio: "<i class='fas fa-check'></i> Priority Support", feat_custom: "<i class='fas fa-check'></i> Custom requests" }
         };
-
-        // --- MEMÓRIA ---
-        document.addEventListener('DOMContentLoaded', () => {
-            const savedLang = localStorage.getItem('darkinom_lang') || 'hu';
-            setLanguage(savedLang);
-        });
-
+        document.addEventListener('DOMContentLoaded', () => { const savedLang = localStorage.getItem('darkinom_lang') || 'hu'; setLanguage(savedLang); });
         function setLanguage(lang) {
             localStorage.setItem('darkinom_lang', lang);
-            document.getElementById('btn-hu').classList.remove('active');
-            document.getElementById('btn-en').classList.remove('active');
-            document.getElementById('btn-' + lang).classList.add('active');
-            
-            document.querySelectorAll('[data-i18n]').forEach(el => {
-                const key = el.getAttribute('data-i18n');
-                if (translations[lang][key]) {
-                    el.innerHTML = translations[lang][key];
-                }
-            });
+            document.getElementById('btn-hu').classList.remove('active'); document.getElementById('btn-en').classList.remove('active'); document.getElementById('btn-' + lang).classList.add('active');
+            document.querySelectorAll('[data-i18n]').forEach(el => { const key = el.getAttribute('data-i18n'); if (translations[lang][key]) el.innerHTML = translations[lang][key]; });
         }
-
-        // --- TRAIL (JAVÍTOTT: clientX/Y + Fixed Position) ---
         document.addEventListener('mousemove', function(e) {
-            const trail = document.createElement('div');
-            trail.classList.add('cursor-trail');
-            document.body.appendChild(trail);
-            // clientX/Y a position:fixed miatt!
-            trail.style.left = e.clientX + 'px';
-            trail.style.top = e.clientY + 'px';
-            const colors = ['#00f3ff', '#bd00ff'];
-            const randomColor = colors[Math.floor(Math.random() * colors.length)];
-            trail.style.backgroundColor = randomColor;
-            trail.style.boxShadow = `0 0 10px ${randomColor}`;
-            const width = Math.random() * 10 + 2; 
-            const height = Math.random() * 4 + 1; 
-            trail.style.width = width + 'px';
-            trail.style.height = height + 'px';
+            const trail = document.createElement('div'); trail.classList.add('cursor-trail'); document.body.appendChild(trail);
+            trail.style.left = e.clientX + 'px'; trail.style.top = e.clientY + 'px';
+            const colors = ['#00f3ff', '#bd00ff']; const randomColor = colors[Math.floor(Math.random() * colors.length)];
+            trail.style.backgroundColor = randomColor; trail.style.boxShadow = `0 0 10px ${randomColor}`;
             setTimeout(() => { trail.remove(); }, 500);
         });
     </script>
