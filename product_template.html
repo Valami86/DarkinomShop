@@ -27,7 +27,7 @@
 
         .nav-links { display: flex; gap: 40px; align-items: center; }
         .nav-links a { color: var(--text-dim); text-decoration: none; font-weight: 600; font-size: 1.1rem; text-transform: uppercase; transition: 0.3s; }
-        .nav-links a:hover { color: var(--primary); text-shadow: 0 0 10px var(--primary); }
+        .nav-links a:hover, .nav-links a.active { color: var(--primary); text-shadow: 0 0 10px var(--primary); }
         .menu-toggle { display: none; font-size: 1.8rem; color: var(--primary); }
         .lang-switch button { background: none; border: 1px solid #333; color: #888; padding: 2px 8px; font-size: 0.8rem; font-family: 'Orbitron'; }
         .lang-switch button.active { border-color: var(--primary); color: var(--primary); }
@@ -73,7 +73,7 @@
 
         @media (max-width: 768px) {
             .menu-toggle { display: block; }
-            .nav-links { display: none; flex-direction: column; position: absolute; top: 80px; left: 0; width: 100%; background: #0a0b10; padding: 20px; border-bottom: 1px solid var(--primary); }
+            .nav-links { display: none; flex-direction: column; position: absolute; top: 80px; left: 0; width: 100%; background: #0a0b10; padding: 20px; text-align: center; border-bottom: 1px solid var(--primary); }
             .nav-links.active { display: flex; }
             .product-wrapper { flex-direction: column; }
             .cart-sidebar { width: 100%; right: -100%; }
@@ -92,10 +92,10 @@
             <div class="menu-toggle" onclick="toggleMenu()"><i class="fas fa-bars"></i></div>
         </div>
         <nav class="nav-links" id="nav-menu">
-            <a href="index.html">Főoldal</a>
-            <a href="scripts.html">Scriptek</a>
-            <a href="packages.html">Csomagok</a>
-            <a href="support.html">Support</a>
+            <a href="index.html" data-i18n="nav_home">Főoldal</a>
+            <a href="scripts.html" data-i18n="nav_scripts">Scriptek</a>
+            <a href="packages.html" data-i18n="nav_packages">Csomagok</a>
+            <a href="support.html" data-i18n="nav_support">Support</a>
             <div class="lang-switch">
                 <button class="lang-btn active" onclick="setLanguage('hu')" id="btn-hu">HU</button>
                 <button class="lang-btn" onclick="setLanguage('en')" id="btn-en">EN</button>
@@ -104,7 +104,7 @@
     </header>
 
     <div class="container">
-        <a href="scripts.html" style="color: #888; text-decoration: none; margin-bottom: 20px; display: inline-block; font-weight: 600;">&larr; Vissza a scriptekhez</a>
+        <a href="scripts.html" style="color: #888; text-decoration: none; margin-bottom: 20px; display: inline-block; font-weight: 600;" data-i18n="back_link">&larr; Vissza a scriptekhez</a>
 
         <div class="product-wrapper">
             <div class="product-image-box">
@@ -122,12 +122,12 @@
                     <li><i class="fas fa-check"></i> Könnyű Config</li>
                     <li><i class="fas fa-check"></i> ESX & QBCore támogatás</li>
                 </ul>
-                <button class="btn-buy" onclick="addToCart('hud')">KOSÁRBA</button>
+                <button class="btn-buy" onclick="addToCart('hud')" data-i18n="btn_cart">KOSÁRBA</button>
             </div>
         </div>
 
         <div class="media-section">
-            <h3 class="media-title">Videó Bemutató</h3>
+            <h3 class="media-title" data-i18n="media_title">Videó Bemutató</h3>
             <div class="video-container">
                 <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allowfullscreen></iframe>
             </div>
@@ -136,17 +136,17 @@
 
     <div class="modal-overlay" id="modalOverlay" onclick="closeAllModals()"></div>
     <div class="cart-sidebar" id="cartSidebar">
-        <div class="cart-header"><span class="cart-title">KOSÁR</span><span class="close-cart" onclick="toggleCart()">&times;</span></div>
+        <div class="cart-header"><span class="cart-title" data-i18n="cart_title">KOSÁR</span><span class="close-cart" onclick="toggleCart()">&times;</span></div>
         <div class="cart-items" id="cartItemsContainer"></div>
         <div class="cart-footer">
-            <div style="display:flex; justify-content:space-between; color:#fff; font-size:1.2rem; margin-bottom:15px;"><span>Összesen:</span><span id="cartTotal">0€</span></div>
-            <button class="checkout-btn" onclick="proceedToCheckout()">FIZETÉS (TEBEX)</button>
+            <div style="display:flex; justify-content:space-between; color:#fff; font-size:1.2rem; margin-bottom:15px;"><span data-i18n="cart_total">Összesen:</span><span id="cartTotal">0€</span></div>
+            <button class="checkout-btn" onclick="proceedToCheckout()" data-i18n="cart_checkout">FIZETÉS (TEBEX)</button>
         </div>
     </div>
 
     <footer>
         <div class="socials"><a href="https://discord.gg/TE_DISCORD_LINKED" target="_blank"><i class="fab fa-discord"></i></a></div>
-        <p style="color:#666; margin-top:20px;">&copy; 2024 DarkinoM.</p>
+        <p style="color:#666; margin-top:20px;" data-i18n="footer_rights">&copy; 2024 DarkinoM. Minden jog fenntartva.</p>
     </footer>
 
     <script>
@@ -155,15 +155,55 @@
         const productsDB = { 'hud': { name: 'DarkinoM HUD', price: 15, img: 'logo.png', tebexId: '445566' } }; // Csak a szükségesek
         let cart = JSON.parse(localStorage.getItem('darkinom_cart')) || [];
 
-        document.addEventListener('DOMContentLoaded', () => { updateCartUI(); const savedLang = localStorage.getItem('darkinom_lang') || 'hu'; setLanguage(savedLang); });
-        function setLanguage(lang) { localStorage.setItem('darkinom_lang', lang); document.getElementById('btn-hu').classList.remove('active'); document.getElementById('btn-en').classList.remove('active'); document.getElementById('btn-' + lang).classList.add('active'); const translations = { hu: { prod_desc: "Ez a legújabb generációs HUD..." }, en: { prod_desc: "This is the latest generation HUD..." } }; document.querySelectorAll('[data-i18n]').forEach(el => { const key = el.getAttribute('data-i18n'); if (translations[lang] && translations[lang][key]) el.innerHTML = translations[lang][key]; }); }
+        const translations = {
+            hu: {
+                nav_home: "Főoldal", nav_scripts: "Scriptek", nav_packages: "Csomagok", nav_support: "Support",
+                prod_desc: "Ez a legújabb generációs HUD rendszer a FiveM szerveredhez. Teljesen optimalizált (0.01ms), modern design, és könnyen testreszabható config fájl.",
+                btn_buy_now: "VÁSÁRLÁS MOST",
+                btn_cart: "KOSÁRBA",
+                media_title: "Videó Bemutató",
+                back_link: "Vissza a scriptekhez",
+                cart_title: "KOSÁR", cart_total: "Összesen:", cart_checkout: "FIZETÉS (TEBEX)", cart_empty: "A kosár üres.",
+                footer_rights: "&copy; 2024 DarkinoM. Minden jog fenntartva."
+            },
+            en: {
+                nav_home: "Home", nav_scripts: "Scripts", nav_packages: "Packages", nav_support: "Support",
+                prod_desc: "This is the latest generation HUD system for your FiveM server. Fully optimized (0.01ms), modern design, and easily customizable config file.",
+                btn_buy_now: "BUY NOW",
+                btn_cart: "ADD TO CART",
+                media_title: "Video Showcase",
+                back_link: "Back to scripts",
+                cart_title: "CART", cart_total: "Total:", cart_checkout: "CHECKOUT (TEBEX)", cart_empty: "Cart is empty.",
+                footer_rights: "&copy; 2024 DarkinoM. All rights reserved."
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', () => { const savedLang = localStorage.getItem('darkinom_lang') || 'hu'; setLanguage(savedLang); });
+        
+        function setLanguage(lang) {
+            localStorage.setItem('darkinom_lang', lang);
+            document.getElementById('btn-hu').classList.remove('active'); document.getElementById('btn-en').classList.remove('active'); document.getElementById('btn-' + lang).classList.add('active');
+            document.querySelectorAll('[data-i18n]').forEach(el => { 
+                const key = el.getAttribute('data-i18n'); 
+                if (translations[lang][key]) el.innerHTML = translations[lang][key]; 
+            });
+            updateCartUI();
+        }
         
         function addToCart(id) { const p = productsDB[id]; if(!p) return; cart.push(p); localStorage.setItem('darkinom_cart', JSON.stringify(cart)); updateCartUI(); document.getElementById('cartSidebar').classList.add('open'); document.getElementById('modalOverlay').classList.add('open'); }
         function removeFromCart(idx) { cart.splice(idx,1); localStorage.setItem('darkinom_cart', JSON.stringify(cart)); updateCartUI(); }
-        function updateCartUI() { document.getElementById('cartCount').innerText = cart.length; const c = document.getElementById('cartItemsContainer'); c.innerHTML = ''; let t = 0; if(cart.length===0) c.innerHTML='<p style="color:#888; text-align:center;">Üres.</p>'; else cart.forEach((item,i) => { t+=item.price; c.innerHTML+=`<div class="cart-item"><img src="${item.img}"><div style="flex:1"><div style="font-weight:bold;color:#fff">${item.name}</div><div style="color:var(--primary)">${item.price}€</div></div><i class="fas fa-trash remove-btn" onclick="removeFromCart(${i})"></i></div>`; }); document.getElementById('cartTotal').innerText = t + '€'; }
+        function updateCartUI() { 
+            const lang = localStorage.getItem('darkinom_lang') || 'hu';
+            document.getElementById('cartCount').innerText = cart.length; 
+            const c = document.getElementById('cartItemsContainer'); c.innerHTML = ''; 
+            let t = 0; 
+            if(cart.length===0) c.innerHTML=`<p style="color:#888; text-align:center;">${translations[lang].cart_empty}</p>`; 
+            else cart.forEach((item,i) => { t+=item.price; c.innerHTML+=`<div class="cart-item"><img src="${item.img}"><div style="flex:1"><div style="font-weight:bold;color:#fff">${item.name}</div><div style="color:var(--primary)">${item.price}€</div></div><i class="fas fa-trash remove-btn" onclick="removeFromCart(${i})"></i></div>`; }); 
+            document.getElementById('cartTotal').innerText = t + '€'; 
+        }
         function toggleCart() { const sb = document.getElementById('cartSidebar'); const ov = document.getElementById('modalOverlay'); if(sb.classList.contains('open')){sb.classList.remove('open');ov.classList.remove('open');}else{sb.classList.add('open');ov.classList.add('open');} }
         function closeAllModals() { document.getElementById('cartSidebar').classList.remove('open'); document.getElementById('modalOverlay').classList.remove('open'); }
-        function proceedToCheckout() { if(cart.length===0)return alert('Üres a kosár!'); const ids = cart.map(i=>i.tebexId).join(','); window.location.href = `https://TE_BOLTOD.tebex.io/checkout/basket?add=${ids}`; }
+        function proceedToCheckout() { if(cart.length===0) return alert('Üres a kosár!'); const ids = cart.map(i=>i.tebexId).join(','); window.location.href = `https://TE_BOLTOD.tebex.io/checkout/basket?add=${ids}`; }
         
         document.addEventListener('mousemove', function(e) { const t = document.createElement('div'); t.classList.add('cursor-trail'); document.body.appendChild(t); t.style.left = e.clientX + 'px'; t.style.top = e.clientY + 'px'; const c = ['#00f3ff', '#bd00ff']; t.style.backgroundColor = c[Math.floor(Math.random()*2)]; t.style.boxShadow=`0 0 10px ${t.style.backgroundColor}`; setTimeout(()=>t.remove(),500); });
     </script>
